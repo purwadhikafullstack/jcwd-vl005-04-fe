@@ -16,8 +16,6 @@ import AdminViewUser from './pages/admin/adminViewUser'
 
 // Product pages
 import ProductHome from './pages/product/productHome'
-import CategoryList from './pages/product/categoryList'
-
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state)
@@ -73,7 +71,7 @@ function App() {
         <Route path='/admin/forget-password' element={<AdminForgetPassword/>}/>
         <Route path='/admin/reset-password/:id' element={<AdminResetPassword/>}/>
         <Route path='/admin/products' element={<ProductHome />} />
-        <Route path='/admin/products/category-list' element={<CategoryList />} />
+        <Route path='/admin/products/category-list' element={<ProductHome />} />
       </Routes>
     </div>
   )

@@ -14,7 +14,7 @@ function ProductHome () {
             case '/admin/products':
                 return <MainContent />
             
-            case '/admin/products/create':
+            case '/admin/products/category-list':
                 return <CategoryList />
 
             default:
