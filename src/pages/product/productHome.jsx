@@ -2,13 +2,12 @@ import React from "react"
 import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
 
 import SidebarMain from "./components/sidebar/sidebarMain"
-import MainContent from "./components/main-content/mainContent"
+import MainContent from "./mainContent"
 import Header from "./components/header/header"
-import ProductCreate from "./productCreate"
+import CategoryList from "./categoryList"
 
 function ProductHome () {
     const url = window.location.pathname
-    console.log(url)
 
     const showPage = () => {
         switch (url) {
@@ -16,7 +15,7 @@ function ProductHome () {
                 return <MainContent />
             
             case '/admin/products/create':
-                return <ProductCreate />
+                return <CategoryList />
 
             default:
                 return null
@@ -31,7 +30,9 @@ function ProductHome () {
                 </div>
                 <div style={{ width: "85%" }}>
                     <Header />
-                    { showPage() }
+                    <div className="p-4">
+                        { showPage() }
+                    </div>
                 </div>
             </div>
         </div>

@@ -16,6 +16,7 @@ import AdminViewUser from './pages/admin/adminViewUser'
 
 // Product pages
 import ProductHome from './pages/product/productHome'
+import CategoryList from './pages/product/categoryList'
 
 function App() {
   const dispatch = useDispatch();
@@ -72,7 +73,7 @@ function App() {
         <Route path='/admin/forget-password' element={<AdminForgetPassword/>}/>
         <Route path='/admin/reset-password/:id' element={<AdminResetPassword/>}/>
         <Route path='/admin/products' element={<ProductHome />} />
-        <Route path='/admin/products/create' element={<ProductHome />} />
+        <Route path='/admin/products/category-list' element={<CategoryList />} />
       </Routes>
     </div>
   )

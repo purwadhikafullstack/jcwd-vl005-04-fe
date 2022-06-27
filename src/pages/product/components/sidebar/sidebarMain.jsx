@@ -17,7 +17,6 @@ function SidebarMain () {
             </div>
             <div name="sidebar_content">
                 <SidebarItem text="Home" url="/admin/products"/>
-                <SidebarItem text="Create Product"/>
                 <SidebarItem text="Category List"/>
             </div>
         </div>

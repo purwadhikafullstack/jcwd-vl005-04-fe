@@ -19,7 +19,7 @@ function ProductItems ({ index, name, bottle_stock, total_stock, price, unit, on
                     { Intl.NumberFormat('id-ID', { style: "currency", currency: "IDR"}).format(price) }
                 </span>
                 <span className="ms-2">
-                    { unit }
+                    { ' /' + unit }
                 </span>
             </td>
             <td style={{ width: "1%", whiteSpace: "nowrap" }}>
