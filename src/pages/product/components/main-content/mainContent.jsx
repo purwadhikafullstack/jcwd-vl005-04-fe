@@ -3,7 +3,6 @@ import axios from "axios"
 
 import "../../../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
 
-import Header from "../header/header"
 import ProductItems from "./sub-view/productItems"
 import { useToast } from "@chakra-ui/react"
 
@@ -23,9 +22,10 @@ function MainContent () {
             })
     }, [])
 
-    const showToast = (type = 'success') => {
+    const showToast = (type = 'success', description = 'Operation Success') => {
         return toast({
-            title: type === 'success' ? 'Operation Success' : 'Operation Failed',
+            title: type,
+            description: description,
             status: type,
             duration: 3000,
             isClosable: true,
@@ -50,11 +50,9 @@ function MainContent () {
     }
 
     const onButtonProductDelete = (id) => {
-        axios.delete(`${API_URL}/products/delete/${id}`)
+        axios.delete(`${API_URL}/productss/delete/${id}`)
             .then((respond) => {
-                console.log(respond.data)
-
-                showToast('success')
+                showToast('success', 'Data berhasil dihapus')
 
                 axios.get(`${API_URL}/products`)
                     .then((new_respond) => {
@@ -62,7 +60,7 @@ function MainContent () {
                     })
             })
             .catch((error) => {
-                showToast('error')
+                showToast('error', 'Internal Service Error')
                 console.log(error)
             })
     }
