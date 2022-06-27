@@ -2,15 +2,20 @@ import React, { useEffect } from 'react'
 
 import { Routes, Route} from 'react-router-dom'
 
-import Axios from "axios";
+import Axios from "axios"
 import Landing from './pages/landing'
+import { useDispatch, useSelector } from 'react-redux'
+
+// Admin pages
 import AdminLogin from './pages/admin/adminLogin'
 import AdminForgetPassword from './pages/admin/adminForgetPassword'
 import AdminResetPassword from './pages/admin/adminResetPassword'
-import { useDispatch, useSelector } from 'react-redux';
 import AdminRegister from './pages/admin/adminRegister'
-import AdminTransaction from './pages/admin/adminTransactions';
-import AdminViewUser from './pages/admin/adminViewUser';
+import AdminTransaction from './pages/admin/adminTransactions'
+import AdminViewUser from './pages/admin/adminViewUser'
+
+// Product pages
+import ProductHome from './pages/product/productHome'
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state)
@@ -65,6 +70,8 @@ function App() {
         <Route path='/admin/view-user' element={<AdminViewUser/>}/>
         <Route path='/admin/forget-password' element={<AdminForgetPassword/>}/>
         <Route path='/admin/reset-password/:id' element={<AdminResetPassword/>}/>
+        <Route path='/admin/products' element={<ProductHome />} />
+        <Route path='/admin/products/category-list' element={<ProductHome />} />
       </Routes>
     </div>
   )
