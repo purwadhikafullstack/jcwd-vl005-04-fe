@@ -6,6 +6,7 @@ import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import ProductItems from "./components/sub-view/productItems"
 import { useToast } from "@chakra-ui/react"
 import ProductCreate from "./productCreate"
+import { useRef } from "react"
 
 function MainContent () {
     const API_URL = process.env.REACT_APP_API_URL
@@ -14,15 +15,17 @@ function MainContent () {
     const [ products, setProducts ] = useState([])
     const [ productUnits, setProductUnits ] = useState([])
     const [ productTypes, setProductTypes ] = useState([])
+    const [ productCategories, setProductCategories ] = useState([])
 
     // New Product
-    const [ newName, setNewName ] = useState('')
-    const [ newType, setNewType ] = useState('')
-    const [ newUnit, setNewUnit ] = useState('')
-    const [ newBottleStock, setNewBottleStock ] = useState(0)
-    const [ newBottleCapacity, setNewBottleCapacity ] = useState(0)
-    const [ newTotalQty, setNewTotalQty ] = useState(0)
-    const [ newPrice, setNewPrice ] = useState('')
+    const newName = useRef('')
+    const newType = useRef('')
+    const newUnit = useRef('')
+    const newCategory = useRef('')
+    const [ newBottleStock, setNewBottleStock ] = useState('0')
+    const [ newBottleCapacity, setNewBottleCapacity ] = useState('0')
+    const [ newTotalQty, setNewTotalQty ] = useState('0')
+    const [ newPrice, setNewPrice ] = useState('0')
     const [ btnDisabled, setBtnDisabled ] = useState(true)
 
     useEffect(() => {
@@ -63,7 +66,7 @@ function MainContent () {
     }
 
     const onButtonProductDelete = (id) => {
-        axios.delete(`${API_URL}/productss/delete/${id}`)
+        axios.delete(`${API_URL}/products/delete/${id}`)
             .then((respond) => {
                 showToast('success', 'Data berhasil dihapus')
 
@@ -79,6 +82,8 @@ function MainContent () {
     }
 
     const onAddProductClick = () => {
+        document.getElementById('add_product').classList.replace('d-none', 'd-flex')
+
         axios.get(`${API_URL}/products/types`)
             .then((response) => {
                 setProductTypes(response.data)
@@ -96,62 +101,67 @@ function MainContent () {
                 showToast('error', 'Failed to fetch product unit data')
                 console.log(error)
             })
+
+        axios.get(`${API_URL}/categories?_active=1`)
+            .then((response) => {
+                setProductCategories(response.data)
+            })
+            .catch((error) => {
+                showToast('error', 'Failed to fetch product category data')
+                console.log(error)
+            })
     }
 
-    const onNameChange = (event) => {
-        setNewName(event.target.value)
-        setBtnDisabled(event.target.value === '' || newType === '' || newUnit === '' || newPrice === '')
+    const onNameChange = () => {
+        setBtnDisabled(newName.current.value === '' || newType.current.value === '' || newUnit.current.value === '' || newPrice === '' || newPrice === '0')
     }
 
-    const onTypeChange = (event) => {
-        setNewType(event.target.value)
-        setBtnDisabled(event.target.value === '' || newName === '' || newUnit === '' || newPrice === '')
+    const onTypeChange = () => {
+        setBtnDisabled(newType.current.value === '' || newName.current.value === '' || newUnit.current.value === '' || newPrice === '' || newPrice === '0')
     }
 
-    const onUnitChange = (event) => {
-        setNewUnit(event.target.value)
-        setBtnDisabled(event.target.value === '' || newType === '' || newName === '' || newPrice === '')
+    const onUnitChange = () => {
+        setBtnDisabled(newUnit.current.value === '' || newType.current.value === '' || newName.current.value === '' || newPrice === '' || newPrice === '0')
     }
 
     const onBottleStockChange = (event) => {
         setNewBottleStock(event)
-        setBtnDisabled(newType === '' || newUnit === '' || newName === '' || newPrice === '')
     }
 
     const onCapacityChange = (event) => {
         setNewBottleCapacity(event)
-        setBtnDisabled(newType === '' || newUnit === '' || newName === '' || newPrice === '')
     }
 
     const onTotalQtyChange = (event) => {
         setNewTotalQty(event)
-        setBtnDisabled(newType === '' || newUnit === '' || newName === '' || newPrice === '')
     }
 
     const onPriceChange = (event) => {
         setNewPrice(event)
-        setBtnDisabled(event === '0' || newType === '' || newUnit === '' || newName === '')
+        setBtnDisabled(event === '' || event === '0' || newType.current.value === '' || newUnit.current.value === '' || newName.current.value === '')
     }
 
     const onSubmitProductClick = () => {
         const data = {
-            name: newName,
-            product_type_id: newType,
+            name: newName.current.value,
+            product_type_id: newType.current.value,
             bottle_stock: newBottleStock,
             bottle_volume: newBottleCapacity,
             total_quantity: newTotalQty,
             price_per_unit: newPrice,
-            product_unit_id: newUnit
+            product_unit_id: newUnit.current.value,
+            product_category_id: newCategory.current.value
         }
 
         axios.post(`${API_URL}/products/create`, data)
             .then((response) => {
-                showToast('success', 'Successfully inserting product')
-                console.log(response)
-
                 axios.get(API_URL + '/products')
-                .then((response) => {
-                    setProducts(response.data)
+                .then((get_response) => {
+                    showToast('success', 'Successfully inserting product')
+                    console.log(get_response)
+                    setProducts(get_response.data)
+                    resetNewProductField()
+                    checkRequiredFields()
                 })
                 .catch((error) => {
                     console.log(error)
@@ -161,6 +171,25 @@ function MainContent () {
                 showToast('error', 'Failed inserting product')
                 console.log(error)
             })
+    }
+
+    const resetNewProductField = () => {
+        newName.current.value = ''
+        newType.current.value = ''
+        newUnit.current.value = ''
+        newCategory.current.value = ''
+        setNewBottleStock('')
+        setNewBottleCapacity('')
+        setNewTotalQty('')
+        setNewPrice('')
+    }
+
+    const checkRequiredFields = () => {
+        setBtnDisabled(
+            newName.current.value === '' ||
+            newType.current.value === '' ||
+            newUnit.current.value === ''
+        )
     }
 
     const applyFilter = (event) => {
@@ -205,20 +234,24 @@ function MainContent () {
             <button className="btn btn-sm btn-primary mb-4 fw-bold w-auto" onClick={onAddProductClick}>
                 Tambah Produk
             </button>
-            <div className="d-flex justify-content-center w-100">
+            <div id="add_product" className="d-none justify-content-center w-100">
                 <div className="w-50 rounded shadow p-4">
                     <ProductCreate 
                         key={'product_create'} 
                         types={productTypes}
                         units={productUnits}
-                        totalQty={newTotalQty}
+                        categories={productCategories}
+                        refName={newName}
+                        refType={newType}
+                        refUnit={newUnit}
+                        refCategory={newCategory}
                         nameChange={onNameChange}
                         typeChange={onTypeChange}
                         unitChange={onUnitChange}
-                        bottleChange={onBottleStockChange}
-                        capacityChange={onCapacityChange}
-                        totalChange={onTotalQtyChange}
                         priceChange={onPriceChange}
+                        bottleStockChange={onBottleStockChange}
+                        capacityChange={onCapacityChange}
+                        totalQtyChange={onTotalQtyChange}
                         btnDisabled={btnDisabled}
                         submit={onSubmitProductClick}
                     />
