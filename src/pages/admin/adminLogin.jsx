@@ -10,7 +10,7 @@ import email from "../../images/email.jpeg";
 import pass from "../../images/pass.png";
 import { useEffect } from 'react'
 
-
+const API_URL = process.env.REACT_APP_API_URL
 function AdminLogin () {
     const toast = useToast();
     const user = useSelector((state) => state)
@@ -65,7 +65,7 @@ function AdminLogin () {
             password : password.current.value
         }
         console.log(data)
-        Axios.post("http://localhost:5000/api/admin/login", data)
+        Axios.post(API_URL + "/admin/login", data)
         .then((respond)=>{
             console.log(respond.data)
             setErrorMessage("Login Success")

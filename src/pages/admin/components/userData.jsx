@@ -3,9 +3,13 @@ import Axios from 'axios';
 import { useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import "../../../css/admin/adminMain.css"
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 function UserData(data){
     const users = data.users;
     const toast = useToast();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [status, setStatus] = useState(0);
 
     const blockUser = () =>{
@@ -50,6 +54,11 @@ function UserData(data){
               })
         })
     }
+
+    const viewUserTransactions = (id) =>{
+        navigate(`/admin/user-transactions/${id}`)
+    }
+
     return (
         <tr>
             <td>{users.id}</td>
@@ -59,10 +68,20 @@ function UserData(data){
             <td>{users.is_verified?"verified":"not verified"}</td>
             <td>{users.is_active?"active":"blocked"}</td>
             <td>
-                {users.is_active?
-                <button onClick={blockUser} className="btn btnError">Block</button>:
-                <button onClick={unblockUser} className="btn btnSuccess">Unblock</button>
-            }
+                <div className="flexbox">
+                    {users.is_active?
+                        <div>
+                            <button onClick={blockUser} className="btn btnError">Block</button>
+                        </div>
+                        :
+                        <div>
+                            <button onClick={unblockUser} className="btn btnSuccess">Unblock</button>
+                        </div>
+                    }
+                    <div>
+                        <button onClick={()=>viewUserTransactions(users.id)} className="btn btnUtility">View Transactions</button>
+                    </div>
+                </div>
             </td>
         </tr>
     )

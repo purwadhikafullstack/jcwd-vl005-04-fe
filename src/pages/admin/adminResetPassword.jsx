@@ -3,8 +3,12 @@ import { useRef, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 import Axios from 'axios'
 import "../../css/admin/loginregister.css"
+import { useSelector } from "react-redux";
 
+const API_URL = process.env.REACT_APP_API_URL
 function AdminResetPassword (){
+    const global = useSelector((state)=>state);
+    const user = global.user
     const password = useRef();
     const [errorMessage, setErrorMessage] = useState("")
     const repassword = useRef();
@@ -12,6 +16,10 @@ function AdminResetPassword (){
     const navigate = useNavigate();
     const pathname = useLocation().pathname;
     const id = pathname.substring(22,pathname.length)
+
+    if(user.email){
+        navigate('/')
+    }
 
     const changePassword = () =>{
         setErrorMessage("")
@@ -47,7 +55,7 @@ function AdminResetPassword (){
             id : id,
             password : password.current.value
         }
-        Axios.post("http://localhost:5000/api/admin/reset-password", data)
+        Axios.post(API_URL + "/admin/reset-password", data)
         .then((respond)=>{
             setErrorMessage("")
             toast({

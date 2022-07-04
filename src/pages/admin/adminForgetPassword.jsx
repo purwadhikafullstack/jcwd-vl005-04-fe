@@ -1,19 +1,30 @@
 import React, { useRef, useState } from "react";
 import Axios from 'axios';
 import {useToast} from '@chakra-ui/react'
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
+const API_URL = process.env.REACT_APP_API_URL
 function AdminForgetPassword (){
+    const global = useSelector((state)=>state)
+    const user = global.user
     const email = useRef();
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const toast = useToast();
+    const navigate = useNavigate();
+
+    if(user.email){
+        navigate('/')
+    }
+
     const sendVerificationEmail = () =>{
         setErrorMessage("");
         setLoading(true);
         const data = {
             email : email.current.value
         }
-        Axios.post("http://localhost:5000/api/admin/forget-password",data)
+        Axios.post(API_URL + "/admin/forget-password",data)
         .then((respond)=>{
             console.log(respond.data)
             setErrorMessage("A Verification Email has been Sent, Please Check your email")
