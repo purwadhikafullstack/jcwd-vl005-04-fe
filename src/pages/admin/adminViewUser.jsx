@@ -6,26 +6,30 @@ import "../../css/admin/adminMain.css"
 import Axios from 'axios'
 import UserData from './components/userData';
 import { useState } from 'react';
+import { useToast } from '@chakra-ui/react'
+
+const API_URL = process.env.REACT_APP_API_URL
 function AdminViewUser(){
     const global = useSelector((state)=>state)
     const user = global.user
     const [users, setUser] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const toast = useToast();
+    let count = 0;
+    
+    const [page, setPage] = useState(1);
 
     useEffect(()=>{
-        let data = {
-          transactions : [],
-          users_data : []
-        }
-        Axios.get("http://localhost:5000/api/users")
+        Axios.get(API_URL + `/users?_page=${page}`)
         .then((respond1)=>{
-            setUser(respond1.data)
+            setUser(respond1.data.user)
+            count  = respond1.data.total
         })
         .catch((error)=>{
-            console.log(error.response.data)
+            console.log(error)
         })
-      },[])
+      },[page])
 
       useEffect(()=>{
         const token = localStorage.getItem('admintoken')
@@ -45,6 +49,15 @@ function AdminViewUser(){
             })
         }
     }
+
+    const prevPage = () =>{
+        if(page > 1)setPage(page-1)
+    }
+
+    const nextPage = () =>{
+        if(page < Math.floor(count/5)+1)setPage(page+1)
+    }
+
     return (
         <div className='main'>
             <div className='transactionSub-main'>
@@ -61,7 +74,7 @@ function AdminViewUser(){
                             <th>Email</th>
                             <th>Verified?</th>
                             <th>Active?</th>
-                            <th>Actions</th>
+                            <th colSpan={2}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,6 +82,11 @@ function AdminViewUser(){
                     </tbody>
                     
                 </table>
+                <div className='pageController'>
+                    <button onClick={prevPage} className="btnPage">-</button>
+                    Page {page} of {Math.floor(count/10)+1}
+                    <button onClick={nextPage} className="btnPage">+</button>
+                </div>
             </div>
         </div>
     )

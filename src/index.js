@@ -13,7 +13,8 @@ const INITIAL_STATE = {
       username : "",
       email : "",
       role : ""
-    }
+    },
+    loading : false
   }
   function Reducer(state = INITIAL_STATE, action){
     
@@ -28,6 +29,18 @@ const INITIAL_STATE = {
       }
     }
   
+    else if(action.type == 'ADMIN_LOADING_START'){
+      return {
+        ...state,
+        loading:true
+      }
+    }
+    else if(action.type == 'ADMIN_LOADING_END'){
+      return {
+        ...state,
+        loading:false
+      }
+    }
     else if(action.type == 'ADMIN_LOGOUT'){
       localStorage.removeItem("admintoken");
       return INITIAL_STATE
@@ -39,6 +52,7 @@ const INITIAL_STATE = {
         adminstorage : action.payload?action.payload:[]
       }
     } 
+    
     else{
       return state;
     }

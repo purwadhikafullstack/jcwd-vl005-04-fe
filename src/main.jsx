@@ -11,6 +11,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import AdminRegister from './pages/admin/adminRegister'
 import AdminTransaction from './pages/admin/adminTransactions';
 import AdminViewUser from './pages/admin/adminViewUser';
+import AdminNavigation from './pages/admin/adminnavigation';
+import AdminUserTransactions from './pages/admin/adminUserTransactions';
+
+const API_URL = process.env.REACT_APP_API_URL
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state)
@@ -19,7 +23,7 @@ function App() {
     const admintoken = localStorage.getItem('admintoken')
     if(admintoken){
       console.log("admintoken : ", admintoken)
-      Axios.get(`http://localhost:5000/api/admin/${admintoken}`)
+      Axios.get(API_URL + `/admin/${admintoken}`)
       .then((respond)=>{
         dispatch({type : 'ADMIN_LOGIN', payload : respond.data})
       })
@@ -29,39 +33,17 @@ function App() {
     }
   },[])
 
-  useEffect(()=>{
-    let data = {
-      transactions : [],
-      users_data : []
-    }
-    Axios.get("http://localhost:5000/api/transaction")
-    .then((respond1)=>{
-        data.transactions = respond1.data
-    })
-    .catch((error)=>{
-        console.log(error.response.data)
-    })
 
-    Axios.get("http://localhost:5000/api/users")
-    .then((respond2)=>{
-      
-        data.users_data = respond2.data
-        console.log("respond : ",respond2.data)
-    })
-    .catch((error)=>{
-        console.log(error.response.data)
-    })
-    console.log(data)
-    dispatch({type : 'ADMIN_GET_DATA', payload : data})
-  },[])
 
   return (
     <div>
+      <AdminNavigation/>
       <Routes>
       <Route path='/' element={<Landing/>}/>
       <Route path='/admin' element={<AdminLogin/>}/>
         <Route path='/admin/register' element={<AdminRegister/>}/>
         <Route path='/admin/transaction' element={<AdminTransaction/>}/>
+        <Route path='/admin/user-transactions/:id' element={<AdminUserTransactions/>}/>
         <Route path='/admin/view-user' element={<AdminViewUser/>}/>
         <Route path='/admin/forget-password' element={<AdminForgetPassword/>}/>
         <Route path='/admin/reset-password/:id' element={<AdminResetPassword/>}/>

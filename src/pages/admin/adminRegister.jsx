@@ -20,8 +20,12 @@ function AdminRegister(){
     
     useEffect(()=>{
         const token = localStorage.getItem('admintoken')
-        if(!token) navigate('/');
-      },[])
+        if(!token){
+            if(user.role!=="admin"){
+                navigate('/')
+            }
+        }
+    },[])
       
     if(user.role!=="admin")navigate('/')
     
@@ -126,7 +130,7 @@ function AdminRegister(){
                     </div>
                     <div className="formInput">
                         <button className="submitButton" onClick={registerAdmin}>
-                            Register
+                            Add Admin
                         </button>
                     </div>
                 </div>

@@ -1,40 +1,41 @@
-import React, {useEffect, useRef} from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux'
-import Axios from 'axios'
-import "./components/transactionData"
-import "../../css/admin/adminMain.css"
-import TransactionData from './components/transactionData';
-import { useState } from 'react';
-import { Icon, useToast } from '@chakra-ui/react'
+import React, { useState, useRef } from "react";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import Axios from 'axios';
+import TransactionData from "./components/transactionData";
+import { useSelector } from "react-redux";
+import { Icon, toast, useToast } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons';
 
 const API_URL = process.env.REACT_APP_API_URL
+function AdminUserTransactions (){
 
-function AdminTransaction(){
-    
-    const global = useSelector((state)=>state)
-    const user = global.user
-    const [error, setErrorMessage] = useState(false);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const [sort, setSort] = useState("DESC")
-    const [filter,setFilter] = useState("All")
-    const [count, setCount] = useState(0)
-
-    let [transactions, setTransactions] = useState("");
-
+    const user = useSelector((state) => state.user)
+    const pathname = useLocation().pathname;
+    const id = pathname.substring(25,pathname.length)
     const [page, setPage] = useState(1);
-
+    const [sort, setSort] = useState("DESC");
+    const [filter, setFilter] = useState("All")
+    const [count, setCount] = useState(0);
+    const navigate = useNavigate();
+    let [transactions, setTransactions] = useState("");
+    
     const startYear = useRef();
     const endYear = useRef();
     const startMonth = useRef();
     const endMonth = useRef();
     const toast = useToast();
 
+    const prevPage = () =>{
+        if(page > 1)setPage(page-1)
+    }
+    const nextPage = () =>{
+        if(page < Math.ceil(count/5))setPage(page+1)
+    }
+
     useEffect(()=>{
-        if(filter==="Custom"){
-            Axios.get(API_URL + `/transaction?_page=${page}&&_sortDate=${sort}&&_filterDate=${filter}&&_filterCustomMonthStart=${startMonth.current.value}&&_filterCustomMonthEnd=${endMonth.current.value}&&_filterCustomYearStart=${startYear.current.value}&&_filterCustomYearEnd=${endYear.current.value}`)
+        if(filter=="Custom"){
+            Axios.get(API_URL + `/transaction/user/${id}?_page=${page}&&_sortDate=${sort}&&_filterDate=${filter}&&_filterCustomMonthStart=${startMonth.current.value}&&_filterCustomMonthEnd=${endMonth.current.value}&&_filterCustomYearStart=${startYear.current.value}&&_filterCustomYearEnd=${endYear.current.value}`)
             .then((respond)=>{
                 setTransactions(respond.data.transaction)
                 setCount(respond.data.total)
@@ -44,7 +45,7 @@ function AdminTransaction(){
             })
         }
         else{
-            Axios.get(API_URL + `/transaction?_page=${page}&&_sortDate=${sort}&&_filterDate=${filter}`)
+            Axios.get(API_URL + `/transaction/user/${id}?_page=${page}&&_sortDate=${sort}&&_filterDate=${filter}`)
             .then((respond)=>{
                 setTransactions(respond.data.transaction)
                 setCount(respond.data.total)
@@ -53,10 +54,10 @@ function AdminTransaction(){
                 console.log(error.response.data)
             })
         }
-      },[page])
-    
-      useEffect(()=>{
-        Axios.get(API_URL + `/transaction?_page=${page}&&_sortDate=${sort}&&_filterDate=${filter}`)
+    },[page])
+
+    useEffect(()=>{
+        Axios.get(API_URL + `/transaction/user/${id}?_page=${page}&&_sortDate=${sort}&&_filterDate=${filter}`)
         .then((respond)=>{
             setTransactions(respond.data.transaction)
             setCount(respond.data.total)
@@ -68,7 +69,7 @@ function AdminTransaction(){
     },[sort])
 
     useEffect(()=>{
-        Axios.get(API_URL + `/transaction?_page=${page}&&_sortDate=${sort}&&_filterDate=${filter}`)
+        Axios.get(API_URL + `/transaction/user/${id}?_page=${page}&&_sortDate=${sort}&&_filterDate=${filter}`)
         .then((respond)=>{
             setTransactions(respond.data.transaction)
             setCount(respond.data.total)
@@ -88,14 +89,6 @@ function AdminTransaction(){
         }
     },[])
 
-    const prevPage = () =>{
-        if(page > 1)setPage(page-1)
-    }
-
-    const nextPage = () =>{
-        if(page < Math.ceil(count/5))setPage(page+1)
-    }
-
     const generateTransactionData = () =>{
         if(transactions){
             return transactions.map((transaction, index)=>{
@@ -108,7 +101,7 @@ function AdminTransaction(){
             })
         }
     }
-    
+
     const onSubmitSearchButton = () =>{
         const startMonthData = startMonth.current.value;
         const endMonthData = endMonth.current.value;
@@ -134,7 +127,7 @@ function AdminTransaction(){
               })
               return
         }
-        Axios.get(API_URL + `/transaction?_page=${page}&&_sortDate=${sort}&&_filterDate=${filter}&&_filterCustomMonthStart=${startMonthData}&&_filterCustomMonthEnd=${endMonthData}&&_filterCustomYearStart=${startYearData}&&_filterCustomYearEnd=${endYearData}`)
+        Axios.get(API_URL + `/transaction/user/${id}?_page=${page}&&_sortDate=${sort}&&_filterDate=${filter}&&_filterCustomMonthStart=${startMonthData}&&_filterCustomMonthEnd=${endMonthData}&&_filterCustomYearStart=${startYearData}&&_filterCustomYearEnd=${endYearData}`)
         .then((respond)=>{
             setTransactions(respond.data.transaction)
             setCount(respond.data.total)
@@ -146,17 +139,20 @@ function AdminTransaction(){
     }
 
     return (
+        
         <div className='main'>
             <div className='transactionSub-main'>
-                <h1 className='header'>
-                    All Transactions
-                </h1>
-                <div className="dataController">
+                <div>
+                    <h1 className='header'>
+                        User {id} Transactions
+                    </h1>
+                    <div className="dataController">
                         <div className="dataControllerDropdown">
                             <div className="dataControllerDropdownHeader">
                                 {sort=="DESC"?"Sort : Date - New to Old":"Sort : Date - Old to New"}
                                 <Icon as={ChevronDownIcon} ml={3} mt={0}/>
                             </div>
+
                             <div className="dataControllerDropdownContent">
                                 <button className="dataControllerDropdownButton" onClick={()=>setSort("DESC")}>
                                     Date - New to Old
@@ -222,6 +218,7 @@ function AdminTransaction(){
                                 
                             </div>
                         }
+                </div>
                 <table className='transactionTable'>
                     <thead>
                         <tr>
@@ -242,12 +239,12 @@ function AdminTransaction(){
                     
                 </table>
                 <div className='pageController'>
-                    <button onClick={prevPage} className="btnPage">{"<"}</button>
+                    <button onClick={prevPage} className="btnPage">-</button>
                     Page {page} of {Math.ceil(count/5)}
-                    <button onClick={nextPage} className="btnPage">{">"}</button>
+                    <button onClick={nextPage} className="btnPage">+</button>
                 </div>
             </div>
         </div>
     )
 }
-export default AdminTransaction;
+export default AdminUserTransactions;
