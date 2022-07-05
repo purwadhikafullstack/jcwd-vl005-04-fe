@@ -67,7 +67,7 @@ function AdminViewUser(){
                 
                 <table className='transactionTable'>
                     <thead>
-                        <tr>
+                        <tr className="adminRow">
                             <th>User ID</th>
                             <th>Name</th>
                             <th>Username</th>

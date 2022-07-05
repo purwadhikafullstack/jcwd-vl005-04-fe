@@ -66,7 +66,7 @@ function TransactionData(data){
             is_approved = "Rejected"
     }
     return (
-        <tr>
+        <tr className="adminRow">
             <td>{page+index}</td>
             <td>{transaction.inv_number}</td>
             <td>{is_approved}</td>

@@ -224,7 +224,7 @@ function AdminTransaction(){
                         }
                 <table className='transactionTable'>
                     <thead>
-                        <tr>
+                        <tr className="adminRow">
                             <th>No</th>
                             <th>Invoice Number</th>
                             <th>Approved?</th>

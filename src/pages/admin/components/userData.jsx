@@ -60,7 +60,7 @@ function UserData(data){
     }
 
     return (
-        <tr>
+        <tr className="adminRow">
             <td>{users.id}</td>
             <td>{users.name}</td>
             <td>{users.username}</td>
