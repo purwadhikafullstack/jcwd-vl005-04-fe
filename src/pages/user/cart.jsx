@@ -7,10 +7,18 @@ import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import CartItem from "./components/cartItem"
 import Header from "./components/header"
 
+import io from "socket.io-client";
+import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+
+const socket = io('http://localhost:5001');
+let notificationSent = false;
 function Cart () {
     const API_URL = process.env.REACT_APP_API_URL
     const toast = useToast()
     const user_id = localStorage.getItem('user_id')
+    const user = useSelector((state)=>state.user)
+    const navigate = useNavigate();
 
     const [ cartItems, setCartItems ] = useState([])
     
@@ -71,7 +79,22 @@ function Cart () {
             isClosable: true,
         })
     }
-
+    const buyTest = () =>{
+        socket.emit('finishTransaction','')
+    }
+    socket.on('confirmasiCheckOutBerhasil',(arg)=>{
+        if(user.role=="admin"&&!notificationSent){
+            notificationSent=true;
+            toast({
+                title: "Transaction Success",
+                description: arg,
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            })
+            navigate('/')
+        }
+    })
     return (
         <>
             <Header />
@@ -79,6 +102,7 @@ function Cart () {
                 <div className="w-50 mx-auto">
                     { showCartItems() }
                 </div>
+                <button onClick={buyTest}>Test</button>
             </div>
         </>
     )

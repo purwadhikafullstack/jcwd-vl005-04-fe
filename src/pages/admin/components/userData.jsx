@@ -71,15 +71,15 @@ function UserData(data){
                 <div className="flexbox">
                     {users.is_active?
                         <div>
-                            <button onClick={blockUser} className="btn btnError">Block</button>
+                            <button onClick={blockUser} className="btnAdmin btnErrorAdmin">Block</button>
                         </div>
                         :
                         <div>
-                            <button onClick={unblockUser} className="btn btnSuccess">Unblock</button>
+                            <button onClick={unblockUser} className="btnAdmin btnSuccessAdmin">Unblock</button>
                         </div>
                     }
                     <div>
-                        <button onClick={()=>viewUserTransactions(users.id)} className="btn btnUtility">View Transactions</button>
+                        <button onClick={()=>viewUserTransactions(users.id)} className="btnAdmin btnUtility">View Transactions</button>
                     </div>
                 </div>
             </td>

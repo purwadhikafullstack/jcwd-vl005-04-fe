@@ -20,10 +20,22 @@ import ProductHome from './pages/product/productHome'
 import Home from './pages/user/home'
 import Cart from './pages/user/cart'
 
+import io from "socket.io-client";
+import { useToast } from '@chakra-ui/react'
+
+const socket = io('http://localhost:5001');
+
 const API_URL = process.env.REACT_APP_API_URL
 function App() {
   const dispatch = useDispatch();
+  const toast = useToast();
   const user = useSelector((state) => state)
+
+  useEffect(()=>{
+    socket.on("hello", (arg)=>{
+      console.log(arg);
+    })
+  },[])
 
   useEffect(()=>{
     const admintoken = localStorage.getItem('admintoken')
@@ -39,11 +51,9 @@ function App() {
     }
   },[])
 
-
-
   return (
     <div>
-      <AdminNavigation/>
+      {/* <AdminNavigation/> */}
       <Routes>
       <Route path='/' element={<Landing/>}/>
       <Route path='/admin' element={<AdminLogin/>}/>

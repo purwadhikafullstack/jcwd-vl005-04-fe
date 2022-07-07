@@ -9,6 +9,7 @@ import profile from "../../images/a.png";
 import email from "../../images/email.jpeg";
 import pass from "../../images/pass.png";
 import { useEffect } from 'react'
+import Header from '../user/components/header'
 
 const API_URL = process.env.REACT_APP_API_URL
 function AdminLogin () {
@@ -102,42 +103,46 @@ function AdminLogin () {
         return setKeepLogged(true)
     }
     return (
-    <div className="main">
-      <div className="sub-main">
-        <div>
-          <div className="imgs">
-            <div className="container-image">
-              <img src={profile} alt="profile" className="profile" />
-            </div>
-          </div>
+    <div>
+      <Header/>
+      <div className="main">
+        <div className="sub-main">
           <div>
-            <h1>Admin Login Page</h1>
-            <div className='inputForm'>
-              <img src={email} alt="email" className="email" />
-              <input type="text" placeholder="email" className="name" ref={emailInput}/>
+            <div className="imgs">
+              <div className="container-image">
+                <img src={profile} alt="profile" className="profile" />
+              </div>
             </div>
-            <div className="inputForm">
-              <img src={pass} alt="pass" className="email" />
-              <input type="password" placeholder="password" className="name" ref={password}/>
-            </div>
-
-            <div className='inputForm'>
-                <input type="checkbox" className = "checkbox" onClick={changeKeepLogged}></input> Keep Login
+            <div>
+              <h1>Admin Login Page</h1>
+              <div className='inputForm'>
+                <img src={email} alt="email" className="email" />
+                <input type="text" placeholder="email" className="name" ref={emailInput}/>
+              </div>
+              <div className="inputForm">
+                <img src={pass} alt="pass" className="email" />
+                <input type="password" placeholder="password" className="name" ref={password}/>
               </div>
 
-            <div className="login-button">
-              <button className="submitButton" onClick={onSubmitButton}>Login</button>
-            </div>
+              <div className='inputForm'>
+                  <input type="checkbox" className = "checkbox" onClick={changeKeepLogged}></input> Keep Login
+                </div>
 
-            <div className="link">
-                <button className='linkButton' onClick={() => navigate('/admin/forget-password')}>
-                    Forget Password
-                </button> 
+              <div className="login-button">
+                <button className="submitButton" onClick={onSubmitButton}>Login</button>
+              </div>
+
+              <div className="link">
+                  <button className='linkButton' onClick={() => navigate('/admin/forget-password')}>
+                      Forget Password
+                  </button> 
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    
     )
 }
 export default AdminLogin;

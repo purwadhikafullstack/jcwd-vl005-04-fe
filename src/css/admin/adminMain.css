@@ -1,7 +1,7 @@
 .flexbox{
     display: flex;
 }
-.btn{
+.btnAdmin{
     color:white;
     width: 120px;
     height:100%;
@@ -12,21 +12,13 @@
 .btnUtility{
     background-color: blueviolet;
 }
-.btnWide{
-    color:white;
-    width: 45%;
-    height:35px;
-    margin:0.5px;
-    border-radius: 5px;
-    transition: 250ms all ease;
-}
-.btnSuccess{
+.btnSuccessAdmin{
     background-color: rgb(0, 145, 0);
 }
-.btnError{
+.btnErrorAdmin{
     background-color: rgb(214, 58, 58);
 }
-.btn:hover, .btnWide:hover{
+.btnAdmin:hover, .btnWide:hover{
     box-shadow: 0px 0px 3px 1px black;
 }
 .btn:active , .btnWide:active{

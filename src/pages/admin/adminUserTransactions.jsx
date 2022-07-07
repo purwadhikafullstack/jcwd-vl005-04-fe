@@ -6,6 +6,8 @@ import TransactionData from "./components/transactionData";
 import { useSelector } from "react-redux";
 import { Icon, toast, useToast } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons';
+import Header from "../user/components/header";
+import SidebarMain from "../product/components/sidebar/sidebarMain";
 
 const API_URL = process.env.REACT_APP_API_URL
 function AdminUserTransactions (){
@@ -84,7 +86,7 @@ function AdminUserTransactions (){
         const token = localStorage.getItem('admintoken')
         if(!token){
             if(user.role!=="admin" && transactions){
-                navigate('/')
+                navigate('/admin')
             }
         }
     },[])
@@ -139,112 +141,125 @@ function AdminUserTransactions (){
     }
 
     return (
-        
-        <div className='main'>
-            <div className='transactionSub-main'>
-                <div>
-                    <h1 className='header'>
-                        User {id} Transactions
-                    </h1>
-                    <div className="dataController">
-                        <div className="dataControllerDropdown">
-                            <div className="dataControllerDropdownHeader">
-                                {sort=="DESC"?"Sort : Date - New to Old":"Sort : Date - Old to New"}
-                                <Icon as={ChevronDownIcon} ml={3} mt={0}/>
-                            </div>
+        <div>
+            <div className="d-flex" style={{ height: "100vh" }}>
+                <div className="" style={{ width: "15%" }}>
+                    <SidebarMain />
+                </div>
+                <div style={{ width: "85%" }}>
+                    <Header />
+                    <div>
+                        <div className='main'>
+                            <div className='transactionSub-main'>
+                                <div>
+                                    <h1 className='header'>
+                                        User {id} Transactions
+                                    </h1>
+                                    <div className="dataController">
+                                        <div className="dataControllerDropdown">
+                                            <div className="dataControllerDropdownHeader">
+                                                {sort=="DESC"?"Sort : Date - New to Old":"Sort : Date - Old to New"}
+                                                <Icon as={ChevronDownIcon} ml={3} mt={0}/>
+                                            </div>
 
-                            <div className="dataControllerDropdownContent">
-                                <button className="dataControllerDropdownButton" onClick={()=>setSort("DESC")}>
-                                    Date - New to Old
-                                </button>
-                                <button className="dataControllerDropdownButton" onClick={()=>setSort("ASC")}>
-                                    Date - Old to New
-                                </button>
-                            </div>
-                        </div>
-                        <div className="dataControllerDropdown">
-                            <div className="dataControllerDropdownHeader">
-                                Filter : {filter}
-                                <Icon as={ChevronDownIcon} ml={3} mt={0}/>
-                            </div>
-                            <div className="dataControllerDropdownContent">
-                                <button className="dataControllerDropdownButton" onClick={()=>setFilter("Custom")}>
-                                    Custom Range
-                                </button>
-                                <button className="dataControllerDropdownButton" onClick={()=>setFilter("Week")}>
-                                    This Week
-                                </button>
-                                <button className="dataControllerDropdownButton" onClick={()=>setFilter("Month")}>
-                                    This Month
-                                </button>
-                                <button className="dataControllerDropdownButton" onClick={()=>setFilter("Year")}>
-                                    This Year
-                                </button>
-                                <button className="dataControllerDropdownButton" onClick={()=>setFilter("All")}>
-                                    All
-                                </button>
+                                            <div className="dataControllerDropdownContent">
+                                                <button className="dataControllerDropdownButton" onClick={()=>setSort("DESC")}>
+                                                    Date - New to Old
+                                                </button>
+                                                <button className="dataControllerDropdownButton" onClick={()=>setSort("ASC")}>
+                                                    Date - Old to New
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className="dataControllerDropdown">
+                                            <div className="dataControllerDropdownHeader">
+                                                Filter : {filter}
+                                                <Icon as={ChevronDownIcon} ml={3} mt={0}/>
+                                            </div>
+                                            <div className="dataControllerDropdownContent">
+                                                <button className="dataControllerDropdownButton" onClick={()=>setFilter("Custom")}>
+                                                    Custom Range
+                                                </button>
+                                                <button className="dataControllerDropdownButton" onClick={()=>setFilter("Week")}>
+                                                    This Week
+                                                </button>
+                                                <button className="dataControllerDropdownButton" onClick={()=>setFilter("Month")}>
+                                                    This Month
+                                                </button>
+                                                <button className="dataControllerDropdownButton" onClick={()=>setFilter("Year")}>
+                                                    This Year
+                                                </button>
+                                                <button className="dataControllerDropdownButton" onClick={()=>setFilter("All")}>
+                                                    All
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {
+                                            filter=="Custom"?
+                                            <div className="dataInputContainer">
+                                                <div className="dataInputForm">
+                                                    <div className="dataInputLabel">
+                                                        Start Year
+                                                    </div>
+                                                    <input type="number" ref={startYear} className="dataControllerDropdown dataControllerInput" placeholder="2022" maxLength="4"></input>
+                                                    <div className="dataInputLabel">
+                                                        Start Month
+                                                    </div>
+                                                    <input type="number" ref={startMonth} className="dataControllerDropdown dataControllerInput" placeholder="01" maxLength="4"></input>
+                                                    <button className="btnSearch" onClick={onSubmitSearchButton}>Search</button>
+                                                
+                                                </div>
+
+                                                <div className="dataInputForm">
+                                                    <div className="dataInputLabel">
+                                                        End Year
+                                                    </div>
+                                                    <input type="number" ref={endYear} className="dataControllerDropdown dataControllerInput" placeholder="2022" maxLength="4"></input>
+                                                    <div className="dataInputLabel">
+                                                        End Month
+                                                    </div>
+                                                    <input type="number" ref={endMonth} className="dataControllerDropdown dataControllerInput" placeholder="01" maxLength="4"></input>
+                                                </div>
+                                            </div>
+                                            :
+                                            <div>
+                                                
+                                            </div>
+                                        }
+                                </div>
+                                <table className='transactionTable'>
+                                    <thead>
+                                        <tr className="adminRow">
+                                            <th>No</th>
+                                            <th>Invoice Number</th>
+                                            <th>Approved?</th>
+                                            <th>Transaction Status</th>
+                                            <th>Created At</th>
+                                            <th>Payment Proof</th>
+                                            <th>Total Payment</th>
+                                            <th>Address ID</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {generateTransactionData()}
+                                    </tbody>
+                                    
+                                </table>
+                                <div className='pageController'>
+                                    <button onClick={prevPage} className="btnPage">-</button>
+                                    Page {page} of {Math.ceil(count/5)}
+                                    <button onClick={nextPage} className="btnPage">+</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    {
-                            filter=="Custom"?
-                            <div className="dataInputContainer">
-                                <div className="dataInputForm">
-                                    <div className="dataInputLabel">
-                                        Start Year
-                                    </div>
-                                    <input type="number" ref={startYear} className="dataControllerDropdown dataControllerInput" placeholder="2022" maxLength="4"></input>
-                                    <div className="dataInputLabel">
-                                        Start Month
-                                    </div>
-                                    <input type="number" ref={startMonth} className="dataControllerDropdown dataControllerInput" placeholder="01" maxLength="4"></input>
-                                    <button className="btnSearch" onClick={onSubmitSearchButton}>Search</button>
-                                
-                                </div>
-
-                                <div className="dataInputForm">
-                                    <div className="dataInputLabel">
-                                        End Year
-                                    </div>
-                                    <input type="number" ref={endYear} className="dataControllerDropdown dataControllerInput" placeholder="2022" maxLength="4"></input>
-                                    <div className="dataInputLabel">
-                                        End Month
-                                    </div>
-                                    <input type="number" ref={endMonth} className="dataControllerDropdown dataControllerInput" placeholder="01" maxLength="4"></input>
-                                </div>
-                            </div>
-                            :
-                            <div>
-                                
-                            </div>
-                        }
-                </div>
-                <table className='transactionTable'>
-                    <thead>
-                        <tr className="adminRow">
-                            <th>No</th>
-                            <th>Invoice Number</th>
-                            <th>Approved?</th>
-                            <th>Transaction Status</th>
-                            <th>Created At</th>
-                            <th>Payment Proof</th>
-                            <th>Total Payment</th>
-                            <th>Address ID</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {generateTransactionData()}
-                    </tbody>
-                    
-                </table>
-                <div className='pageController'>
-                    <button onClick={prevPage} className="btnPage">-</button>
-                    Page {page} of {Math.ceil(count/5)}
-                    <button onClick={nextPage} className="btnPage">+</button>
                 </div>
             </div>
+            
         </div>
+        
     )
 }
 export default AdminUserTransactions;

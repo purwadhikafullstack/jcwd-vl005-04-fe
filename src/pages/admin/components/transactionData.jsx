@@ -79,8 +79,8 @@ function TransactionData(data){
                 {   
                     is_approved == "Not Approved"?
                     <div>
-                        <button className="btnWide btnSuccess" onClick={approveTransaction}>Approve</button>
-                        <button className="btnWide btnError" onClick={rejectTransaction}>Reject</button>
+                        <button className="btnAdmin btnSuccessAdmin" onClick={approveTransaction}>Approve</button>
+                        <button className="btnAdmin btnErrorAdmin" onClick={rejectTransaction}>Reject</button>
                     </div>
                     :
                     <div>

@@ -58,7 +58,7 @@ const INITIAL_STATE = {
     }
   }
   const store = createStore(Reducer);
-  
+
 // render main component
 ReactDOM.render( 
   <ChakraProvider>
