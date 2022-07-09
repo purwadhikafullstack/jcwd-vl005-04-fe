@@ -16,6 +16,7 @@ import AdminTransaction from './pages/admin/adminTransactions';
 import AdminViewUser from './pages/admin/adminViewUser';
 import AdminNavigation from './pages/admin/adminnavigation';
 import AdminUserTransactions from './pages/admin/adminUserTransactions';
+import AdminReport from "./pages/admin/adminReport";
 import ProductHome from './pages/product/productHome'
 import Home from './pages/user/home'
 import Cart from './pages/user/cart'
@@ -65,6 +66,7 @@ function App() {
         <Route path='/admin/reset-password/:id' element={<AdminResetPassword/>}/>
         <Route path='/admin/products' element={<ProductHome />} />
         <Route path='/admin/products/category-list' element={<ProductHome />} />
+        <Route path="/admin/report" element={<AdminReport />} />
         <Route path='/home' element={<Home />} />
         <Route path='/cart' element={<Cart />} />
       </Routes>
