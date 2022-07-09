@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 
 function NotFound() {
   return (
-    <div className="login-box">
-      <div>Page Not Found</div>
+    <div className="small-box text-center">
+      <h1>Page Not Found</h1>
+      <br/>
       <div>
-        go to{" "}
+        Go to{" "}
         <Link className="link-anton" to="/">
           <Button>Home</Button>
         </Link>

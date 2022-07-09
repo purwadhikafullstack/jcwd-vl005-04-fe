@@ -30,6 +30,7 @@ function SidebarMain () {
                 <SidebarItem text="Category List" url="/admin/products/category-list"/>
                 <SidebarItem text="User List" url="/admin/view-user"/>
                 <SidebarItem text="Add Admin" url="/admin/register"/>
+                <SidebarItem text="Report" url="/admin/report"/>
                 
             </div>
             <button className="logoutBtn" onClick={logout}>Log out</button>

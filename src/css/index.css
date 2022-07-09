@@ -12,7 +12,7 @@ body {
       monospace;
   }
   
-  .login-box {
+  .small-box {
     width: 300px;
     box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px,
       rgb(60 64 67 / 15%) 0px 2px 6px 2px;
@@ -59,4 +59,14 @@ div#root {
 
 .input-group-text{
   background: #f8f9fa;
+}
+
+.checkout-section{
+  position: fixed;
+  bottom: 0;
+  padding: 20px;
+  width: 100%;
+  padding-left: 25%;
+  padding-right: 25%;
+  box-shadow: 0 -5px 5px -5px #333;
 }

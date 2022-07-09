@@ -73,7 +73,7 @@ function ResetPassword() {
 
   const [password, setPassword] = useState("");
   return (
-    <div className="login-box">
+    <div className="small-box">
       <Form className="mb-3" onSubmit={onSubmit}>
         <h2 className="text-center mb-3">Reset Password</h2>
         <hr className="mb-4" />

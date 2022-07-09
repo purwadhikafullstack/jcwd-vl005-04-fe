@@ -19,7 +19,7 @@ function AdminLogin () {
 
     useEffect(()=>{
       const token = localStorage.getItem('admintoken')
-      if(token) navigate('/');
+      if(token) navigate('/admin/home');
     },[])
     
 
@@ -82,7 +82,7 @@ function AdminLogin () {
                 duration: 5000,
                 isClosable: true,
               })
-            navigate('/')
+            navigate('/admin/home')
         })
         .catch((error)=>{
             toast({
@@ -104,7 +104,6 @@ function AdminLogin () {
     }
     return (
     <div>
-      <Header/>
       <div className="main">
         <div className="sub-main">
           <div>

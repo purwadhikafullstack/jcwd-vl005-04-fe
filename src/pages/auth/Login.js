@@ -78,7 +78,7 @@ function Login() {
   };
 
   return (
-    <div className="login-box">
+    <div className="small-box">
       <div className="login__image--wrapper">
         <FontAwesomeIcon icon={faUser} />
       </div>

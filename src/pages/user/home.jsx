@@ -5,14 +5,12 @@ import { useToast } from "@chakra-ui/react"
 
 import Card from "./components/card"
 import Header from "./components/header"
+import { getUserInfo } from "../../utils"
 
-function Home () {
+function Home() {
+
     const API_URL = process.env.REACT_APP_API_URL
     const toast = useToast()
-
-    if (localStorage.user_id === undefined) {
-        localStorage.setItem('user_id', 1)
-    }
 
     const [ products, setProducts ] = useState([])
 
@@ -41,9 +39,8 @@ function Home () {
     const showProducts = () => {
         return products.map((product, index) => {
             return (
-                <div className="col-3">
-                    <Card 
-                        key={index}
+                <div className="col-3" key={index}>
+                    <Card
                         id={product.id}
                         name={product.name}
                         qty={product.total_quantity}
@@ -72,7 +69,7 @@ function Home () {
         const data = {
             product_id: id,
             price: price,
-            user_id: 1,
+            user_id: getUserInfo().id,
             created_at: new Date().toISOString().slice(0, 10)
         }
 
@@ -91,14 +88,14 @@ function Home () {
             <Header />
             <div className="p-4">
                 <div name="filter" className="mb-4 w-25 shadow">
-                    <select class="form-select" onChange={applyFilter}>
+                    <select className="form-select" onChange={applyFilter}>
                         <option value="?_sort=id&_order=ASC">LATEST</option>
                         <option value="?_sort=price_per_unit&_order=ASC">LOWEST TO HIGHEST PRICE</option>
                         <option value="?_sort=price_per_unit&_order=DESC">HIGHEST TO LOWEST PRICE</option>
                     </select>
                 </div>
                 <div className="row">
-                    { showProducts() }
+                    {showProducts()}
                 </div>
             </div>
         </>

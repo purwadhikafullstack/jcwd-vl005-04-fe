@@ -208,7 +208,7 @@ function MainContent () {
     return (
         <div name="product-pages">
             <div name="filter" className="mb-4 w-25 shadow">
-                <select class="form-select" onChange={applyFilter}>
+                <select className="form-select" onChange={applyFilter}>
                     <option value="?_sort=id&_order=ASC">LATEST</option>
                     <option value="?_sort=price_per_unit&_order=ASC">LOWEST TO HIGHEST PRICE</option>
                     <option value="?_sort=price_per_unit&_order=DESC">HIGHEST TO LOWEST PRICE</option>

@@ -11,12 +11,12 @@ export const AlertError = (text) => {
   });
 };
 
-// export const openInNewTab = (url) => {
-//   return () => {
-//     const newWindow = window.open(url, "_blank", "noopener,noreferrer");
-//     if (newWindow) newWindow.opener = null;
-//   };
-// };
+export const openInNewTab = (url) => {
+  return () => {
+    const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+    if (newWindow) newWindow.opener = null;
+  };
+};
 
 export const Loader = ({ visible }) => {
   let displayLoader = "none";
@@ -59,3 +59,10 @@ export const getUserInfo = () => {
 
   return decoded.user;
 };
+
+export const snakeToTitle = (str) => {
+  return str
+    .split('_')
+    .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}

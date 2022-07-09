@@ -5,7 +5,7 @@ import { createStore} from 'redux'
 import { Provider } from 'react-redux'
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "boxicons";
+import "bootstrap-icons/font/bootstrap-icons.css"
 import "./css/index.css";
 
 // import main component
