@@ -65,7 +65,7 @@ function UserData(data){
             <td>{users.name}</td>
             <td>{users.username}</td>
             <td>{users.email}</td>
-            <td>{users.is_verified?"verified":"not verified"}</td>
+            <td>{users.verification?"verified":"not verified"}</td>
             <td>{users.is_active?"active":"blocked"}</td>
             <td>
                 <div className="flexbox">
