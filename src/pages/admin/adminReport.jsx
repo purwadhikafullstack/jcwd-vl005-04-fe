@@ -24,40 +24,6 @@ function AdminReport() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
-  const shipperData = [
-    {
-      company: "TIKI",
-      desc: "two working days",
-      price: 10000
-    },
-    {
-      name: "JNE",
-      desc: "two working days",
-      price: 9000
-    },
-    {
-      name: "J&T",
-      desc: "two working days",
-      price: 8000
-    },
-    {
-      name: "SiCepat",
-      desc: "two working days",
-      price: 7000
-    },
-    {
-      name: "GoSend",
-      desc: "two hours",
-      price: 18000
-    },
-    {
-      name: "GrabExpress",
-      desc: "two hours",
-      price: 18000
-    },
-
-  ]
   useEffect(() => {
     let data = {
       transactions: [],

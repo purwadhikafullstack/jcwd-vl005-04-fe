@@ -96,7 +96,7 @@ const Register = () => {
   };
 
   return (
-    <div className="login-box">
+    <div className="small-box">
       <Form onSubmit={handleSubmit} className="mb-3">
         <h2 className="text-center mb-3">Register</h2>
         <hr className="mb-4" />

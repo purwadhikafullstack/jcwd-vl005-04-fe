@@ -12,7 +12,11 @@ function Header() {
     return (
         <div className="p-4 bg-primary fw-bold text-white">
             <div className="d-flex justify-content-between">
-                <a href="/home">Product Page</a>
+                <div>
+                    <a href="/">Product Page</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/pending-payment">Pending Payment</a>
+                </div>
                 <div>
                     <a href="/cart"><i className="bi bi-bag"></i></a>
                     &nbsp;&nbsp;&nbsp;

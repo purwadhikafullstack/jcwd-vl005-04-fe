@@ -34,6 +34,9 @@ import Cart from './pages/user/cart'
 import io from "socket.io-client";
 import { useToast } from '@chakra-ui/react'
 import PrivateRouteAdmin from './pages/route/PrivateRouteAdmin'
+import Checkout from './pages/user/Checkout'
+import PendingPayment from './pages/user/PendingPayment'
+import UploadPayment from './pages/user/UploadPayment'
 
 const socket = io('http://localhost:5001');
 
@@ -91,8 +94,11 @@ function App() {
         <Route exact path="/" element={<PrivateRoute />}>
           <Route path='/cart' element={<Cart />} />
           <Route path='/' element={<Home />} />
+          <Route path='/checkout' element={<Checkout />} />
+          <Route path='/pending-payment' element={<PendingPayment />} />
+          <Route path='/upload-payment' element={<UploadPayment />} />
         </Route>
-        
+
         <Route exact path="/" element={<AuthRoute />}>
           <Route element={<Login />} path="/login" exact />
           <Route element={<Register />} path="/register" exact />

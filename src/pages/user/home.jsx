@@ -5,16 +5,12 @@ import { useToast } from "@chakra-ui/react"
 
 import Card from "./components/card"
 import Header from "./components/header"
+import { getUserInfo } from "../../utils"
 
 function Home() {
-    alert("asdsadasd")
 
     const API_URL = process.env.REACT_APP_API_URL
     const toast = useToast()
-
-    if (localStorage.user_id === undefined) {
-        localStorage.setItem('user_id', 1)
-    }
 
     const [ products, setProducts ] = useState([])
 
@@ -73,7 +69,7 @@ function Home() {
         const data = {
             product_id: id,
             price: price,
-            user_id: 1,
+            user_id: getUserInfo().id,
             created_at: new Date().toISOString().slice(0, 10)
         }
 

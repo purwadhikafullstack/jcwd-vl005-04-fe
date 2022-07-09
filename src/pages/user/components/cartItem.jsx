@@ -4,9 +4,10 @@ import axios from "axios"
 import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
 import dummy_img from "../../../../src/images/whitebackground.png"
+import { getUserInfo } from "../../../utils"
 
-function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClick }) {
-    const user_id = localStorage.getItem('user_id')
+function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClick, isCheckout }) {
+    const user_id = getUserInfo().id
     const API_URL = process.env.REACT_APP_API_URL
     
     const [ totalPrice, setTotalPrice ] = useState(Number(price) * Number(volume))
@@ -32,13 +33,14 @@ function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClic
     }
 
     const onPlusClick = () => {
+        const user_id = getUserInfo().id
         const incTotalVolume = totalVolume + 1
         setTotalVolume(incTotalVolume)
 
         console.log(incTotalVolume)
 
         const data = {
-            user_id: localStorage.getItem('user_id'),
+            user_id: user_id,
             product_id: product_id,
             volume: incTotalVolume
         }
@@ -54,13 +56,14 @@ function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClic
     }
 
     const onMinClick = () => {
+        const user_id = getUserInfo().id
         const decTotalVolume = totalVolume - 1
         setTotalVolume(decTotalVolume)
 
         console.log(totalVolume)
 
         const data = {
-            user_id: localStorage.getItem('user_id'),
+            user_id: user_id,
             product_id: product_id,
             volume: decTotalVolume
         }
@@ -93,10 +96,10 @@ function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClic
                     <div className="w-25 ms-2 d-flex flex-column align-items-center justify-content-center">
                         <div className="d-flex w-100 mb-3">
                             {/* <button className="btn btn-sm btn-light" onClick={onMinClick}>-</button> */}
-                            <input type="number" min={1} className="form-control mx-2 text-center" defaultValue={totalVolume} onChange={onVolumeChange}/>
+                            <input type="number" min={1} className="form-control mx-2 text-center" defaultValue={totalVolume} onChange={onVolumeChange} disabled={isCheckout}/>
                             {/* <button className="btn btn-sm btn-light" onClick={onPlusClick}>+</button> */}
                         </div>
-                        <button className="btn btn-sm btn-danger w-100" onClick={onDeleteClick}>Hapus</button>
+                        {!isCheckout && <button className="btn btn-sm btn-danger w-100" onClick={onDeleteClick}>Hapus</button>}
                     </div>
                 </div>
             </div>
