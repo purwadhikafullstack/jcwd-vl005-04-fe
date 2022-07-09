@@ -39,6 +39,9 @@ function AdminNavigation(){
                                     <button className="navbarButtonDropdown" onClick={()=>navigate('/admin/register')}>
                                         Add Admin
                                     </button>
+                                    <button className="navbarButtonDropdown" onClick={()=>navigate('/admin/report')}>
+                                        Report
+                                    </button>
                                     <button className="navbarButtonDropdown" onClick={logout}>
                                         Logout
                                     </button>

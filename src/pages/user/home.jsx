@@ -6,7 +6,9 @@ import { useToast } from "@chakra-ui/react"
 import Card from "./components/card"
 import Header from "./components/header"
 
-function Home () {
+function Home() {
+    alert("asdsadasd")
+
     const API_URL = process.env.REACT_APP_API_URL
     const toast = useToast()
 
@@ -41,9 +43,8 @@ function Home () {
     const showProducts = () => {
         return products.map((product, index) => {
             return (
-                <div className="col-3">
-                    <Card 
-                        key={index}
+                <div className="col-3" key={index}>
+                    <Card
                         id={product.id}
                         name={product.name}
                         qty={product.total_quantity}
@@ -91,14 +92,14 @@ function Home () {
             <Header />
             <div className="p-4">
                 <div name="filter" className="mb-4 w-25 shadow">
-                    <select class="form-select" onChange={applyFilter}>
+                    <select className="form-select" onChange={applyFilter}>
                         <option value="?_sort=id&_order=ASC">LATEST</option>
                         <option value="?_sort=price_per_unit&_order=ASC">LOWEST TO HIGHEST PRICE</option>
                         <option value="?_sort=price_per_unit&_order=DESC">HIGHEST TO LOWEST PRICE</option>
                     </select>
                 </div>
                 <div className="row">
-                    { showProducts() }
+                    {showProducts()}
                 </div>
             </div>
         </>

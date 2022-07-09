@@ -22,7 +22,6 @@ function Landing(){
 
     return (
         <div>
-            <Header/>
             {
                 user.role=="admin"?
                 <SidebarMain/>
@@ -31,9 +30,11 @@ function Landing(){
                 </div>
             }
             
+            <div style={{width:"85%",marginLeft:"15%"}}>
             Temporary Landing Page<br></br>
             Username : {user.username}<br></br>
             <button onClick={onLogout}>Logout</button>
+            </div>
         </div>
     )
 }

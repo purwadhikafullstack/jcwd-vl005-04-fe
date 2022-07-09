@@ -9,6 +9,7 @@ import { Box, Grid, GridItem, Heading, Stack, Text } from "@chakra-ui/react";
 import formatThousands from "format-thousands";
 import moment from "moment";
 import axios from "../../lib/axios";
+import SidebarMain from "../product/components/sidebar/sidebarMain";
 
 function AdminReport() {
   const global = useSelector((state) => state);
@@ -23,6 +24,40 @@ function AdminReport() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+
+  const shipperData = [
+    {
+      company: "TIKI",
+      desc: "two working days",
+      price: 10000
+    },
+    {
+      name: "JNE",
+      desc: "two working days",
+      price: 9000
+    },
+    {
+      name: "J&T",
+      desc: "two working days",
+      price: 8000
+    },
+    {
+      name: "SiCepat",
+      desc: "two working days",
+      price: 7000
+    },
+    {
+      name: "GoSend",
+      desc: "two hours",
+      price: 18000
+    },
+    {
+      name: "GrabExpress",
+      desc: "two hours",
+      price: 18000
+    },
+
+  ]
   useEffect(() => {
     let data = {
       transactions: [],
@@ -89,50 +124,53 @@ function AdminReport() {
     );
   };
   return (
-    <div style={{ margin: "40px" }}>
-      <h1
-        style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "10px" }}
-      >
-        Report
-      </h1>
-      <hr style={{ marginBottom: "30px" }} />
-      <input
-        type={"date"}
-        onChange={(e) => {
-          console.log("e.target.value");
-          console.log(e.target.value);
-          setDate(moment(e.target.value));
-        }}
-        value={date.format("YYYY-MM-DD")}
-        style={{ marginBottom: "30px" }}
-      />
-      <Stack spacing={8} direction="row">
-        {/* <Stats title={"Omset"} value={formatThousands(100000, ".")} /> */}
-        <Stats title={"Profit"} value={formatThousands(profit, ".")} />
-        <Stats
-          title={"Number of Sales"}
-          value={formatThousands(numOfSales, ".")}
+    <div>
+      <SidebarMain />
+      <div style={{ padding: "40px", width: "85%", marginLeft: "15%" }}>
+        <h1
+          style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "10px" }}
+        >
+          Report
+        </h1>
+        <hr style={{ marginBottom: "30px" }} />
+        <input
+          type={"date"}
+          onChange={(e) => {
+            console.log("e.target.value");
+            console.log(e.target.value);
+            setDate(moment(e.target.value));
+          }}
+          value={date.format("YYYY-MM-DD")}
+          style={{ marginBottom: "30px", outline: "auto", padding: "20px" }}
         />
-        <Stats
-          title={"Top 3 Most Sold"}
-          list={
-            topProducts.length > 0 ? (
-              <ol
-                style={{
-                  textAlign: "left",
-                  marginLeft: "20px",
-                  fontWeight: "bold",
-                }}
-              >
-                {topProducts.map((el) => {
-                  return <li>{el.product_name}</li>;
-                })}
-              </ol>
-            ) : undefined
-          }
-          value={topProducts.length === 0 ? "-" : undefined}
-        />
-      </Stack>
+        <Stack spacing={8} direction="row">
+          {/* <Stats title={"Omset"} value={formatThousands(100000, ".")} /> */}
+          <Stats title={"Profit"} value={formatThousands(profit, ".")} />
+          <Stats
+            title={"Number of Sales"}
+            value={formatThousands(numOfSales, ".")}
+          />
+          <Stats
+            title={"Top 3 Most Sold"}
+            list={
+              topProducts.length > 0 ? (
+                <ol
+                  style={{
+                    textAlign: "left",
+                    marginLeft: "20px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {topProducts.map((el) => {
+                    return <li>{el.product_name}</li>;
+                  })}
+                </ol>
+              ) : undefined
+            }
+            value={topProducts.length === 0 ? "-" : undefined}
+          />
+        </Stack>
+      </div>
     </div>
   );
 }
