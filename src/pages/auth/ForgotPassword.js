@@ -46,7 +46,7 @@ function ForgotPassword() {
         <hr className="mb-4" />
         <Form.Group className="mb-3">
           <Form.Control
-            type={"email"}
+            type={"text"}
             placeholder={"Email address or username"}
             onChange={(e) => {
               setUsernameOrEmail(e.target.value);

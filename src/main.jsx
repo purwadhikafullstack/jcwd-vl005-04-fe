@@ -65,7 +65,7 @@ function App() {
     <div>
       {/* <AdminNavigation/> */}
       <Routes>
-        {/* <Route path='/admin' element={<AdminLogin/>}/>
+        <Route path='/admin' element={<AdminLogin/>}/>
         <Route path='/admin/register' element={<AdminRegister/>}/>
         <Route path='/admin/transaction' element={<AdminTransaction/>}/>
         <Route path='/admin/user-transactions/:id' element={<AdminUserTransactions/>}/>
@@ -76,7 +76,7 @@ function App() {
         <Route path='/admin/products/category-list' element={<ProductHome />} />
         <Route path="/admin/report" element={<AdminReport />} />
         <Route path='/home' element={<Home />} />
-        <Route path='/cart' element={<Cart />} /> */}
+        <Route path='/cart' element={<Cart />} />
 
         <Route exact path="/" element={<PrivateRoute />}>
           {/* <Route exact path="/" element={<DisplayProduct />} /> */}
