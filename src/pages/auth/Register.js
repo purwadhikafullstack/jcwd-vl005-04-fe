@@ -75,7 +75,7 @@ const Register = () => {
     }
 
     axios
-      .post("/register", {
+      .post("/api/auth/register", {
         username: username,
         email: email,
         birthday: birthday,

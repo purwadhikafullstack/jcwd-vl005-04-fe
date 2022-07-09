@@ -26,7 +26,7 @@ function Login() {
         reqBody.keep_login = true;
       }
 
-      response = await axios.post("/login", reqBody);
+      response = await axios.post("/api/auth/login", reqBody);
     } catch (error) {
       if (
         error.response &&
@@ -42,7 +42,7 @@ function Login() {
         }).then((result) => {
           if (result.isDenied) {
             axios
-              .post("/email-verify/resend", {
+              .post("/api/auth/email-verify/resend", {
                 username_or_email: usernameOrEmail,
                 password: password,
               })

@@ -15,7 +15,7 @@ function ResetPassword() {
   useEffect(() => {
     if (parsed && parsed.token) {
       axios
-        .post("/reset-password-token-validate", {
+        .post("/api/auth/reset-password-token-validate", {
           token: parsed.token,
         })
         .then((response) => {
@@ -46,7 +46,7 @@ function ResetPassword() {
 
     let response;
     try {
-      response = await axios.post("/reset-password", {
+      response = await axios.post("/api/auth/reset-password", {
         token: parsed.token,
         password: password,
       });

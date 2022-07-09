@@ -14,7 +14,7 @@ function VerifyAccount(props) {
     setIsLoading(true);
     if (parsed && parsed.token) {
       axios
-        .post("/email-verify", {
+        .post("/api/auth/email-verify", {
           token: parsed.token,
         })
         .then(() => {

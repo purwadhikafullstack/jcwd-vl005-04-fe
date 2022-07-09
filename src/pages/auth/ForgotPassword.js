@@ -12,7 +12,7 @@ function ForgotPassword() {
 
     let response;
     try {
-      response = await axios.post("/email/forgot-password", {
+      response = await axios.post("/api/auth/email/forgot-password", {
         username_or_email: usernameOrEmail,
       });
     } catch (error) {
