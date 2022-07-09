@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import "../../css/admin/adminMain.css";
-import Axios from "axios";
 import UserData from "./components/userData";
 import { useState } from "react";
 import { Box, Grid, GridItem, Heading, Stack, Text } from "@chakra-ui/react";
 import formatThousands from "format-thousands";
 import moment from "moment";
+import axios from "../../lib/axios";
 
 function AdminReport() {
   const global = useSelector((state) => state);
@@ -28,7 +28,7 @@ function AdminReport() {
       transactions: [],
       users_data: [],
     };
-    Axios.get("http://localhost:5001/api/users")
+    axios.get("/api/users")
       .then((respond1) => {
         setUser(respond1.data);
       })
@@ -38,7 +38,7 @@ function AdminReport() {
   }, []);
 
   useEffect(() => {
-    Axios.post("http://localhost:5001/api/admin/report", {
+    axios.post("/api/admin/report", {
       date: date.format("YYYY-MM-DD"),
       // date: "2022-07-01",
     })

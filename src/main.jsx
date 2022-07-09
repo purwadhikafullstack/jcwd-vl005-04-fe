@@ -18,6 +18,15 @@ import AdminNavigation from './pages/admin/adminnavigation';
 import AdminUserTransactions from './pages/admin/adminUserTransactions';
 import AdminReport from "./pages/admin/adminReport";
 import ProductHome from './pages/product/productHome'
+import PrivateRoute from './pages/route/PrivateRoute'
+import AuthRoute from './pages/route/AuthRoute'
+import Login from './pages/auth/Login'
+import ForgotPassword from './pages/auth/ForgotPassword'
+import Register from './pages/auth/Register'
+import ResetPassword from './pages/auth/ResetPassword'
+import VerifyAccount from './pages/auth/VerifyAccount'
+import NotFound from './pages/NotFound'
+
 import Home from './pages/user/home'
 import Cart from './pages/user/cart'
 
@@ -56,8 +65,7 @@ function App() {
     <div>
       {/* <AdminNavigation/> */}
       <Routes>
-      <Route path='/' element={<Landing/>}/>
-      <Route path='/admin' element={<AdminLogin/>}/>
+        {/* <Route path='/admin' element={<AdminLogin/>}/>
         <Route path='/admin/register' element={<AdminRegister/>}/>
         <Route path='/admin/transaction' element={<AdminTransaction/>}/>
         <Route path='/admin/user-transactions/:id' element={<AdminUserTransactions/>}/>
@@ -68,7 +76,24 @@ function App() {
         <Route path='/admin/products/category-list' element={<ProductHome />} />
         <Route path="/admin/report" element={<AdminReport />} />
         <Route path='/home' element={<Home />} />
-        <Route path='/cart' element={<Cart />} />
+        <Route path='/cart' element={<Cart />} /> */}
+
+        <Route exact path="/" element={<PrivateRoute />}>
+          {/* <Route exact path="/" element={<DisplayProduct />} /> */}
+          <Route path='/' element={<Landing/>}/>
+        </Route>
+        <Route exact path="/" element={<AuthRoute />}>
+          <Route element={<Login />} path="/login" exact />
+          <Route element={<Register />} path="/register" exact />
+          <Route
+            element={<ForgotPassword />}
+            path="/forgot-password"
+            exact
+          />
+          <Route element={<ResetPassword />} path="/reset-password" exact />
+          <Route element={<VerifyAccount />} path="/verify-email" exact />
+        </Route>
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </div>
   )

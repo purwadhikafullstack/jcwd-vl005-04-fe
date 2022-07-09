@@ -4,6 +4,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { createStore} from 'redux'
 import { Provider } from 'react-redux'
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "boxicons";
+import "./css/index.css";
+
 // import main component
 import App from './main'
 import { ChakraProvider } from '@chakra-ui/react'
