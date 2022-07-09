@@ -102,7 +102,6 @@ function Cart () {
                 <div className="w-50 mx-auto">
                     { showCartItems() }
                 </div>
-                <button onClick={buyTest}>Test</button>
             </div>
         </>
     )

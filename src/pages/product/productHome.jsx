@@ -39,4 +39,4 @@ function ProductHome () {
     )
 }
 
-export default ProductHome
+export default ProductHome;

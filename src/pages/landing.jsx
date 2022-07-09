@@ -23,7 +23,14 @@ function Landing(){
     return (
         <div>
             <Header/>
-            <SidebarMain/>
+            {
+                user.role=="admin"?
+                <SidebarMain/>
+                :
+                <div>
+                </div>
+            }
+            
             Temporary Landing Page<br></br>
             Username : {user.username}<br></br>
             <button onClick={onLogout}>Logout</button>
