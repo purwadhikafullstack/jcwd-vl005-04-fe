@@ -15,9 +15,9 @@ function AdminForgetPassword (){
     const toast = useToast();
     const navigate = useNavigate();
 
-    if(user.email){
-        navigate('/')
-    }
+    // if(user.email){
+    //     navigate('/')
+    // }
 
     const sendVerificationEmail = () =>{
         setErrorMessage("");
@@ -52,7 +52,6 @@ function AdminForgetPassword (){
     }
     return (
         <div>
-            <Header/>
             <div className="main">
                 <div className="sub-main">
                     <div className="resetContainer">

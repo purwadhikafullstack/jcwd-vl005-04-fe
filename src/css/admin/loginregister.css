@@ -71,9 +71,11 @@ input {
   margin-top: 25px;
   font-size: 20px;
   transition: 250ms all ease;
+  box-shadow: inset 0px 0px 4px 0px #888;
 }
-.nameLowPadding{
+.nameSmallPadding{
   padding-left:15px;
+  box-shadow: inset 0px 0px 12px 0px #888;
 }
 .name:hover{
   width:410px;

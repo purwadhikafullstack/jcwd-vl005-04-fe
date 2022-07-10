@@ -30,7 +30,7 @@ function ProductCreate ({
 
     const showProductUnits = () => {
         return units.map((unit, index) => {
-            return <option value={ unit.id }>{ unit.name }</option>
+            return <option value={ unit.id }>{ unit.unit_name }</option>
         })
     }
 

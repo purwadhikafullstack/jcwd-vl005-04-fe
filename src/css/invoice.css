@@ -1,0 +1,34 @@
+.invoiceForm{
+    width: 100%;
+    padding:30px;
+    background-color: lightgray;
+}
+.invoiceContainer{
+    width: 100%;
+    padding:30px;
+    background-color: white;
+    box-shadow: 2px 2px 4px 4px gray;
+}
+.invoiceHeader{
+    display: flex;
+    flex-direction: column;
+}
+.invoiceHeaderLogo{
+    font-size:32px;
+    margin-bottom: 30px;
+}
+.invoiceLabel{
+    font-size: 22px;
+}
+.invoiceContent{
+    width: 100%;
+    padding-top: 20px;
+}
+.invoiceTable{
+    width: 100%;
+}
+.invoiceFooter{
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+}
