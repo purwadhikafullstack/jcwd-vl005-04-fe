@@ -3,6 +3,7 @@ import Axios from 'axios';
 import {useToast} from '@chakra-ui/react'
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Header from "../user/components/header";
 
 const API_URL = process.env.REACT_APP_API_URL
 function AdminForgetPassword (){
@@ -50,22 +51,26 @@ function AdminForgetPassword (){
         })
     }
     return (
-        <div className="main">
-            <div className="sub-main">
-                <div className="resetContainer">
-                    <h1 className="loginHeader">
-                        Forget Password
-                    </h1>
-                    <div className="inputForm">
-                        <input type = "text" className="nameSmallPadding" ref={email} placeholder="Email"></input>
+        <div>
+            <Header/>
+            <div className="main">
+                <div className="sub-main">
+                    <div className="resetContainer">
+                        <h1 className="loginHeader">
+                            Forget Password
+                        </h1>
+                        <div className="inputForm">
+                            <input type = "text" className="nameSmallPadding" ref={email} placeholder="Email"></input>
+                        </div>
+                        {errorMessage}
+                        <button className="submitButton submitButtonReset" onClick={sendVerificationEmail}>
+                            Send Verification Email
+                        </button>
                     </div>
-                    {errorMessage}
-                    <button className="submitButton submitButtonReset" onClick={sendVerificationEmail}>
-                        Send Verification Email
-                    </button>
                 </div>
             </div>
         </div>
+        
     )
 }
 export default AdminForgetPassword

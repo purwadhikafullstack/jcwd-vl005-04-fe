@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Axios from 'axios'
 import "../../css/admin/loginregister.css"
 import { useSelector } from "react-redux";
+import Header from "../user/components/header";
 
 const API_URL = process.env.REACT_APP_API_URL
 function AdminResetPassword (){
@@ -73,31 +74,35 @@ function AdminResetPassword (){
     }
 
     return (
-        <div className="main">
-            <div className="sub-main">
-                <div className="resetContainer">
-                    <h1 className="loginHeader">
-                        Reset Password
-                    </h1>
+        <div>
+            <Header/>
+            <div className="main">
+                <div className="sub-main">
+                    <div className="resetContainer">
+                        <h1 className="loginHeader">
+                            Reset Password
+                        </h1>
 
-                    <div className="inputForm">
-                        <input type = "password" className="name" ref = {password} placeholder="Password">
+                        <div className="inputForm">
+                            <input type = "password" className="name" ref = {password} placeholder="Password">
 
-                        </input>
+                            </input>
 
+                        </div>
+                        <div className="inputForm">
+                            <input type = "password" className="name" ref = {repassword} placeholder="Re-Enter Password">
+
+                            </input>
+                        </div>
+
+                        <button className="submitButton submitButtonReset" onClick={changePassword}>
+                            Submit
+                        </button>
                     </div>
-                    <div className="inputForm">
-                        <input type = "password" className="name" ref = {repassword} placeholder="Re-Enter Password">
-
-                        </input>
-                    </div>
-
-                    <button className="submitButton submitButtonReset" onClick={changePassword}>
-                        Submit
-                    </button>
                 </div>
             </div>
         </div>
+        
     )
 }
 export default AdminResetPassword

@@ -7,6 +7,8 @@ import Axios from 'axios'
 import UserData from './components/userData';
 import { useState } from 'react';
 import { useToast } from '@chakra-ui/react'
+import Header from '../user/components/header';
+import SidebarMain from '../product/components/sidebar/sidebarMain';
 
 const API_URL = process.env.REACT_APP_API_URL
 function AdminViewUser(){
@@ -35,7 +37,7 @@ function AdminViewUser(){
         const token = localStorage.getItem('admintoken')
         if(!token){
             if(user.role!=="admin" && users){
-                navigate('/')
+                navigate('/admin')
             }
         }
     },[])
@@ -59,36 +61,50 @@ function AdminViewUser(){
     }
 
     return (
-        <div className='main'>
-            <div className='transactionSub-main'>
-                <h1 className='header'>
-                    Users
-                </h1>
-                
-                <table className='transactionTable'>
-                    <thead>
-                        <tr>
-                            <th>User ID</th>
-                            <th>Name</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Verified?</th>
-                            <th>Active?</th>
-                            <th colSpan={2}>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {generateUsersData()}
-                    </tbody>
-                    
-                </table>
-                <div className='pageController'>
-                    <button onClick={prevPage} className="btnPage">-</button>
-                    Page {page} of {Math.floor(count/10)+1}
-                    <button onClick={nextPage} className="btnPage">+</button>
+        <div>
+            <div className="d-flex" style={{ height: "100vh" }}>
+                <div className="" style={{ width: "15%" }}>
+                    <SidebarMain />
+                </div>
+                <div style={{ width: "85%" }}>
+                    <Header />
+                    <div>
+                        <div className='main'>
+                            <div className='transactionSub-main'>
+                                <h1 className='header'>
+                                    Users
+                                </h1>
+                                
+                                <table className='transactionTable'>
+                                    <thead>
+                                        <tr className="adminRow">
+                                            <th>User ID</th>
+                                            <th>Name</th>
+                                            <th>Username</th>
+                                            <th>Email</th>
+                                            <th>Verified?</th>
+                                            <th>Active?</th>
+                                            <th colSpan={2}>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {generateUsersData()}
+                                    </tbody>
+                                    
+                                </table>
+                                <div className='pageController'>
+                                    <button onClick={prevPage} className="btnPage">-</button>
+                                    Page {page} of {Math.floor(count/10)+1}
+                                    <button onClick={nextPage} className="btnPage">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            
         </div>
+        
     )
     
 }

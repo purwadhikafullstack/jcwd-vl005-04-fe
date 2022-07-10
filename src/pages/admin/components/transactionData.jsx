@@ -6,17 +6,21 @@ function TransactionData(data){
     const transaction = data.transaction
     let page = (data.page-1)*5
     let index = data.index+1
-    
+
     const toast = useToast();
     let time = transaction.created_at;
     let is_approved;
 
+    let userdata = {
+        user_id : transaction.user_id
+    }
+
     const approveTransaction = () =>{
-        Axios.get(API_URL + `/transaction/approve/${transaction.id}`)
+        Axios.post(API_URL + `/transaction/approve/${transaction.id}`, userdata)
         .then((respond)=>{
             toast({
                 title: 'Transaction Approved',
-                description: `Please refresh to continue`,
+                description: `An Invoice Email has been sent to User`,
                 status: 'success',
                 duration: 5000,
                 isClosable: true,
@@ -34,10 +38,10 @@ function TransactionData(data){
     }
 
     const rejectTransaction = () =>{
-        Axios.get(API_URL + `/transaction/reject/${transaction.id}`)
+        Axios.post(API_URL + `/transaction/reject/${transaction.id}`, userdata)
         .then((respond)=>{
             toast({
-                title: 'Transaction Rejected',
+                title: 'A Reject Transaction Email has been sent to User',
                 description: `Please refresh to continue`,
                 status: 'success',
                 duration: 5000,
@@ -66,7 +70,7 @@ function TransactionData(data){
             is_approved = "Rejected"
     }
     return (
-        <tr>
+        <tr className="adminRow">
             <td>{page+index}</td>
             <td>{transaction.inv_number}</td>
             <td>{is_approved}</td>
@@ -79,8 +83,8 @@ function TransactionData(data){
                 {   
                     is_approved == "Not Approved"?
                     <div>
-                        <button className="btnWide btnSuccess" onClick={approveTransaction}>Approve</button>
-                        <button className="btnWide btnError" onClick={rejectTransaction}>Reject</button>
+                        <button className="btnAdmin btnSuccessAdmin" onClick={approveTransaction}>Approve</button>
+                        <button className="btnAdmin btnErrorAdmin" onClick={rejectTransaction}>Reject</button>
                     </div>
                     :
                     <div>

@@ -16,7 +16,7 @@ function Card ({ name, onCartClick }) {
                     className="btn btn-primary btn-sm w-100 align-items-center align-middle"
                     onClick={onCartClick}
                 >
-                        <i class="bi bi-bag-plus"></i>
+                        <i className="bi bi-bag-plus"></i>
                         <span> Keranjang</span>
                 </button>
             </div>

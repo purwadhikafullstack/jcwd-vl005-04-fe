@@ -4,6 +4,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { createStore} from 'redux'
 import { Provider } from 'react-redux'
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css"
+import "./css/index.css";
+
 // import main component
 import App from './main'
 import { ChakraProvider } from '@chakra-ui/react'
@@ -58,7 +62,7 @@ const INITIAL_STATE = {
     }
   }
   const store = createStore(Reducer);
-  
+
 // render main component
 ReactDOM.render( 
   <ChakraProvider>
