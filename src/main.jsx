@@ -37,6 +37,7 @@ import PrivateRouteAdmin from './pages/route/PrivateRouteAdmin'
 import Checkout from './pages/user/Checkout'
 import PendingPayment from './pages/user/PendingPayment'
 import UploadPayment from './pages/user/UploadPayment'
+import Invoice from './pages/user/invoice'
 
 const socket = io('http://localhost:5001');
 
@@ -55,7 +56,6 @@ function App() {
   useEffect(() => {
     const admintoken = localStorage.getItem('admintoken')
     if (admintoken) {
-      console.log("admintoken : ", admintoken)
       Axios.get(API_URL + `/admin/${admintoken}`)
         .then((respond) => {
           dispatch({ type: 'ADMIN_LOGIN', payload: respond.data })
@@ -65,6 +65,17 @@ function App() {
         })
     }
   }, [])
+
+  socket.on('confirmasiCheckOutBerhasil', (arg) => {
+    console.log('test')
+        toast({
+            title: "Transaction Success",
+            description: arg,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+        })
+  })
 
   return (
     <div>
@@ -77,7 +88,7 @@ function App() {
           <Route path='/admin/transaction' element={<AdminTransaction />} />
           <Route path='/admin/user-transactions/:id' element={<AdminUserTransactions />} />
           <Route path='/admin/view-user' element={<AdminViewUser />} />
-          <Route path='/admin/forget-password' element={<AdminForgetPassword />} />
+          <Route path='/admin/forget-password' element={<AdminForgetPassword/>} />
           <Route path='/admin/reset-password/:id' element={<AdminResetPassword />} />
           <Route path='/admin/products' element={<ProductHome />} />
           <Route path='/admin/products/category-list' element={<ProductHome />} />
@@ -89,9 +100,10 @@ function App() {
         </Route>
         {/* admin */}
 
-
+        
         {/* user */}
         <Route exact path="/" element={<PrivateRoute />}>
+          <Route path='/invoice/:no' element={<Invoice/>} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/' element={<Home />} />
           <Route path='/checkout' element={<Checkout />} />
@@ -102,11 +114,7 @@ function App() {
         <Route exact path="/" element={<AuthRoute />}>
           <Route element={<Login />} path="/login" exact />
           <Route element={<Register />} path="/register" exact />
-          <Route
-            element={<ForgotPassword />}
-            path="/forgot-password"
-            exact
-          />
+          <Route element={<ForgotPassword />} path="/forgot-password" exact/>
           <Route element={<ResetPassword />} path="/reset-password" exact />
           <Route element={<VerifyAccount />} path="/verify-email" exact />
         </Route>

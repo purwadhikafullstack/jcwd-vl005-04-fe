@@ -18,9 +18,9 @@ function AdminResetPassword (){
     const pathname = useLocation().pathname;
     const id = pathname.substring(22,pathname.length)
 
-    if(user.email){
-        navigate('/')
-    }
+    // if(user.email){
+    //     navigate('/')
+    // }
 
     const changePassword = () =>{
         setErrorMessage("")

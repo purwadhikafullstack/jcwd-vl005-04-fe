@@ -238,8 +238,7 @@ function AdminTransaction(){
                                     <tr className="adminRow">
                                         <th>No</th>
                                         <th>Invoice Number</th>
-                                        <th>Approved?</th>
-                                        <th>Transaction Status</th>
+                                        <th>Status</th>
                                         <th>Created At</th>
                                         <th>Payment Proof</th>
                                         <th>Total Payment</th>
