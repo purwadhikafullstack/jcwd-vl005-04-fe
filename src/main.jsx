@@ -81,6 +81,7 @@ function App() {
     <div>
       {/* <AdminNavigation/> */}
       <Routes>
+      <Route path='/invoice/:no' element={<Invoice/>} />
         {/* admin */}
         <Route exact path="/admin" element={<PrivateRouteAdmin />}>
           <Route path='/admin/home' element={<Landing />} />
@@ -103,7 +104,6 @@ function App() {
         
         {/* user */}
         <Route exact path="/" element={<PrivateRoute />}>
-          <Route path='/invoice/:no' element={<Invoice/>} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/' element={<Home />} />
           <Route path='/checkout' element={<Checkout />} />
