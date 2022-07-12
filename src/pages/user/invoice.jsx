@@ -20,8 +20,16 @@ function Invoice(){
     const [transactionDetails, setTransactionDetails] = useState();
     const [orderBy, setOrderBy] = useState();
     const [transactionStatus, setTransactionStatus] = useState();
+    const [username, setUsername] = useState();
 
+    useEffect(()=>{
+        if(transactionDetails){
+            setUsername(transactionDetails[0].username)
+        }
+    },[transactionDetails])
     
+    console.log(transaction)
+
     useEffect(()=>{
         Axios.get(API_URL + `/transaction/invoice/${id}`)
         .then((respond)=>{
@@ -64,7 +72,7 @@ function Invoice(){
                             <p className="invoiceHeaderLogo">PHARMACY</p>
                             <p className="invoiceLabel">Invoice Number : {invNumber}</p>
                             <p className="invoiceLabel">Transaction Status : {transactionStatus}</p>
-                            <p className="invoiceLabel">Order By : {orderBy}</p>
+                            <p className="invoiceLabel">Order By : {username?username:orderBy}</p>
                         </div>
                         <div className="invoiceContent">
                         <table className="invoiceTable">
@@ -80,10 +88,7 @@ function Invoice(){
                                         Price per Unit
                                     </th>
                                     <th>
-                                        Quantity
-                                    </th>
-                                    <th>
-                                        Volume per unit
+                                        Volume
                                     </th>
                                     <th>
                                         Total Price

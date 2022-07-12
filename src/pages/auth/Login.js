@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { faUser, faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDispatch } from "react-redux";
 
 function Login() {
   let navigate = useNavigate();
@@ -13,6 +14,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [keepLogin, setKeepLogin] = useState(false);
   const [passwordShow, setPasswordShow] = useState(false);
+  const dispatch = useDispatch();
 
   const login = async (e) => {
     e.preventDefault();
@@ -66,6 +68,7 @@ function Login() {
     }
     if (response && response.data) {
       if (response.data.status === "ok") {
+        dispatch({type:"ADMIN_LOGOUT"})
         localStorage.setItem("access_token", response.data.data.access_token);
         navigate("/");
       } else {

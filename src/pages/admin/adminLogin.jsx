@@ -70,6 +70,8 @@ function AdminLogin () {
         .then((respond)=>{
             console.log(respond.data)
             setErrorMessage("Login Success")
+            localStorage.removeItem("access_token");
+            
             if(keepLogged){
                 localStorage.setItem("admintoken",respond.data.id)
             }

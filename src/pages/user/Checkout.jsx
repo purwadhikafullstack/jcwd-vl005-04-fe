@@ -78,7 +78,7 @@ function Checkout() {
                     let totalTemp = 0
                     for (let i = 0; i < response.data.length; i++) {
                         const item = response.data[i];
-                        totalTemp += item.price
+                        totalTemp += item.price*item.volume
                     }
                     setTotal(totalTemp)
                 })
@@ -165,7 +165,7 @@ function Checkout() {
         if (selectedShipping === null) {
             return AlertError("Invalid shipping");
         }
-
+        console.log(total)
         const data = {
             user_id: getUserInfo().id,
             products: cartItems,

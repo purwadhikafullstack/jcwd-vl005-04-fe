@@ -22,9 +22,10 @@ function SidebarMain () {
                 name="sidebar_heading" 
                 className="text-center py-4 mb-3 border-bottom border-white"
             >
-                <h1>Admin</h1>
+                <h1>Admin Menu</h1>
             </div>
             <div name="sidebar_content">
+                <SidebarItem text="Home" url="/admin/home"/>
                 <SidebarItem text="Add Products" url="/admin/products"/>
                 <SidebarItem text="Transaction" url="/admin/transaction"/>
                 <SidebarItem text="Category List" url="/admin/products/category-list"/>

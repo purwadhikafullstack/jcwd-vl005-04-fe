@@ -33,7 +33,7 @@ function Cart() {
                 let totalTemp = 0
                 for (let i = 0; i < response.data.length; i++) {
                     const item = response.data[i];
-                    totalTemp += item.price
+                    totalTemp += item.price*item.volume
                 }
                 setTotal(totalTemp)
             })
@@ -59,7 +59,7 @@ function Cart() {
                 let totalTemp = 0
                 for (let i = 0; i < response.data.length; i++) {
                     const item = response.data[i];
-                    totalTemp += item.price
+                    totalTemp += item.price*item.volume
                 }
                 setTotal(totalTemp)
             })
