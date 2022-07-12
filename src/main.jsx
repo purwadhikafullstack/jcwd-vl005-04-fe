@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import Axios from "axios"
 import Landing from './pages/landing'
@@ -48,20 +48,16 @@ function App() {
   const user = useSelector((state) => state)
 
   useEffect(() => {
-    socket.on("hello", (arg) => {
-      console.log(arg);
-    })
-  }, [])
-
-  useEffect(() => {
     const admintoken = localStorage.getItem('admintoken')
     if (admintoken) {
       Axios.get(API_URL + `/admin/${admintoken}`)
         .then((respond) => {
+          if(respond.data=="")localStorage.removeItem('admintoken')
           dispatch({ type: 'ADMIN_LOGIN', payload: respond.data })
         })
         .catch((error) => {
           console.log(error.response.data)
+          Navigate('/admin')
         })
     }
   }, [])
