@@ -54,7 +54,12 @@ function PendingPayment() {
                         let onClickFn = () => {
                             navigate(`/upload-payment?transaction_id=${el.id}`)
                         }
+                        let btnText =snakeToTitle(el.status)
                         switch (el.status) {
+                            case "approved":
+                                badgeColor = "success"
+                                btnText = "Paid"
+                                break;
                             case "pending":
                                 badgeColor = "warning"
 
@@ -70,7 +75,7 @@ function PendingPayment() {
                                 <Card.Body>
                                     <strong>{`INVOICE ${el.inv_number} - Rp${formatThousands(el.total_payment, ".")}`}</strong>
                                     &nbsp;&nbsp;
-                                    {<Badge bg={badgeColor}>{snakeToTitle(el.status)}</Badge>}
+                                    {<Badge bg={badgeColor}>{btnText}</Badge>}
                                 </Card.Body>
                             </Card>
                         </button>
