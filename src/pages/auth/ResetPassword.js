@@ -6,6 +6,7 @@ import qs from "query-string";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Header from "../user/components/header";
 
 function ResetPassword() {
   const navigate = useNavigate();
@@ -73,36 +74,39 @@ function ResetPassword() {
 
   const [password, setPassword] = useState("");
   return (
-    <div className="small-box">
-      <Form className="mb-3" onSubmit={onSubmit}>
-        <h2 className="text-center mb-3">Reset Password</h2>
-        <hr className="mb-4" />
-        <Form.Group className="mb-3">
-          <InputGroup className="mb-3">
-            <Form.Control
-              type={passwordShow ? "text" : "password"}
-              placeholder={"Input new password"}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
-            <InputGroup.Text className="p-0">
-              <Button
-                onClick={() => {
-                  setPasswordShow(!passwordShow);
+    <>
+      <Header isAuth={true} />
+      <div className="small-box">
+        <Form className="mb-3" onSubmit={onSubmit}>
+          <h2 className="text-center mb-3">Reset Password</h2>
+          <hr className="mb-4" />
+          <Form.Group className="mb-3">
+            <InputGroup className="mb-3">
+              <Form.Control
+                type={passwordShow ? "text" : "password"}
+                placeholder={"Input new password"}
+                onChange={(e) => {
+                  setPassword(e.target.value);
                 }}
-                variant="light"
-              >
-                <FontAwesomeIcon icon={passwordShow ? faEyeSlash : faEye} />
-              </Button>
-            </InputGroup.Text>
-          </InputGroup>
-        </Form.Group>
-        <Button className="w-100" variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
-    </div>
+              />
+              <InputGroup.Text className="p-0">
+                <Button
+                  onClick={() => {
+                    setPasswordShow(!passwordShow);
+                  }}
+                  variant="light"
+                >
+                  <FontAwesomeIcon icon={passwordShow ? faEyeSlash : faEye} />
+                </Button>
+              </InputGroup.Text>
+            </InputGroup>
+          </Form.Group>
+          <Button className="w-100" variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </div>
+    </>
   );
 }
 

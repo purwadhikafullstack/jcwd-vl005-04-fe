@@ -6,13 +6,16 @@ import { useToast } from "@chakra-ui/react"
 import Card from "./components/card"
 import Header from "./components/header"
 import { getUserInfo } from "../../utils"
+import { useNavigate } from "react-router-dom"
 
 function Home() {
+    const navigate = useNavigate()
+    const isLogin = localStorage.getItem("access_token") !== null
 
     const API_URL = process.env.REACT_APP_API_URL
     const toast = useToast()
 
-    const [ products, setProducts ] = useState([])
+    const [products, setProducts] = useState([])
 
     useEffect(() => {
         axios.get(`${API_URL}/products`)
@@ -45,7 +48,13 @@ function Home() {
                         name={product.name}
                         qty={product.total_quantity}
                         unit={product.unit}
-                        onCartClick={() => onCartButtonClick(product.id, product.price_per_unit)}
+                        onCartClick={() => {
+                            if (!isLogin) {
+                                navigate("/login")
+                                return
+                            }
+                            onCartButtonClick(product.id, product.price_per_unit)
+                        }}
                     />
                 </div>
             )
