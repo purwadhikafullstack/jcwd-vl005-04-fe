@@ -1,6 +1,9 @@
 .flexbox{
     display: flex;
 }
+.pointer{
+    cursor: pointer;
+}
 .btnAdmin{
     color:white;
     width: 120px;

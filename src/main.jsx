@@ -49,6 +49,7 @@ function App() {
 
   useEffect(() => {
     const admintoken = localStorage.getItem('admintoken')
+    console.log(admintoken)
     if (admintoken) {
       Axios.get(API_URL + `/admin/${admintoken}`)
         .then((respond) => {

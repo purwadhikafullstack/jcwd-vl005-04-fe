@@ -8,6 +8,7 @@ import { Spinner, useToast } from '@chakra-ui/react'
 import profile from "../../images/a.png";
 import email from "../../images/email.jpeg";
 import pass from "../../images/pass.png";
+import eye from "../../images/eye.png"
 import { useEffect } from 'react'
 import Header from '../user/components/header'
 
@@ -122,12 +123,11 @@ function AdminLogin () {
               </div>
               <div className="inputForm">
                 <img src={pass} alt="pass" className="email" />
-                <input type="password" placeholder="password" className="name" ref={password}/>
+                <input type={showPassword?"text":"password"} placeholder="password" className="name" ref={password}/><img src={eye} alt="pass" className='showPasswordIcon' onClick={changeShowState}/>
               </div>
-
               <div className='inputForm'>
-                  <input type="checkbox" className = "checkbox" onClick={changeKeepLogged}></input> Keep Login
-                </div>
+                <input type="checkbox" className = "checkbox pointer" onClick={changeKeepLogged} id="keeplogged"></input> <label for="keeplogged" className='pointer'>Keep Login</label>
+              </div>
 
               <div className="login-button">
                 <button className="submitButton" onClick={onSubmitButton}>Login</button>

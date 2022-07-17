@@ -74,7 +74,6 @@ function Landing(){
 
     const generateTopProducts = () =>{
         if(topProducts){
-            console.log(topProducts)
             return topProducts.map((topProduct,index)=>{
                 return <li className="adminLandingContentLabel">
                     {topProduct.product_name}
