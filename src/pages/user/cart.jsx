@@ -26,14 +26,14 @@ function Cart() {
     const [cartItems, setCartItems] = useState([])
     const [total, setTotal] = useState(0);
 
-    useEffect(() => {
+    const loadCart = () => {
         axios.get(`${API_URL}/cart/${user_id}`)
             .then((response) => {
                 setCartItems(response.data)
                 let totalTemp = 0
                 for (let i = 0; i < response.data.length; i++) {
                     const item = response.data[i];
-                    totalTemp += item.price
+                    totalTemp += item.price * item.volume
                 }
                 setTotal(totalTemp)
             })
@@ -41,6 +41,10 @@ function Cart() {
                 console.log(error)
                 showToast('error', 'Gagal mendapatkan barang dalam keranjang')
             })
+    }
+
+    useEffect(() => {
+        loadCart()
     }, [])
 
     const onDeleteClick = (product_id) => {
@@ -52,21 +56,7 @@ function Cart() {
                 showToast('error', 'Gagal menghapus barang dari keranjang')
                 console.log(error)
             })
-
-        axios.get(`${API_URL}/cart/${user_id}`)
-            .then((response) => {
-                setCartItems(response.data)
-                let totalTemp = 0
-                for (let i = 0; i < response.data.length; i++) {
-                    const item = response.data[i];
-                    totalTemp += item.price
-                }
-                setTotal(totalTemp)
-            })
-            .catch((error) => {
-                console.log(error)
-                showToast('error', 'Gagal mendapatkan barang dalam keranjang')
-            })
+            loadCart()
     }
 
     const showCartItems = () => {
@@ -81,6 +71,7 @@ function Cart() {
                     name={item.name}
                     abbreviation={item.abbreviation}
                     onDeleteClick={() => onDeleteClick(item.product_id)}
+                    loadCart={loadCart}
                 />
             )
         })

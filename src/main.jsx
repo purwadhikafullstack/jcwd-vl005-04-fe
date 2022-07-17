@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import Axios from "axios"
 import Landing from './pages/landing'
@@ -48,20 +48,16 @@ function App() {
   const user = useSelector((state) => state)
 
   useEffect(() => {
-    socket.on("hello", (arg) => {
-      console.log(arg);
-    })
-  }, [])
-
-  useEffect(() => {
     const admintoken = localStorage.getItem('admintoken')
     if (admintoken) {
       Axios.get(API_URL + `/admin/${admintoken}`)
         .then((respond) => {
+          if(respond.data=="")localStorage.removeItem('admintoken')
           dispatch({ type: 'ADMIN_LOGIN', payload: respond.data })
         })
         .catch((error) => {
           console.log(error.response.data)
+          Navigate('/admin')
         })
     }
   }, [])
@@ -81,6 +77,9 @@ function App() {
     <div>
       {/* <AdminNavigation/> */}
       <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/invoice/:no' element={<Invoice/>} />
+
         {/* admin */}
         <Route exact path="/admin" element={<PrivateRouteAdmin />}>
           <Route path='/admin/home' element={<Landing />} />
@@ -103,9 +102,7 @@ function App() {
         
         {/* user */}
         <Route exact path="/" element={<PrivateRoute />}>
-          <Route path='/invoice/:no' element={<Invoice/>} />
           <Route path='/cart' element={<Cart />} />
-          <Route path='/' element={<Home />} />
           <Route path='/checkout' element={<Checkout />} />
           <Route path='/pending-payment' element={<PendingPayment />} />
           <Route path='/upload-payment' element={<UploadPayment />} />

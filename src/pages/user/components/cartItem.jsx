@@ -6,7 +6,7 @@ import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import dummy_img from "../../../../src/images/whitebackground.png"
 import { getUserInfo } from "../../../utils"
 
-function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClick, isCheckout }) {
+function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClick, isCheckout, loadCart }) {
     const user_id = getUserInfo().id
     const API_URL = process.env.REACT_APP_API_URL
     
@@ -30,6 +30,8 @@ function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClic
             .catch((error) => {
                 console.log(error)
             })
+            
+            loadCart()
     }
 
     const onPlusClick = () => {

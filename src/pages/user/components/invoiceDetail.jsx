@@ -15,13 +15,10 @@ function InvoiceDetail(data){
                 Rp. {details[index].price_per_unit}
             </td>
             <td>
-                {details[index].volume} bottle
+                {details[index].volume} {details[index].unit_name}
             </td>
             <td>
-                {details[index].total_quantity} {details[index].unit_name}
-            </td>
-            <td>
-                Rp. {details[index].price}
+                Rp. {details[index].price_per_unit * details[index].volume}
             </td>
         </tr>
     )

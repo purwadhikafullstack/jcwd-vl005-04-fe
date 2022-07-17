@@ -74,7 +74,8 @@ function AdminViewUser(){
                                 <h1 className='header'>
                                     Users
                                 </h1>
-                                
+                                <div className="dataController">
+                                </div>
                                 <table className='transactionTable'>
                                     <thead>
                                         <tr className="adminRow">

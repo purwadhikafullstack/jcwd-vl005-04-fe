@@ -63,7 +63,7 @@ function Checkout() {
             <Header />
             <div className="small-box">
                 <Form.Group className="mb-3">
-                    <Form.Label>Bukti Pembayaran</Form.Label>
+                    <Form.Label>Payment Proof</Form.Label>
                     <Form.Control
                         type="file"
                         placeholder="Bukti Pembayaran"

@@ -1,0 +1,57 @@
+.adminLandingContainer{
+    width: 100%;
+    height:92.5vh;
+    background:url(../../images/whitebackground.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.adminLandingContent{
+    width: 90%;
+    height:90%;
+    display: flex;
+    flex-direction: column;
+    padding:10px;
+}
+.adminLandingGroup{
+    width: 100%;
+    height:300px;
+    display: flex;
+    margin:10px;
+}
+.adminLandingGroupDouble{
+    width: 100%;
+    height:600px;
+    display: flex;
+    margin:10px;
+}
+.adminLandingContentHalf{
+    width: 50%;
+    height: 100%;
+    padding:20px;
+    padding-left:40px;
+    padding-right:40px;
+    margin:10px;
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 2px 2px 4px 2px gray;
+}
+.adminLandingContentFull{
+    width: 100%;
+    height: 100%;
+    padding:40px;
+    margin:10px;
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 2px 2px 4px 2px gray;
+}
+.adminLandingContentHeader{
+    font-size: 40px;
+}
+.adminLandingContentText{
+    font-size: 24px;
+}
+.adminFullFlex{
+    width: 100%;
+    height:80%;
+    display: flex;
+}

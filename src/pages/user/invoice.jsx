@@ -20,8 +20,16 @@ function Invoice(){
     const [transactionDetails, setTransactionDetails] = useState();
     const [orderBy, setOrderBy] = useState();
     const [transactionStatus, setTransactionStatus] = useState();
+    const [username, setUsername] = useState();
 
+    useEffect(()=>{
+        if(transactionDetails){
+            setUsername(transactionDetails[0].username)
+        }
+    },[transactionDetails])
     
+    console.log(transaction)
+
     useEffect(()=>{
         Axios.get(API_URL + `/transaction/invoice/${id}`)
         .then((respond)=>{
@@ -57,110 +65,50 @@ function Invoice(){
 
     return (
         <div>
-            {user.role=="admin"?
-                <div>
-                    <div className="" style={{ width: "15%" }}>
-                        <SidebarMain />
-                    </div>
-                    <div style={{ width: "85%", marginLeft:"15%"}}>
-                        <Header />
-                            <div className="invoiceForm">
-                                <div className="invoiceContainer">
-                                    <div className="invoiceHeader">
-                                        <p className="invoiceHeaderLogo">PHARMACY</p>
-                                        <p className="invoiceLabel">Invoice Number : {invNumber}</p>
-                                        <p className="invoiceLabel">Transaction Status : {transactionStatus}</p>
-                                        <p className="invoiceLabel">Order By : {orderBy}</p>
-
-                                    </div>
-                                    <div className="invoiceContent">
-                                        <table className="invoiceTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        No.
-                                                    </th>
-                                                    <th>
-                                                        Product Name
-                                                    </th>
-                                                    <th>
-                                                        Price per Unit
-                                                    </th>
-                                                    <th>
-                                                        Quantity
-                                                    </th>
-                                                    <th>
-                                                        Volume per unit
-                                                    </th>
-                                                    <th>
-                                                        Total Price
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                    {generateTransactionDetails()}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div className="invoiceFooter">
-                                        <div className="invoiceLabel">
-                                            Grand Total : Rp. {payment}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div>
+                <div className="invoiceForm">
+                    <div className="invoiceContainer">
+                        <div className="invoiceHeader">
+                            <p className="invoiceHeaderLogo">PHARMACY</p>
+                            <p className="invoiceLabel">Invoice Number : {invNumber}</p>
+                            <p className="invoiceLabel">Transaction Status : {transactionStatus}</p>
+                            <p className="invoiceLabel">Order By : {username?username:orderBy}</p>
                         </div>
-                    </div>
-                :
-                <div>
-                    <Header />
-                    <div className="invoiceForm">
-                        <div className="invoiceContainer">
-                            <div className="invoiceHeader">
-                                <p className="invoiceHeaderLogo">PHARMACY</p>
-                                <p className="invoiceLabel">Invoice Number : {invNumber}</p>
-                                <p className="invoiceLabel">Order By : {orderBy}</p>
-
-                            </div>
-                            <div className="invoiceContent">
-                                <table className="invoiceTable">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                No.
-                                            </th>
-                                            <th>
-                                                Product Name
-                                            </th>
-                                            <th>
-                                                Price per Unit
-                                            </th>
-                                            <th>
-                                                Quantity
-                                            </th>
-                                            <th>
-                                                Volume per unit
-                                            </th>
-                                            <th>
-                                                Total Price
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                            {generateTransactionDetails()}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div className="invoiceFooter">
-                                <div className="invoiceLabel">
-                                    Grand Total : Rp. {payment}
-                                </div>
-                            </div>
+                        <div className="invoiceContent">
+                        <table className="invoiceTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        No.
+                                    </th>
+                                    <th>
+                                        Product Name
+                                    </th>
+                                    <th>
+                                        Price per Unit
+                                    </th>
+                                    <th>
+                                        Volume
+                                    </th>
+                                    <th>
+                                        Total Price
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                        {generateTransactionDetails()}
+                            </tbody>
+                        </table>
+                        </div>
+                    <div className="invoiceFooter">
+                        <div className="invoiceLabel">
+                                Grand Total : Rp. {payment}
                         </div>
                     </div>
                 </div>
-            }
+            </div>
         </div>
+    </div>
     )
 }
 export default Invoice;

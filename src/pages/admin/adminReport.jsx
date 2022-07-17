@@ -5,11 +5,13 @@ import { useDispatch } from "react-redux";
 import "../../css/admin/adminMain.css";
 import UserData from "./components/userData";
 import { useState } from "react";
-import { Box, Grid, GridItem, Heading, Stack, Text } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Heading, Stack, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
 import formatThousands from "format-thousands";
 import moment from "moment";
 import axios from "../../lib/axios";
 import SidebarMain from "../product/components/sidebar/sidebarMain";
+import { openInNewTab } from "../../utils";
+import { Button } from "react-bootstrap";
 
 function AdminReport() {
   const global = useSelector((state) => state);
@@ -18,8 +20,10 @@ function AdminReport() {
 
   const [date, setDate] = useState(moment());
   const [profit, setProfit] = useState(0);
+  const [gross, setGross] = useState(0);
   const [numOfSales, setNumOfSales] = useState(0);
   const [topProducts, setTopProducts] = useState([]);
+  const [trnList, setTrnList] = useState([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,8 +51,10 @@ function AdminReport() {
         console.log("res.data");
         console.log(res.data);
         setProfit(res.data.profit);
+        setGross(res.data.gross);
         setNumOfSales(res.data.total_transactions);
         setTopProducts(res.data.top_products);
+        setTrnList(res.data.transaction_list)
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -112,6 +118,7 @@ function AdminReport() {
         <Stack spacing={8} direction="row">
           {/* <Stats title={"Omset"} value={formatThousands(100000, ".")} /> */}
           <Stats title={"Profit"} value={formatThousands(profit, ".")} />
+          <Stats title={"Gross"} value={formatThousands(gross, ".")} />
           <Stats
             title={"Number of Sales"}
             value={formatThousands(numOfSales, ".")}
@@ -136,6 +143,44 @@ function AdminReport() {
             value={topProducts.length === 0 ? "-" : undefined}
           />
         </Stack>
+        <br />
+        {trnList && trnList.length > 0 && <div>
+          <TableContainer overflowX={"scroll"}>
+            <Table variant='striped' scroll>
+              <Thead>
+                <Tr>
+                  <Th style={{minWidth: "180px"}} className="text-center">Transaction Time</Th>
+                  <Th style={{minWidth: "170px"}} className="text-center">Invoice Number</Th>
+                  <Th style={{minWidth: "160px"}} className="text-center">Total Payment</Th>
+                  <Th style={{minWidth: "180px"}} className="text-center">Name</Th>
+                  <Th style={{minWidth: "130px"}} className="text-center">Quantity</Th>
+                  <Th style={{minWidth: "150px"}} className="text-center">Price</Th>
+                  <Th style={{minWidth: "150px"}} className="text-center">Price Capital</Th>
+                  <Th style={{minWidth: "150px"}} className="text-center">Profit</Th>
+                  <Th style={{minWidth: "150px"}} className="text-center">Payment Proof Path</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {trnList.map((el) => {
+                  return <Tr>
+                    <Td className="text-center">{moment(el.created_at).format("DD-MM-YYYY")}</Td>
+                    <Td className="text-center">{el.inv_number}</Td>
+                    <Td className="text-center">{formatThousands(el.total_payment, ".")}</Td>
+                    <Td className="text-center">{el.name}</Td>
+                    <Td className="text-center">{formatThousands(el.volume, ".")}</Td>
+                    <Td className="text-center">{formatThousands(el.price, ".")}</Td>
+                    <Td className="text-center">{formatThousands(el.price_capital, ".")}</Td>
+                    <Td className="text-center">{formatThousands(el.profit, ".")}</Td>
+                    <Td className="text-center"><Button onClick={openInNewTab(el.payment_proof_path)}>Link</Button></Td>
+                  </Tr>
+                })}
+              </Tbody>
+              <Tfoot>
+              </Tfoot>
+            </Table>
+          </TableContainer>
+        </div>}
+
       </div>
     </div>
   );

@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { faUser, faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDispatch } from "react-redux";
+import Header from "../user/components/header";
 
 function Login() {
   let navigate = useNavigate();
@@ -13,6 +15,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [keepLogin, setKeepLogin] = useState(false);
   const [passwordShow, setPasswordShow] = useState(false);
+  const dispatch = useDispatch();
 
   const login = async (e) => {
     e.preventDefault();
@@ -47,7 +50,7 @@ function Login() {
                 password: password,
               })
               .then((res) => {
-                Swal.fire("success").then(() => {});
+                Swal.fire("success").then(() => { });
               })
               .catch((error) => {
                 Swal.fire({
@@ -66,6 +69,7 @@ function Login() {
     }
     if (response && response.data) {
       if (response.data.status === "ok") {
+        dispatch({ type: "ADMIN_LOGOUT" })
         localStorage.setItem("access_token", response.data.data.access_token);
         navigate("/");
       } else {
@@ -78,67 +82,70 @@ function Login() {
   };
 
   return (
-    <div className="small-box">
-      <div className="login__image--wrapper">
-        <FontAwesomeIcon icon={faUser} />
-      </div>
-      <div className="text-center"></div>
-      <div className="login-form-wrapper">
-        <h2 className="text-center mb-3">Login Page</h2>
-        <hr className="mb-4" />
-        <Form className="mb-3" onSubmit={login}>
-          <Form.Group className="mb-3">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="email"
-              onChange={(e) => {
-                setUsernameOrEmail(e.target.value);
-              }}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Password</Form.Label>
-            <InputGroup className="mb-3">
+    <>
+      <Header isAuth={true} />
+      <div className="small-box">
+        <div className="login__image--wrapper">
+          <FontAwesomeIcon icon={faUser} />
+        </div>
+        <div className="text-center"></div>
+        <div className="login-form-wrapper">
+          <h2 className="text-center mb-3">Login Page</h2>
+          <hr className="mb-4" />
+          <Form className="mb-3" onSubmit={login}>
+            <Form.Group className="mb-3">
+              <Form.Label>Username or Email</Form.Label>
               <Form.Control
-                type={passwordShow ? "text" : "password"}
-                placeholder="password"
+                type="text"
+                placeholder="username or email"
                 onChange={(e) => {
-                  setPassword(e.target.value);
+                  setUsernameOrEmail(e.target.value);
                 }}
               />
-              <InputGroup.Text className="p-0">
-                <Button
-                  onClick={() => {
-                    setPasswordShow(!passwordShow);
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Password</Form.Label>
+              <InputGroup className="mb-3">
+                <Form.Control
+                  type={passwordShow ? "text" : "password"}
+                  placeholder="password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
                   }}
-                  variant="light"
-                >
-                  <FontAwesomeIcon icon={passwordShow ? faEyeSlash : faEye} />
-                </Button>
-              </InputGroup.Text>
-            </InputGroup>
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Check
-              type="checkbox"
-              label="Remember me"
-              onChange={(e) => {
-                setKeepLogin(e.target.checked);
-              }}
-            />
-          </Form.Group>
-          <Button className="w-100" variant="primary" type="submit">
-            Login
-          </Button>
-        </Form>
+                />
+                <InputGroup.Text className="p-0">
+                  <Button
+                    onClick={() => {
+                      setPasswordShow(!passwordShow);
+                    }}
+                    variant="light"
+                  >
+                    <FontAwesomeIcon icon={passwordShow ? faEyeSlash : faEye} />
+                  </Button>
+                </InputGroup.Text>
+              </InputGroup>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Check
+                type="checkbox"
+                label="Remember me"
+                onChange={(e) => {
+                  setKeepLogin(e.target.checked);
+                }}
+              />
+            </Form.Group>
+            <Button className="w-100" variant="primary" type="submit">
+              Login
+            </Button>
+          </Form>
 
-        <p className="text-center">
-          <Link className="link-anton" to="/forgot-password">Forgot Password</Link> Or{" "}
-          <Link className="link-anton" to="/register">Sign Up</Link>
-        </p>
+          <p className="text-center">
+            <Link className="link-anton" to="/forgot-password">Forgot Password</Link> Or{" "}
+            <Link className="link-anton" to="/register">Sign Up</Link>
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

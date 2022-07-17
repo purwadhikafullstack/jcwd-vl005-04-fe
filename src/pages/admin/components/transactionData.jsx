@@ -98,7 +98,7 @@ function TransactionData(data){
             <td>{transaction.inv_number}</td>
             <td>{transaction.status}</td>
             <td>{time}</td>
-            <td><img src={transaction.payment_proof_path} alt="No Image"></img></td>
+            <td className="tableDataCenter"><img src={transaction.payment_proof_path} alt="No Image" className="transactionImage"></img></td>
             <td>Rp. {transaction.total_payment}</td>
             <td>{transaction.address_id}</td>
             <td>

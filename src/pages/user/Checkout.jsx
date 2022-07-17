@@ -78,7 +78,7 @@ function Checkout() {
                     let totalTemp = 0
                     for (let i = 0; i < response.data.length; i++) {
                         const item = response.data[i];
-                        totalTemp += item.price
+                        totalTemp += item.price*item.volume
                     }
                     setTotal(totalTemp)
                 })
@@ -144,7 +144,7 @@ function Checkout() {
                 setPostalCode("")
             })
             .catch((error) => {
-                showToast('error', 'Gagal tambah alamat')
+                showToast('error', 'Failed to add new address')
                 console.log(error)
             })
 
@@ -165,7 +165,7 @@ function Checkout() {
         if (selectedShipping === null) {
             return AlertError("Invalid shipping");
         }
-
+        console.log(total)
         const data = {
             user_id: getUserInfo().id,
             products: cartItems,
@@ -210,7 +210,7 @@ function Checkout() {
                 <ModalOverlay />
                 <ModalContent>
                     <Form onSubmit={handleSubmitAddress} className="mb-3">
-                        <ModalHeader>Tambah Alamat Baru</ModalHeader>
+                        <ModalHeader>Add New Address</ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>
                             <hr className="mb-4" />
@@ -298,16 +298,16 @@ function Checkout() {
                     <strong><h4>Total: {formatThousands(total, ".")}</h4></strong>
                 </div>
                 <Form.Group className="mb-3">
-                    <Form.Label>Alamat</Form.Label>
+                    <Form.Label>Address</Form.Label>
                     <Form.Select className="mb-3" onChange={(e) => { setSelectedAddress(e.target.value) }}>
                         {addresses.map((el, index) => {
                             return <option key={index} value={el.id}>{`${el.address}, ${el.sub_district}, ${el.district}, ${el.city} ${el.postal_code}`}</option>
                         })}
                     </Form.Select>
-                    <Button variant="secondary" onClick={onOpen}>Input alamat baru</Button>
+                    <Button variant="secondary" onClick={onOpen}>Add New Address</Button>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Kurir</Form.Label>
+                    <Form.Label>Courier</Form.Label>
                     <Form.Select onChange={(e) => { setSelectedShipping(e.target.value) }}>
                         {shipperData.map((el, index) => {
                             return <option key={index} value={el.id}>{el.name} - Rp{formatThousands(el.price, ".")}</option>

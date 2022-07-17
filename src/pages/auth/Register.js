@@ -9,6 +9,7 @@ import freeEmailDomains from "free-email-domains";
 import emailvalidator from "email-validator";
 import passwordValidator from "password-validator";
 import { AlertError } from "../../utils";
+import Header from "../user/components/header";
 
 const Register = () => {
   let navigate = useNavigate();
@@ -96,103 +97,106 @@ const Register = () => {
   };
 
   return (
-    <div className="small-box">
-      <Form onSubmit={handleSubmit} className="mb-3">
-        <h2 className="text-center mb-3">Register</h2>
-        <hr className="mb-4" />
-        <Form.Group className="mb-3">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
-            type={"text"}
-            placeholder={"Username"}
-            label={"Username"}
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type={"email"}
-            placeholder={"Email"}
-            label={"Email"}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Birthday</Form.Label>
-          <Form.Control
-            type={"date"}
-            placeholder={"Birthday"}
-            label={"Birthday"}
-            onChange={(e) => {
-              setBirthday(e.target.value);
-            }}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Password</Form.Label>
-          <InputGroup className="mb-3">
+    <>
+      <Header isAuth={true} />
+      <div className="small-box">
+        <Form onSubmit={handleSubmit} className="mb-3">
+          <h2 className="text-center mb-3">Register</h2>
+          <hr className="mb-4" />
+          <Form.Group className="mb-3">
+            <Form.Label>Username</Form.Label>
             <Form.Control
-              type={passwordShow ? "text" : "password"}
-              placeholder={"Password"}
-              label={"Password"}
+              type={"text"}
+              placeholder={"Username"}
+              label={"Username"}
               onChange={(e) => {
-                setPassword(e.target.value);
+                setUsername(e.target.value);
               }}
             />
-            <InputGroup.Text className="p-0">
-              <Button
-                variant="light"
-                onClick={() => {
-                  setPasswordShow(!passwordShow);
-                }}
-              >
-                <FontAwesomeIcon icon={passwordShow ? faEyeSlash : faEye} />
-              </Button>
-            </InputGroup.Text>
-          </InputGroup>
-        </Form.Group>
-
-        <Form.Group>
-          <Form.Label>Password</Form.Label>
-          <InputGroup className="mb-3">
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Email</Form.Label>
             <Form.Control
-              type={passwordConfirmShow ? "text" : "password"}
-              placeholder={"Confirm Password"}
-              label={"Confirm Password"}
+              type={"email"}
+              placeholder={"Email"}
+              label={"Email"}
               onChange={(e) => {
-                setPasswordConfirm(e.target.value);
+                setEmail(e.target.value);
               }}
             />
-            <InputGroup.Text className="p-0">
-              <Button
-                variant="light"
-                onClick={() => {
-                  setPasswordConfirmShow(!passwordConfirmShow);
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Birthday</Form.Label>
+            <Form.Control
+              type={"date"}
+              placeholder={"Birthday"}
+              label={"Birthday"}
+              onChange={(e) => {
+                setBirthday(e.target.value);
+              }}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
+            <InputGroup className="mb-3">
+              <Form.Control
+                type={passwordShow ? "text" : "password"}
+                placeholder={"Password"}
+                label={"Password"}
+                onChange={(e) => {
+                  setPassword(e.target.value);
                 }}
-              >
-                <FontAwesomeIcon
-                  icon={passwordConfirmShow ? faEyeSlash : faEye}
-                />
-              </Button>
-            </InputGroup.Text>
-          </InputGroup>
-        </Form.Group>
+              />
+              <InputGroup.Text className="p-0">
+                <Button
+                  variant="light"
+                  onClick={() => {
+                    setPasswordShow(!passwordShow);
+                  }}
+                >
+                  <FontAwesomeIcon icon={passwordShow ? faEyeSlash : faEye} />
+                </Button>
+              </InputGroup.Text>
+            </InputGroup>
+          </Form.Group>
 
-        <Button className="w-100" variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
+          <Form.Group>
+            <Form.Label>Password</Form.Label>
+            <InputGroup className="mb-3">
+              <Form.Control
+                type={passwordConfirmShow ? "text" : "password"}
+                placeholder={"Confirm Password"}
+                label={"Confirm Password"}
+                onChange={(e) => {
+                  setPasswordConfirm(e.target.value);
+                }}
+              />
+              <InputGroup.Text className="p-0">
+                <Button
+                  variant="light"
+                  onClick={() => {
+                    setPasswordConfirmShow(!passwordConfirmShow);
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={passwordConfirmShow ? faEyeSlash : faEye}
+                  />
+                </Button>
+              </InputGroup.Text>
+            </InputGroup>
+          </Form.Group>
 
-      <p className="text-center">
-        <Link className="link-anton" to="/forgot-password">Forgot Password</Link> Or{" "}
-        <Link className="link-anton" to="/login">Login</Link>
-      </p>
-    </div>
+          <Button className="w-100" variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+
+        <p className="text-center">
+          <Link className="link-anton" to="/forgot-password">Forgot Password</Link> Or{" "}
+          <Link className="link-anton" to="/login">Login</Link>
+        </p>
+      </div>
+    </>
   );
 };
 
