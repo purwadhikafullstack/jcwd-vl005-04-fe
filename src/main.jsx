@@ -90,9 +90,9 @@ function App() {
           <Route path='/admin/forget-password' element={<AdminForgetPassword/>} />
           <Route path='/admin/reset-password/:id' element={<AdminResetPassword />} />
           <Route path="/admin/report" element={<AdminReport />} />
-        </Route>
           <Route path='/admin/products' element={<ProductHome />} />
           <Route path='/admin/products/category-list' element={<ProductHome />} />
+        </Route>
 
         <Route exact path="/admin" element={<AuthRouteAdmin />}>
           <Route path='/admin' element={<AdminLogin />} />
