@@ -1,9 +1,9 @@
 import React from "react"
-import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
+
+import { Box, Flex } from "@chakra-ui/react"
 
 import SidebarMain from "./components/sidebar/sidebarMain"
 import MainContent from "./mainContent"
-import Header from "./components/header/header"
 import CategoryList from "./categoryList"
 
 function ProductHome () {
@@ -23,20 +23,15 @@ function ProductHome () {
     }
 
     return (
-        <div className="w-100">
-            <div className="d-flex" style={{ height: "100vh" }}>
-                <div className="" style={{ width: "15%" }}>
-                    <SidebarMain />
-                </div>
-                <div style={{ width: "85%" }}>
-                    <Header />
-                    <div className="p-4">
-                        { showPage() }
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Flex>
+            <Box w='15%'>
+                <SidebarMain />
+            </Box>
+            <Box w='85%' p={4}>
+                { showPage() }
+            </Box>
+        </Flex>
     )
 }
 
-export default ProductHome;
+export default ProductHome

@@ -1,12 +1,9 @@
-import React, { useState, useEffect }  from "react"
+import React, { useState, useEffect, useRef }  from "react"
 import axios from "axios"
 
-import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
-
+import { Box, Button, Select, Table, TableContainer, Tbody, Th, Thead, Tr, useToast } from "@chakra-ui/react"
 import ProductItems from "./components/sub-view/productItems"
-import { useToast } from "@chakra-ui/react"
 import ProductCreate from "./productCreate"
-import { useRef } from "react"
 
 function MainContent () {
     const API_URL = process.env.REACT_APP_API_URL
@@ -16,6 +13,8 @@ function MainContent () {
     const [ productUnits, setProductUnits ] = useState([])
     const [ productTypes, setProductTypes ] = useState([])
     const [ productCategories, setProductCategories ] = useState([])
+
+    const [ newProductOpen, setNewProductOpen ] = useState('none')
 
     // New Product
     const newName = useRef('')
@@ -27,6 +26,7 @@ function MainContent () {
     const [ newTotalQty, setNewTotalQty ] = useState('0')
     const [ newPrice, setNewPrice ] = useState('0')
     const [ btnDisabled, setBtnDisabled ] = useState(true)
+    const [ newImg, setNewImg ] = useState(null)
 
     useEffect(() => {
         axios.get(API_URL + '/products')
@@ -82,7 +82,7 @@ function MainContent () {
     }
 
     const onAddProductClick = () => {
-        document.getElementById('add_product').classList.replace('d-none', 'd-flex')
+        setNewProductOpen('block')
 
         axios.get(`${API_URL}/products/types`)
             .then((response) => {
@@ -110,6 +110,10 @@ function MainContent () {
                 showToast('error', 'Failed to fetch product category data')
                 console.log(error)
             })
+    }
+
+    const onAddProductCancelClick = () => {
+        setNewProductOpen('none')
     }
 
     const onNameChange = () => {
@@ -141,6 +145,11 @@ function MainContent () {
         setBtnDisabled(event === '' || event === '0' || newType.current.value === '' || newUnit.current.value === '' || newName.current.value === '')
     }
 
+    const onImgChange = (event) => {
+        console.log(event.target.files[0])
+        setNewImg(event.target.files[0])
+    }
+
     const onSubmitProductClick = () => {
         const data = {
             name: newName.current.value,
@@ -150,27 +159,46 @@ function MainContent () {
             total_quantity: newTotalQty,
             price_per_unit: newPrice,
             product_unit_id: newUnit.current.value,
-            product_category_id: newCategory.current.value
+            product_category_id: newCategory.current.value,
+            img: newImg
         }
 
-        axios.post(`${API_URL}/products/create`, data)
+        const formData = new FormData();
+        formData.append('file', newImg)
+        // formData.append('data', data)
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+
+        axios.post(`${API_URL}/products/create`, formData, config)
             .then((response) => {
-                axios.get(API_URL + '/products')
-                .then((get_response) => {
-                    showToast('success', 'Successfully inserting product')
-                    console.log(get_response)
-                    setProducts(get_response.data)
-                    resetNewProductField()
-                    checkRequiredFields()
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+                showToast('success', 'Berhasil upload')
             })
             .catch((error) => {
-                showToast('error', 'Failed inserting product')
+                showToast('error', 'Gagal upload')
                 console.log(error)
             })
+        // axios.post(`${API_URL}/products/create`, uploadData)
+        //     .then((response) => {
+        //         axios.get(API_URL + '/products')
+        //         .then((get_response) => {
+        //             showToast('success', 'Successfully inserting product')
+        //             console.log(get_response)
+        //             setProducts(get_response.data)
+        //             resetNewProductField()
+        //             checkRequiredFields()
+        //         })
+        //         .catch((error) => {
+        //             console.log(error)
+        //         })
+        //     })
+        //     .catch((error) => {
+        //         showToast('error', 'Failed inserting product')
+        //         console.log(error)
+        //     })
     }
 
     const resetNewProductField = () => {
@@ -207,56 +235,56 @@ function MainContent () {
 
     return (
         <div name="product-pages">
-            <div name="filter" className="mb-4 w-25 shadow">
-                <select className="form-select" onChange={applyFilter}>
-                    <option value="?_sort=id&_order=ASC">LATEST</option>
-                    <option value="?_sort=price_per_unit&_order=ASC">LOWEST TO HIGHEST PRICE</option>
-                    <option value="?_sort=price_per_unit&_order=DESC">HIGHEST TO LOWEST PRICE</option>
-                </select>
-            </div>
-            <div className="table-responsive rounded shadow mb-4">
-                <table className="table">
-                    <thead>
-                        <tr className="text-center table-dark">
-                            <th>#</th>
-                            <th>Nama Produk</th>
-                            <th>Stok Botol</th>
-                            <th>Total Stok</th>
-                            <th>Harga Eceran</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <Select mb={4} w='25%' boxShadow='md' onChange={ applyFilter }>
+                <option value="?_sort=id&_order=ASC">LATEST</option>
+                <option value="?_sort=price_per_unit&_order=ASC">LOWEST TO HIGHEST PRICE</option>
+                <option value="?_sort=price_per_unit&_order=DESC">HIGHEST TO LOWEST PRICE</option>
+            </Select>
+            <TableContainer backgroundColor='gray.50' borderRadius='10' boxShadow='md'>
+                <Table variant='simple'>
+                    <Thead backgroundColor='blue.100'>
+                        <Tr>
+                            <Th>#</Th>
+                            <Th>Nama Produk</Th>
+                            <Th>Stok Botol</Th>
+                            <Th>Total Stok</Th>
+                            <Th>Harga Eceran</Th>
+                            <Th></Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody backgroundColor='white'>
                         { generateProductRows() }
-                    </tbody>
-                </table>
-            </div>
-            <button className="btn btn-sm btn-primary mb-4 fw-bold w-auto" onClick={onAddProductClick}>
+                    </Tbody>
+                </Table>
+            </TableContainer>
+            
+            <Button colorScheme='blue' mt={4} size='sm' onClick={ onAddProductClick }>
                 Tambah Produk
-            </button>
-            <div id="add_product" className="d-none justify-content-center w-100">
-                <div className="w-50 rounded shadow p-4">
-                    <ProductCreate 
-                        key={'product_create'} 
-                        types={productTypes}
-                        units={productUnits}
-                        categories={productCategories}
-                        refName={newName}
-                        refType={newType}
-                        refUnit={newUnit}
-                        refCategory={newCategory}
-                        nameChange={onNameChange}
-                        typeChange={onTypeChange}
-                        unitChange={onUnitChange}
-                        priceChange={onPriceChange}
-                        bottleStockChange={onBottleStockChange}
-                        capacityChange={onCapacityChange}
-                        totalQtyChange={onTotalQtyChange}
-                        btnDisabled={btnDisabled}
-                        submit={onSubmitProductClick}
-                    />
-                </div>
-            </div>
+            </Button>
+
+            <Box w='50%' mt={4} mx='auto' p={4} boxShadow='md' display={newProductOpen}>
+                <ProductCreate 
+                    key={'product_create'} 
+                    types={productTypes}
+                    units={productUnits}
+                    categories={productCategories}
+                    refName={newName}
+                    refType={newType}
+                    refUnit={newUnit}
+                    refCategory={newCategory}
+                    nameChange={onNameChange}
+                    typeChange={onTypeChange}
+                    unitChange={onUnitChange}
+                    priceChange={onPriceChange}
+                    bottleStockChange={onBottleStockChange}
+                    capacityChange={onCapacityChange}
+                    totalQtyChange={onTotalQtyChange}
+                    btnDisabled={btnDisabled}
+                    submit={onSubmitProductClick}
+                    cancel={onAddProductCancelClick}
+                    imgChange={onImgChange}
+                />
+            </Box>
         </div>
     )
 }
