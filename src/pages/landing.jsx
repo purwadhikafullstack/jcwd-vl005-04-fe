@@ -8,22 +8,25 @@ import SidebarMain from "./product/components/sidebar/sidebarMain";
 import Header from "./user/components/header";
 import "../css/admin/adminLanding.css"
 import { useEffect, useState } from "react";
+import moment from "moment";
 import SimpleTransactionTable from "./admin/components/simpleTransactionTable";
 
 const socket = io('http://localhost:5001');
 const API_URL = process.env.REACT_APP_API_URL
 function Landing(){
+    const [date, setDate] = useState(moment());
+    const [report, setReport] = useState("");
+    const [topProducts, setTopProducts] = useState("");
     const global = useSelector((state)=>state)
     const [transactions, setTransactions] = useState(); 
-    console.log(transactions)
     const user = global.user
     const toast = useToast();
     let randomMessage = "Test";
     const dispatch = useDispatch()
     const navigate = useNavigate()
     
-    const date = new Date().toString();
-    const rngdate = date.substring(23,24)
+    const currdate = new Date().toString();
+    const rngdate = currdate.substring(23,24)
 
     if(rngdate%2==0){
         randomMessage = "Honesty is da best policey"
@@ -44,6 +47,17 @@ function Landing(){
         .catch((error)=>{
             console.log(error.response.data)
         })
+        Axios.post(API_URL + "/admin/report", {
+            date: date.format("YYYY-MM-DD"),
+            // date: "2022-07-01",
+          })
+            .then((res) => {
+              setReport(res.data)
+              setTopProducts(res.data.top_products)
+            })
+            .catch((error) => {
+              console.log(error.response.data);
+            });
     },[])
     
     const generateTransactionTable = () =>{
@@ -54,6 +68,16 @@ function Landing(){
                     transaction = {transaction}
                     index = {index}
                 />
+            })
+        }
+    }
+
+    const generateTopProducts = () =>{
+        if(topProducts){
+            return topProducts.map((topProduct,index)=>{
+                return <li className="adminLandingContentLabel">
+                    {topProduct.product_name}
+                </li>
             })
         }
     }
@@ -71,11 +95,16 @@ function Landing(){
                             <div className="adminLandingContentFull">
                                 <p className="adminLandingContentHeader">Welcome, {user.username}!</p>
                                 <p className="adminLandingContentText">"{randomMessage}" -Wise People</p>
+                                
                             </div>
                         </div>
                         <div className="adminLandingGroupDouble">
                             <div className="adminLandingContentHalf">
-                                <p className="adminLandingContentHeader">Top Products</p>
+                                <p className="adminLandingContentHeader">Today's Report</p>
+                                <p className="adminLandingContentText">Gross : {report.gross}</p>
+                                <p className="adminLandingContentText">Profit : {report.profit}</p>
+                                <p className="adminLandingContentText">Top Products : </p>
+                                {generateTopProducts()}
                             </div>
                             <div className="adminLandingContentHalf">
                             <p className="adminLandingContentHeader">Recent Transactions</p>
