@@ -126,7 +126,7 @@ function AdminLogin () {
                 <input type={showPassword?"text":"password"} placeholder="password" className="name" ref={password}/><img src={eye} alt="pass" className='showPasswordIcon' onClick={changeShowState}/>
               </div>
               <div className='inputForm'>
-                <input type="checkbox" className = "checkbox pointer" onClick={changeKeepLogged} id="keeplogged"></input> <label for="keeplogged" className='pointer'>Keep Login</label>
+                <input type="checkbox" className = "checkbox pointer" onClick={changeKeepLogged} id="keeplogged"></input> <label htmlFor="keeplogged" className='pointer'>Keep Login</label>
               </div>
 
               <div className="login-button">

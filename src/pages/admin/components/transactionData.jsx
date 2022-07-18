@@ -92,10 +92,13 @@ function TransactionData(data){
     //     case 2:
     //         is_approved = "Rejected"
     // }
+    const checkInvoice = (inv) =>{
+        navigate("/invoice/"+inv)
+    }
     return (
         <tr className="adminRow">
             <td>{page+index}</td>
-            <td>{transaction.inv_number}</td>
+            <td onClick={()=>checkInvoice(transaction.inv_number)} className="selectableTableData">{transaction.inv_number}</td>
             <td>{transaction.status}</td>
             <td>{time}</td>
             <td className="tableDataCenter"><img src={transaction.payment_proof_path} alt="No Image" className="transactionImage"></img></td>
