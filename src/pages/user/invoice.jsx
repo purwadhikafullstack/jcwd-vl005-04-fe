@@ -24,6 +24,7 @@ function Invoice(){
 
     useEffect(()=>{
         if(transactionDetails){
+            console.log(transactionDetails)
             setUsername(transactionDetails[0].username)
         }
     },[transactionDetails])

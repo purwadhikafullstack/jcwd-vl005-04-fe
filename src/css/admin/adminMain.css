@@ -71,11 +71,11 @@
     text-align: center;
     justify-content: center;
     display: flex;
-    padding-top: 90px;
-    padding-bottom: 90px;
+    padding-top: 70px;
+    padding-bottom: 30px;
     background-color: #e1e3eb;
   }
-.transactionSub-main {
+.transactionSub-main{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

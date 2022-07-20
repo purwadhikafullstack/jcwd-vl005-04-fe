@@ -62,7 +62,6 @@ function UserData(data){
     return (
         <tr className="adminRow">
             <td>{users.id}</td>
-            <td>{users.name}</td>
             <td>{users.username}</td>
             <td>{users.email}</td>
             <td>{users.verification?"verified":"not verified"}</td>
