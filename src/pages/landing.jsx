@@ -99,14 +99,14 @@ function Landing(){
                             </div>
                         </div>
                         <div className="adminLandingGroupDouble">
-                            <div className="adminLandingContentHalf">
+                            <div className="adminLandingContentHalf adminLandingContentClickable" onClick={()=>navigate('/admin/report')}>
                                 <p className="adminLandingContentHeader">Today's Report</p>
                                 <p className="adminLandingContentText">Gross : {report.gross}</p>
                                 <p className="adminLandingContentText">Profit : {report.profit}</p>
                                 <p className="adminLandingContentText">Top Products : </p>
                                 {generateTopProducts()}
                             </div>
-                            <div className="adminLandingContentHalf">
+                            <div className="adminLandingContentHalf adminLandingContentClickable" onClick={()=>navigate('/admin/transaction')}>
                             <p className="adminLandingContentHeader">Recent Transactions</p>
                             <div className="adminFullFlex">
                                 <table className="transactionTable">

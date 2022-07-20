@@ -12,9 +12,13 @@ function UserData(data){
     const dispatch = useDispatch();
     const [status, setStatus] = useState(0);
 
+    const [blockConfirmation, setBlockConfirmation] = useState(false);
+    const [unblockConfirmation, setUnblockConfirmation] = useState(false);
+
     const blockUser = () =>{
         Axios.get(`http://localhost:5000/api/users/block/${users.id}`)
         .then((respond)=>{
+            setBlockConfirmation(false);
             toast({
                 title: 'Block Success',
                 description: `${respond.data}`,
@@ -24,6 +28,7 @@ function UserData(data){
               })
         })
         .catch((error)=>{
+            setBlockConfirmation(false);
             toast({
                 title: 'Block Error',
                 description: `${error.response.data}`,
@@ -36,6 +41,7 @@ function UserData(data){
     const unblockUser = () =>{
         Axios.get(`http://localhost:5000/api/users/unblock/${users.id}`)
         .then((respond)=>{
+            setUnblockConfirmation(false);
             toast({
                 title: 'Unblock Success',
                 description: `${respond.data}`,
@@ -45,6 +51,7 @@ function UserData(data){
               })
         })
         .catch((error)=>{
+            setUnblockConfirmation(false);
             toast({
                 title: 'Unblock Error',
                 description: `${error.response.data}`,
@@ -59,6 +66,14 @@ function UserData(data){
         navigate(`/admin/user-transactions/${id}`)
     }
 
+    const showBlockConfirmation = () =>{
+        setBlockConfirmation(true);
+    }
+
+    const showUnblockConfirmation = () =>{
+        setUnblockConfirmation(true);
+    }
+
     return (
         <tr className="adminRow">
             <td>{users.id}</td>
@@ -70,11 +85,11 @@ function UserData(data){
                 <div className="flexbox">
                     {users.is_active?
                         <div>
-                            <button onClick={blockUser} className="btnAdmin btnErrorAdmin">Block</button>
+                            <button onClick={showBlockConfirmation} className="btnAdmin btnErrorAdmin">Block</button>
                         </div>
                         :
                         <div>
-                            <button onClick={unblockUser} className="btnAdmin btnSuccessAdmin">Unblock</button>
+                            <button onClick={showUnblockConfirmation} className="btnAdmin btnSuccessAdmin">Unblock</button>
                         </div>
                     }
                     <div>
@@ -82,6 +97,66 @@ function UserData(data){
                     </div>
                 </div>
             </td>
+            {
+                unblockConfirmation?
+                <div className="adminVerificationContainer">
+                    <div className="adminVerificationContent">
+                        <div className="adminVerificationHeader">
+                            <div className="adminVerificationHeaderTitle">
+                                Unblock Confirmation
+                            </div>
+                            <div className="adminVerificationClose" onClick={()=>setUnblockConfirmation(false)}>
+                                X
+                            </div>
+                        </div>
+                        <div className="adminVerificationText">
+                            Are you sure to Unblock {users.username}?
+                        </div>
+                        <div className="adminVerificationText">
+                            <button className="adminVerificationButton btnSuccessAdmin" onClick={unblockUser}>
+                                Yes
+                            </button>
+                            <button className="adminVerificationButton btnErrorAdmin" onClick={()=>setUnblockConfirmation(false)}>
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                :
+                <div>
+
+                </div>
+            }
+            {
+                blockConfirmation?
+                <div className="adminVerificationContainer">
+                    <div className="adminVerificationContent">
+                        <div className="adminVerificationHeader">
+                            <div className="adminVerificationHeaderTitle">
+                                Block Confirmation
+                            </div>
+                            <div className="adminVerificationClose" onClick={()=>setBlockConfirmation(false)}>
+                                X
+                            </div>
+                        </div>
+                        <div className="adminVerificationText">
+                            Are you sure to block {users.username}?
+                        </div>
+                        <div className="adminVerificationText">
+                            <button className="adminVerificationButton btnSuccessAdmin" onClick={blockUser}>
+                                Yes
+                            </button>
+                            <button className="adminVerificationButton btnErrorAdmin" onClick={()=>setBlockConfirmation(false)}>
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                :
+                <div>
+
+                </div>
+            }
         </tr>
     )
 }
