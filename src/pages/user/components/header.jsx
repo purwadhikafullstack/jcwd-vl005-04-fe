@@ -19,7 +19,7 @@ function Header({ isAuth }) {
             {
                 user.role==="admin"?
                 <div className="d-flex justify-content-between">
-                    Logged as Admin
+                    Pharmacy Admin
                 </div>
                 :
                 <div className="d-flex justify-content-between">

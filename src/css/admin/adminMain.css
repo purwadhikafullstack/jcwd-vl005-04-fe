@@ -71,11 +71,11 @@
     text-align: center;
     justify-content: center;
     display: flex;
-    padding-top: 90px;
-    padding-bottom: 90px;
+    padding-top: 70px;
+    padding-bottom: 30px;
     background-color: #e1e3eb;
   }
-.transactionSub-main {
+.transactionSub-main{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -189,4 +189,80 @@ th,td{
 }   
 .selectableTableData:hover{
     box-shadow: 0px 0px 4px 1px gray inset;
+}
+
+.adminVerificationContainer{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14%;
+    padding-left: 20%;
+    top:0;
+    left:0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.adminVerificationContent{
+    width: 100%;
+    height:100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px 2px rgb(85, 85, 85);
+    background-color: white;
+}
+.adminVerificationHeader{
+    width: 100%;
+    height:12%;
+    padding:0px;
+    padding-left: 20px;
+    padding-right:5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 32px;
+    color:white;
+    background-color: rgb(5, 161, 0);
+    border-radius: 10px 10px 0px 0px ;
+}
+.adminVerificationClose{
+    width: 60px;
+    height:100%;
+    color:white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+    cursor: pointer;
+    transition: 150ms all ease;
+}
+.adminVerificationClose:hover{
+    box-shadow: 0px 0px 2px 2px gray;
+    background-color: green;
+}
+.adminVerificationText{
+    width:100%;
+    height:40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+.adminVerificationButton{
+    width:250px;
+    height:70px;
+    margin:20px;
+    color:white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 150ms all ease;
+}
+.adminVerificationButton:hover{
+    box-shadow: 2px 2px 4px 2px gray;
+}
+.adminVerificationButton:active{
+    box-shadow: 2px 2px 4px 4px rgb(87, 87, 87);
 }

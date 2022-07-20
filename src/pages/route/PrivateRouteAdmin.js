@@ -4,7 +4,8 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRouteAdmin = () => {
   const user = useSelector((state)=>state.user)
-  if (localStorage.getItem("admintoken") === null && user.role !== "admin") {
+  console.log(user)
+  if (localStorage.getItem("admintoken") === null && user.role !== "") {
     return <Navigate to="/admin" />;
   }
 

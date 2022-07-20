@@ -53,6 +53,13 @@
 .adminLandingContentLabel{
     font-size: 20px;
 }
+.adminLandingContentClickable{
+    cursor: pointer;
+    transition: 150ms all ease;
+}
+.adminLandingContentClickable:hover{
+    box-shadow: 2px 2px 8px 4px black;
+}
 .adminFullFlex{
     width: 100%;
     height:80%;
