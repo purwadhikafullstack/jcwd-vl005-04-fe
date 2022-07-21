@@ -21,12 +21,13 @@ function MainContent () {
     const newType = useRef('')
     const newUnit = useRef('')
     const newCategory = useRef('')
-    const [ newBottleStock, setNewBottleStock ] = useState('0')
-    const [ newBottleCapacity, setNewBottleCapacity ] = useState('0')
-    const [ newTotalQty, setNewTotalQty ] = useState('0')
-    const [ newPrice, setNewPrice ] = useState('0')
     const [ btnDisabled, setBtnDisabled ] = useState(true)
-    const [ newImg, setNewImg ] = useState(null)
+    const [ editId, setEditId ] = useState(0)
+    const [ newBottleStock, setNewBottleStock ] = useState(0)
+    const [ newBottleCapacity, setNewBottleCapacity ] = useState(0)
+    const [ newTotalQty, setNewTotalQty ] = useState(0)
+    const [ newPrice, setNewPrice ] = useState(0)
+    const [ type, setType ] = useState('new')
 
     useEffect(() => {
         axios.get(API_URL + '/products')
@@ -49,10 +50,11 @@ function MainContent () {
     }
 
     const generateProductRows = () => {
-        return products.map((product, index) => {
+        return products.map((product, index) => {            
             return (
                 <ProductItems 
                     key={product.id}
+                    id={product.id}
                     index={index+1}
                     name={product.name}
                     bottle_stock={product.bottle_stock}
@@ -60,9 +62,45 @@ function MainContent () {
                     price={product.price_per_unit}
                     unit={product.unit}
                     onDeleteBtnClick={() => onButtonProductDelete(product.id)}
+                    onEditBtnClick={() => onEditClick(
+                            product.id,
+                            product.name,
+                            product.bottle_stock,
+                            product.total_quantity,
+                            product.bottle_volume,
+                            product.price_per_unit,
+                            product.product_unit_id,
+                            product.product_category_id,
+                            product.product_type_id
+                        )}
+                    type={type}
                 />
             )
         })
+    }
+
+    const onEditClick = (id, name, bottle_stock, total, volume, price, unit, category, type) => {
+        setEditId(id)
+
+        newName.current.value = name
+        newType.current.value = type
+        newUnit.current.value = unit
+        newCategory.current.value = category
+
+        document.getElementById('bottle_stock').value = bottle_stock
+        document.getElementById('bottle_capacity').value = volume
+        document.getElementById('total_stock').value = total
+        document.getElementById('price').value = price
+
+        setNewBottleStock(bottle_stock)
+        setNewBottleCapacity(volume)
+        setNewTotalQty(total)
+        setNewPrice(price)
+
+        getProductAttributes()
+
+        setType('update')
+        setNewProductOpen('block')
     }
 
     const onButtonProductDelete = (id) => {
@@ -83,7 +121,12 @@ function MainContent () {
 
     const onAddProductClick = () => {
         setNewProductOpen('block')
+        setType('new')
 
+        getProductAttributes()
+    }
+
+    const getProductAttributes = () => {
         axios.get(`${API_URL}/products/types`)
             .then((response) => {
                 setProductTypes(response.data)
@@ -114,6 +157,10 @@ function MainContent () {
 
     const onAddProductCancelClick = () => {
         setNewProductOpen('none')
+        setType('new')
+
+        resetNewProductField()
+        checkRequiredFields()
     }
 
     const onNameChange = () => {
@@ -129,29 +176,25 @@ function MainContent () {
     }
 
     const onBottleStockChange = (event) => {
-        setNewBottleStock(event)
+        setNewBottleStock(event.target.value)
     }
 
     const onCapacityChange = (event) => {
-        setNewBottleCapacity(event)
+        setNewBottleCapacity(event.target.value)
     }
 
     const onTotalQtyChange = (event) => {
-        setNewTotalQty(event)
+        setNewTotalQty(event.target.value)
     }
 
     const onPriceChange = (event) => {
-        setNewPrice(event)
-        setBtnDisabled(event === '' || event === '0' || newType.current.value === '' || newUnit.current.value === '' || newName.current.value === '')
-    }
-
-    const onImgChange = (event) => {
-        console.log(event.target.files[0])
-        setNewImg(event.target.files[0])
+        setNewPrice(event.target.value)
+        setBtnDisabled(event.target.value === '' || event.target.value === '0' || newType.current.value === '' || newUnit.current.value === '' || newName.current.value === '')
     }
 
     const onSubmitProductClick = () => {
         const data = {
+            id: editId,
             name: newName.current.value,
             product_type_id: newType.current.value,
             bottle_stock: newBottleStock,
@@ -160,45 +203,46 @@ function MainContent () {
             price_per_unit: newPrice,
             product_unit_id: newUnit.current.value,
             product_category_id: newCategory.current.value,
-            img: newImg
         }
 
-        const formData = new FormData();
-        formData.append('file', newImg)
-        // formData.append('data', data)
+        console.log(data)
 
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
+        let path, success_message, error_message = ''
+
+        if (type === 'new') {
+            path = 'create'
+            success_message = 'Successfully insert new product'
+            error_message = 'Failed creating new product'
+        }
+        else if (type === 'update') {
+            path = 'update/' + editId
+            success_message = 'Successfully update product data'
+            error_message = 'Failed updating product data'
         }
 
-        axios.post(`${API_URL}/products/create`, formData, config)
+        axios.post(`${API_URL}/products/${path}`, data)
             .then((response) => {
-                showToast('success', 'Berhasil upload')
+                axios.get(API_URL + '/products')
+                .then((get_response) => {
+                    showToast('success', success_message)
+                    console.log(get_response)
+                    setProducts(get_response.data)
+                    resetNewProductField()
+                    checkRequiredFields()
+                    
+                    if (type === 'update') {
+                        setType('new')
+                        setNewProductOpen('none')
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
             })
             .catch((error) => {
-                showToast('error', 'Gagal upload')
+                showToast('error', error_message)
                 console.log(error)
             })
-        // axios.post(`${API_URL}/products/create`, uploadData)
-        //     .then((response) => {
-        //         axios.get(API_URL + '/products')
-        //         .then((get_response) => {
-        //             showToast('success', 'Successfully inserting product')
-        //             console.log(get_response)
-        //             setProducts(get_response.data)
-        //             resetNewProductField()
-        //             checkRequiredFields()
-        //         })
-        //         .catch((error) => {
-        //             console.log(error)
-        //         })
-        //     })
-        //     .catch((error) => {
-        //         showToast('error', 'Failed inserting product')
-        //         console.log(error)
-        //     })
     }
 
     const resetNewProductField = () => {
@@ -206,10 +250,16 @@ function MainContent () {
         newType.current.value = ''
         newUnit.current.value = ''
         newCategory.current.value = ''
-        setNewBottleStock('')
-        setNewBottleCapacity('')
-        setNewTotalQty('')
-        setNewPrice('')
+
+        document.getElementById('bottle_stock').value = 0
+        document.getElementById('bottle_capacity').value = 0
+        document.getElementById('total_stock').value = 0
+        document.getElementById('price').value = 0
+
+        setNewBottleStock(0)
+        setNewBottleCapacity(0)
+        setNewTotalQty(0)
+        setNewPrice(0)
     }
 
     const checkRequiredFields = () => {
@@ -234,7 +284,7 @@ function MainContent () {
     }
 
     return (
-        <div name="product-pages">
+        <>
             <Select mb={4} w='25%' boxShadow='md' onChange={ applyFilter }>
                 <option value="?_sort=id&_order=ASC">LATEST</option>
                 <option value="?_sort=price_per_unit&_order=ASC">LOWEST TO HIGHEST PRICE</option>
@@ -258,7 +308,7 @@ function MainContent () {
                 </Table>
             </TableContainer>
             
-            <Button colorScheme='blue' mt={4} size='sm' onClick={ onAddProductClick }>
+            <Button colorScheme='blue' mt={4} size='sm' onClick={ onAddProductClick } disabled={ type === 'update' ? true : false}>
                 Tambah Produk
             </Button>
 
@@ -282,10 +332,9 @@ function MainContent () {
                     btnDisabled={btnDisabled}
                     submit={onSubmitProductClick}
                     cancel={onAddProductCancelClick}
-                    imgChange={onImgChange}
                 />
             </Box>
-        </div>
+        </>
     )
 }
 

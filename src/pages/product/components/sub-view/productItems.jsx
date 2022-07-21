@@ -1,7 +1,7 @@
 import React from "react"
 import { Button, ButtonGroup, Flex, Td, Text, Tr } from "@chakra-ui/react"
 
-function ProductItems ({ index, name, bottle_stock, total_stock, price, unit, onDeleteBtnClick}) {
+function ProductItems ({ index, name, bottle_stock, total_stock, price, unit, onDeleteBtnClick, onEditBtnClick, type }) {
     return (
         <Tr textAlign='center'>
             <Td style={{ width: "1%", whiteSpace: "nowrap" }}>{ index }</Td>
@@ -28,10 +28,15 @@ function ProductItems ({ index, name, bottle_stock, total_stock, price, unit, on
                 </Flex>
             </Td>
             <Td>
-                <ButtonGroup spacing='3'>
-                    <Button colorScheme='gray' size='sm'>Edit</Button>
-                    <Button colorScheme='red' size='sm' onClick={ onDeleteBtnClick }>Delete</Button>
-                </ButtonGroup>
+                {
+                    type === 'new' ?
+                    <ButtonGroup spacing='3'>
+                        <Button colorScheme='gray' size='sm' onClick={ onEditBtnClick }>Edit</Button>
+                        <Button colorScheme='red' size='sm' onClick={ onDeleteBtnClick }>Delete</Button>
+                    </ButtonGroup>
+                    :
+                    null
+                }
             </Td>
         </Tr>
     )

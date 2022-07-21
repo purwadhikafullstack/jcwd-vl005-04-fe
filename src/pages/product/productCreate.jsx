@@ -32,8 +32,7 @@ function ProductCreate ({
         totalQtyChange,
         btnDisabled, 
         submit,
-        cancel,
-        imgChange
+        cancel
     }) {
 
     const showProductTypes = () => {
@@ -70,14 +69,14 @@ function ProductCreate ({
             <Flex justifyContent='space-between' mb={3} gap='3'>
                 <FormControl isRequired>
                     <FormLabel htmlFor='type'>Tipe Produk</FormLabel>
-                    <Select id='type' ref={refType} placeholder='Pilih tipe produk' onChange={typeChange}>
+                    <Select id='type' ref={refType} placeholder='Pilih tipe produk' onChange={typeChange} defaultValue={refType.current.value}>
                         { showProductTypes() }
                     </Select>
                 </FormControl>
 
                 <FormControl>
                     <FormLabel htmlFor='category'>Kategori Produk</FormLabel>
-                    <Select id='category' ref={refCategory} placeholder='Pilih kategori produk'>
+                    <Select id='category' ref={refCategory} placeholder='Pilih kategori produk' defaultValue={refCategory.current.value}>
                         { showProductCategories() }
                     </Select>
                 </FormControl>
@@ -85,30 +84,28 @@ function ProductCreate ({
 
             <FormControl className="mb-3">
                 <FormLabel htmlFor='bottle_stock'>Stok Botol</FormLabel>
-                <NumberInput min={0} onChange={bottleStockChange}>
-                    <NumberInputField id='bottle_stock'/>
-                    <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
+                <Input 
+                    id='bottle_stock'
+                    min={0} 
+                    type='number' 
+                    onChange={bottleStockChange}
+                />
             </FormControl>
 
             <Flex justifyContent='space-between' gap='3' mb={3}>
                 <FormControl w='60%'>
                     <FormLabel htmlFor='bottle_capacity'>Kapasitas Botol</FormLabel>
-                    <NumberInput min={0} onChange={capacityChange}>
-                        <NumberInputField id='bottle_capacity' />
-                        <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                        </NumberInputStepper>
-                    </NumberInput>
+                    <Input 
+                        id='bottle_capacity'
+                        min={0} 
+                        type='number' 
+                        onChange={capacityChange}
+                    />
                 </FormControl>
 
                 <FormControl isRequired w='40%'>
                     <FormLabel htmlFor='type'>Satuan Produk</FormLabel>
-                    <Select id='type' ref={refUnit} placeholder='Pilih satuan produk' onChange={unitChange}>
+                    <Select id='type' ref={refUnit} placeholder='Pilih satuan produk' onChange={unitChange} defaultValue={refUnit.current.value}>
                         { showProductUnits() }
                     </Select>
                 </FormControl>             
@@ -116,37 +113,30 @@ function ProductCreate ({
 
             <Flex justifyContent='space-between' gap='3' mb={3}>
                 <FormControl w='60%'>
-                    <FormLabel htmlFor='bottle_stock'>Total Stok</FormLabel>
-                    <NumberInput min={0} onChange={totalQtyChange}>
-                        <NumberInputField id='bottle_stock' />
-                        <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                        </NumberInputStepper>
-                    </NumberInput>
+                    <FormLabel htmlFor='total_stock'>Total Stok</FormLabel>
+                    <Input 
+                        id='total_stock'
+                        min={0} 
+                        type='number' 
+                        onChange={totalQtyChange}
+                    />
                 </FormControl>
 
                 <FormControl isRequired w='40%'>
                     <FormLabel htmlFor='price'>Harga Eceran</FormLabel>
-                    <NumberInput min={0} onChange={priceChange}>
-                        <NumberInputField id='price' />
-                        <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                        </NumberInputStepper>
-                    </NumberInput>
+                    <Input 
+                        id='price'
+                        min={0} 
+                        type='number' 
+                        onChange={priceChange}
+                    />
                 </FormControl>
             </Flex>
 
-            {/* <FormControl mb={3}>
-                <FormLabel htmlFor='image'>Upload Gambar</FormLabel>
-                <Input type='file' id='image' accept='images/*' onChange={imgChange}/>
-            </FormControl> */}
-
             <Flex justifyContent='end'>
                 <ButtonGroup gap='3'>
-                    <Button colorScheme='red' size='sm' onClick={cancel}>Batal</Button>
-                    <Button isDisabled={btnDisabled} colorScheme='green' size='sm' onClick={submit}>Tambah</Button>
+                    <Button colorScheme='red' size='sm' onClick={cancel}>Cancel</Button>
+                    <Button isDisabled={btnDisabled} colorScheme='green' size='sm' onClick={submit}>Submit</Button>
                 </ButtonGroup>
             </Flex>
         </>
