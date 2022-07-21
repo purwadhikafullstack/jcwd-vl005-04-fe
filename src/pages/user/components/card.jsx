@@ -1,26 +1,23 @@
 import React from "react"
 
-import "../../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
-import "../../../../node_modules/bootstrap-icons/font/bootstrap-icons.css"
+import { FaPlus } from 'react-icons/fa'
 
 import image from "../../../images/whitebackground.png"
+import { Box, Button, GridItem, Image, Text } from "@chakra-ui/react"
 
-function Card ({ name, onCartClick }) {
+function Card ({ name, qty, unit, price, onCartClick }) {
     return (
-        <div className="card shadow mb-4">
-            <img src={image} className="card-img-top" alt={ name } />
-            <div className="card-body">
-                <h5 className="card-title text-primary fw-bold">{ name }</h5>
-                <p className="card-text mb-2">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <button 
-                    className="btn btn-primary btn-sm w-100 align-items-center align-middle"
-                    onClick={onCartClick}
-                >
-                        <i className="bi bi-bag-plus"></i>
-                        <span> Keranjang</span>
-                </button>
-            </div>
-        </div>
+        <GridItem shadow='md' mb={4} borderRadius='lg'> 
+            <Image src={ image } alt={ name }/>
+            <Box p={4}>
+                <Text fontSize='xl' fontWeight='bold' mb={4}>{ name }</Text>
+                <Text mb={5}>{ new Intl.NumberFormat('id-ID', {style: 'currency', currency: 'IDR'}).format(price) } /{ unit }</Text>
+                <Button colorScheme='blue' size='sm' w='100%' onClick={onCartClick} gap={1.5}>
+                    <FaPlus />
+                    Keranjang
+                </Button>
+            </Box>
+        </GridItem>
     )
 }
 

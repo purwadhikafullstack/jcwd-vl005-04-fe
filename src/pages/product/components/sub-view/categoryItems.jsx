@@ -1,26 +1,29 @@
 import React from "react"
+import { Badge, Button, ButtonGroup, Td, Tr } from "@chakra-ui/react"
 
 function CategoryItems ({index, name, status, deleteClick, restoreClick, editClick}) {
     return (
-        <tr>
-            <td className="text-center">{ index }</td>
-            <td>{ name }</td>
-            <td className="text-center">
+        <Tr>
+            <Td style={{ width: '1%', whiteSpace: 'no-wrap', textAlign: 'center' }}>{ index }</Td>
+            <Td>{ name }</Td>
+            <Td>
                 { status ? 
-                    <span className="bg-success rounded p-2 text-white fw-bold">Aktif</span>    
+                    <Badge colorScheme='green'>Aktif</Badge>
                     :
-                    <span className="bg-danger rounded p-2 text-white fw-bold">Tidak Aktif</span>
+                    <Badge colorScheme='red'>Tidak Aktif</Badge>
                 }
-            </td>
-            <td style={{ width: '1%', whiteSpace: 'nowrap' }}>
-                <button className="btn btn-sm btn-light border border-dark mx-2" onClick={editClick}>Edit</button>
-                { status ? 
-                    <button className="btn btn-sm btn-danger mx-2" onClick={deleteClick}>Non Aktifkan</button>
-                    :
-                    <button className="btn btn-sm btn-success mx-2" onClick={restoreClick}>Aktifkan</button>
-                }
-            </td>
-        </tr>
+            </Td>
+            <Td>
+                <ButtonGroup gap='3'>
+                    <Button size='sm' onClick={editClick}>Edit</Button>
+                    { status ? 
+                        <Button size='sm' colorScheme='red' onClick={deleteClick}>Non Aktifkan</Button>
+                        :
+                        <Button size='sm' colorScheme='green' onClick={restoreClick}>Aktifkan</Button>
+                    }
+                </ButtonGroup>
+            </Td>
+        </Tr>
     )
 }
 
