@@ -231,7 +231,7 @@ function Checkout() {
                                 <Form.Label>Sub District</Form.Label>
                                 <Form.Control
                                     type={"text"}
-                                    placeholder={"SubDistrict"}
+                                    placeholder={"Sub District"}
                                     label={"Sub District"}
                                     value={subDistrict}
                                     onChange={(e) => {
@@ -264,7 +264,7 @@ function Checkout() {
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>PostalCode</Form.Label>
+                                <Form.Label>Postal Code</Form.Label>
                                 <Form.Control
                                     type={"number"}
                                     placeholder={"Postal Code"}
@@ -295,7 +295,7 @@ function Checkout() {
             <div className="p-4">
                 <div className="w-50 mx-auto mb-3">
                     {showCartItems()}
-                    <strong><h4>Total: {formatThousands(total, ".")}</h4></strong>
+                    <strong><h4>Total: {new Intl.NumberFormat('id-ID', {style: 'currency', currency: 'IDR'}).format(total)}</h4></strong>
                 </div>
                 <Form.Group className="mb-3">
                     <Form.Label>Address</Form.Label>
