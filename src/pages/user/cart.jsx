@@ -125,7 +125,7 @@ function Cart() {
             <div className="checkout-section bg-primary text-white">
                 <div className="d-flex justify-content-between">
                     <div>
-                        <Button >Total: {formatThousands(total, '.')}</Button></div>
+                        <Button >Total: {new Intl.NumberFormat('id-ID', {style: 'currency', currency: 'IDR'}).format(total)}</Button></div>
                     <div>
                         <Button variant="secondary" onClick={onCheckout}>Checkout</Button>
                     </div>

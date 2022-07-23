@@ -12,6 +12,9 @@ import axios from "../../lib/axios";
 import SidebarMain from "../product/components/sidebar/sidebarMain";
 import { openInNewTab } from "../../utils";
 import { Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {  } from "@fortawesome/free-regular-svg-icons";
+import { faMoneyBill1 } from "@fortawesome/free-solid-svg-icons";
 
 function AdminReport() {
   const global = useSelector((state) => state);
@@ -115,8 +118,9 @@ function AdminReport() {
           value={date.format("YYYY-MM-DD")}
           style={{ marginBottom: "30px", outline: "auto", padding: "20px" }}
         />
-        <Stack spacing={8} direction="row">
+        <Stack style={{paddingLeft: "122px"}} spacing={8} direction="row">
           {/* <Stats title={"Omset"} value={formatThousands(100000, ".")} /> */}
+          
           <Stats title={"Profit"} value={formatThousands(profit, ".")} />
           <Stats title={"Gross"} value={formatThousands(gross, ".")} />
           <Stats
@@ -155,7 +159,7 @@ function AdminReport() {
                   <Th style={{minWidth: "180px"}} className="text-center">Name</Th>
                   <Th style={{minWidth: "130px"}} className="text-center">Quantity</Th>
                   <Th style={{minWidth: "150px"}} className="text-center">Price</Th>
-                  <Th style={{minWidth: "150px"}} className="text-center">Price Capital</Th>
+                  <Th style={{minWidth: "150px"}} className="text-center">Cost of Capital</Th>
                   <Th style={{minWidth: "150px"}} className="text-center">Profit</Th>
                   <Th style={{minWidth: "150px"}} className="text-center">Payment Proof Path</Th>
                 </Tr>
