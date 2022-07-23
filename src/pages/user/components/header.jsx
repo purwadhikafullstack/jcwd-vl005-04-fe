@@ -25,7 +25,7 @@ function Header({ isAuth }) {
                     </Flex>
                     :
                     <Flex justifyContent='space-between' alignItems='center'>
-                        <Link href='/home' fontSize='3xl'>
+                        <Link href='/' fontSize='3xl'>
                             <Flex alignItems='center' gap={4}>
                                 <Image src={logoHeader} height={70}/>
                                 Home
