@@ -1,11 +1,9 @@
 import axios from "axios"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 
-import { Button, FormControl, FormLabel, Input, useToast } from "@chakra-ui/react"
+import { Box, Button, Flex, Input, Table, TableContainer, Tbody, Th, Thead, Tr, useToast } from "@chakra-ui/react"
 
-import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import CategoryItems from "./components/sub-view/categoryItems"
-import { useRef } from "react"
 import CategoryItemEditable from "./categoryItemEditable"
 
 function CategoryList () {
@@ -167,27 +165,28 @@ function CategoryList () {
 
     return (
         <div name="category-list">
-            <div className="shadow p-4 mb-4 w-50 mx-auto">
-                <div className="d-flex w-100">
-                    <Input ref={newCategory} id='name' type='text' placeholder="Nama Kategori Baru" className="w-75 me-2" onChange={onNewCategoryChange}/>
-                    <Button colorScheme='blue' className="w-25 ms-2" isDisabled={isDisabled} onClick={onAddClick}>Tambah</Button>
-                </div>
-            </div>
-            <div className="table-responsive shadow rounded">
-                <table className="table align-middle">
-                    <thead>
-                        <tr className="text-center fw-bold table-primary">
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <Box w='50%' mx='auto' mb={4} p={4} boxShadow='md'>
+                <Flex gap='3'>
+                    <Input w='75%' ref={newCategory} id='name' type='text' placeholder="Nama Kategori Baru" onChange={onNewCategoryChange}/>
+                    <Button w='25%' colorScheme='blue' isDisabled={isDisabled} onClick={onAddClick}>Tambah</Button>
+                </Flex>
+            </Box>
+
+            <TableContainer boxShadow='md' borderRadius='10'>
+                <Table variant='simple'>
+                    <Thead backgroundColor='blue.100'>
+                        <Tr>
+                            <Th>#</Th>
+                            <Th>Nama Kategori</Th>
+                            <Th>Status</Th>
+                            <Th></Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
                         { showCategoryList() }
-                    </tbody>
-                </table>
-            </div>
+                    </Tbody>
+                </Table>
+            </TableContainer>
         </div>
     )
 }

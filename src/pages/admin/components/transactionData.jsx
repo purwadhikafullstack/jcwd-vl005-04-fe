@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Axios from 'axios'
 import { useToast } from "@chakra-ui/react";
 import io from "socket.io-client";
@@ -20,6 +20,9 @@ function TransactionData(data){
     let time = transaction.created_at;
     let is_approved;
 
+    const [approveConfirmation, setApproveConfirmation] = useState(false);
+    const [rejectConfirmation, setRejectConfirmation] = useState(false);
+
     let userdata = {
         user_id : transaction.user_id
     }
@@ -28,6 +31,7 @@ function TransactionData(data){
         Axios.post(API_URL + `/transaction/approve/${transaction.id}`, userdata)
         .then((respond)=>{
             socket.emit('finishTransaction', '')
+            setApproveConfirmation(false);
             toast({
                 title: 'Transaction Approved',
                 description: `An Invoice Email has been sent to User`,
@@ -37,6 +41,7 @@ function TransactionData(data){
               })
         })
         .catch((error)=>{
+            setApproveConfirmation(false);
             toast({
                 title: 'Error',
                 description: `${error.response.data}`,
@@ -50,6 +55,7 @@ function TransactionData(data){
     const rejectTransaction = () =>{
         Axios.post(API_URL + `/transaction/reject/${transaction.id}`, userdata)
         .then((respond)=>{
+            setRejectConfirmation(false);
             toast({
                 title: 'A Reject Transaction Email has been sent to User',
                 description: `Please refresh to continue`,
@@ -59,6 +65,7 @@ function TransactionData(data){
               })
         })
         .catch((error)=>{
+            setRejectConfirmation(false);
             toast({
                 title: 'Error',
                 description: `${error.response.data}`,
@@ -82,20 +89,22 @@ function TransactionData(data){
         }
     })
 
-    // switch(transaction.is_approved){
-    //     case 0:
-    //         is_approved = "Not Approved"
-    //         break;
-    //     case 1:
-    //         is_approved = "Approved"
-    //         break;
-    //     case 2:
-    //         is_approved = "Rejected"
-    // }
+    const checkInvoice = (inv) =>{
+        navigate("/invoice/"+inv)
+    }
+
+    const showApproveConfirmation = () =>{
+        setApproveConfirmation(true);
+    }
+
+    const showRejectConfirmation = () =>{
+        setRejectConfirmation(true);
+    }
+
     return (
         <tr className="adminRow">
             <td>{page+index}</td>
-            <td>{transaction.inv_number}</td>
+            <td onClick={()=>checkInvoice(transaction.inv_number)} className="selectableTableData">{transaction.inv_number}</td>
             <td>{transaction.status}</td>
             <td>{time}</td>
             <td className="tableDataCenter"><img src={transaction.payment_proof_path} alt="No Image" className="transactionImage"></img></td>
@@ -105,14 +114,74 @@ function TransactionData(data){
                 {   
                     transaction.status == "in_review"?
                     <div>
-                        <button className="btnAdmin btnSuccessAdmin" onClick={approveTransaction}>Approve</button>
-                        <button className="btnAdmin btnErrorAdmin" onClick={rejectTransaction}>Reject</button>
+                        <button className="btnAdmin btnSuccessAdmin" onClick={showApproveConfirmation}>Approve</button>
+                        <button className="btnAdmin btnErrorAdmin" onClick={showRejectConfirmation}>Reject</button>
                     </div>
                     :
                     <div>
                     </div>
                 }
             </td>
+            {
+                approveConfirmation?
+                <div className="adminVerificationContainer">
+                    <div className="adminVerificationContent">
+                        <div className="adminVerificationHeader">
+                            <div className="adminVerificationHeaderTitle">
+                                Approve Confirmation
+                            </div>
+                            <div className="adminVerificationClose" onClick={()=>setApproveConfirmation(false)}>
+                                X
+                            </div>
+                        </div>
+                        <div className="adminVerificationText">
+                            Are you sure to Approve Transaction with Invoice {transaction.inv_number}?
+                        </div>
+                        <div className="adminVerificationText">
+                            <button className="adminVerificationButton btnSuccessAdmin" onClick={approveTransaction}>
+                                Yes
+                            </button>
+                            <button className="adminVerificationButton btnErrorAdmin" onClick={()=>setApproveConfirmation(false)}>
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                :
+                <div>
+
+                </div>
+            }
+            {
+                rejectConfirmation?
+                <div className="adminVerificationContainer">
+                    <div className="adminVerificationContent">
+                        <div className="adminVerificationHeader">
+                            <div className="adminVerificationHeaderTitle">
+                                Reject Confirmation
+                            </div>
+                            <div className="adminVerificationClose" onClick={()=>setRejectConfirmation(false)}>
+                                X
+                            </div>
+                        </div>
+                        <div className="adminVerificationText">
+                            Are you sure to Reject Transaction with Invoice {transaction.inv_number}?
+                        </div>
+                        <div className="adminVerificationText">
+                            <button className="adminVerificationButton btnSuccessAdmin" onClick={rejectTransaction}>
+                                Yes
+                            </button>
+                            <button className="adminVerificationButton btnErrorAdmin" onClick={()=>setRejectConfirmation(false)}>
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                :
+                <div>
+
+                </div>
+            }
         </tr>
     )
 }

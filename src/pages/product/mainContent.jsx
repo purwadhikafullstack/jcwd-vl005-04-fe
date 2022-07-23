@@ -1,12 +1,9 @@
-import React, { useState, useEffect }  from "react"
+import React, { useState, useEffect, useRef }  from "react"
 import axios from "axios"
 
-import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
-
+import { Box, Button, Select, Table, TableContainer, Tbody, Th, Thead, Tr, useToast } from "@chakra-ui/react"
 import ProductItems from "./components/sub-view/productItems"
-import { useToast } from "@chakra-ui/react"
 import ProductCreate from "./productCreate"
-import { useRef } from "react"
 
 function MainContent () {
     const API_URL = process.env.REACT_APP_API_URL
@@ -17,16 +14,20 @@ function MainContent () {
     const [ productTypes, setProductTypes ] = useState([])
     const [ productCategories, setProductCategories ] = useState([])
 
+    const [ newProductOpen, setNewProductOpen ] = useState('none')
+
     // New Product
     const newName = useRef('')
     const newType = useRef('')
     const newUnit = useRef('')
     const newCategory = useRef('')
-    const [ newBottleStock, setNewBottleStock ] = useState('0')
-    const [ newBottleCapacity, setNewBottleCapacity ] = useState('0')
-    const [ newTotalQty, setNewTotalQty ] = useState('0')
-    const [ newPrice, setNewPrice ] = useState('0')
     const [ btnDisabled, setBtnDisabled ] = useState(true)
+    const [ editId, setEditId ] = useState(0)
+    const [ newBottleStock, setNewBottleStock ] = useState(0)
+    const [ newBottleCapacity, setNewBottleCapacity ] = useState(0)
+    const [ newTotalQty, setNewTotalQty ] = useState(0)
+    const [ newPrice, setNewPrice ] = useState(0)
+    const [ type, setType ] = useState('new')
 
     useEffect(() => {
         axios.get(API_URL + '/products')
@@ -49,10 +50,11 @@ function MainContent () {
     }
 
     const generateProductRows = () => {
-        return products.map((product, index) => {
+        return products.map((product, index) => {            
             return (
                 <ProductItems 
                     key={product.id}
+                    id={product.id}
                     index={index+1}
                     name={product.name}
                     bottle_stock={product.bottle_stock}
@@ -60,9 +62,45 @@ function MainContent () {
                     price={product.price_per_unit}
                     unit={product.unit}
                     onDeleteBtnClick={() => onButtonProductDelete(product.id)}
+                    onEditBtnClick={() => onEditClick(
+                            product.id,
+                            product.name,
+                            product.bottle_stock,
+                            product.total_quantity,
+                            product.bottle_volume,
+                            product.price_per_unit,
+                            product.product_unit_id,
+                            product.product_category_id,
+                            product.product_type_id
+                        )}
+                    type={type}
                 />
             )
         })
+    }
+
+    const onEditClick = (id, name, bottle_stock, total, volume, price, unit, category, type) => {
+        setEditId(id)
+
+        newName.current.value = name
+        newType.current.value = type
+        newUnit.current.value = unit
+        newCategory.current.value = category
+
+        document.getElementById('bottle_stock').value = bottle_stock
+        document.getElementById('bottle_capacity').value = volume
+        document.getElementById('total_stock').value = total
+        document.getElementById('price').value = price
+
+        setNewBottleStock(bottle_stock)
+        setNewBottleCapacity(volume)
+        setNewTotalQty(total)
+        setNewPrice(price)
+
+        getProductAttributes()
+
+        setType('update')
+        setNewProductOpen('block')
     }
 
     const onButtonProductDelete = (id) => {
@@ -82,8 +120,13 @@ function MainContent () {
     }
 
     const onAddProductClick = () => {
-        document.getElementById('add_product').classList.replace('d-none', 'd-flex')
+        setNewProductOpen('block')
+        setType('new')
 
+        getProductAttributes()
+    }
+
+    const getProductAttributes = () => {
         axios.get(`${API_URL}/products/types`)
             .then((response) => {
                 setProductTypes(response.data)
@@ -112,6 +155,14 @@ function MainContent () {
             })
     }
 
+    const onAddProductCancelClick = () => {
+        setNewProductOpen('none')
+        setType('new')
+
+        resetNewProductField()
+        checkRequiredFields()
+    }
+
     const onNameChange = () => {
         setBtnDisabled(newName.current.value === '' || newType.current.value === '' || newUnit.current.value === '' || newPrice === '' || newPrice === '0')
     }
@@ -125,24 +176,25 @@ function MainContent () {
     }
 
     const onBottleStockChange = (event) => {
-        setNewBottleStock(event)
+        setNewBottleStock(event.target.value)
     }
 
     const onCapacityChange = (event) => {
-        setNewBottleCapacity(event)
+        setNewBottleCapacity(event.target.value)
     }
 
     const onTotalQtyChange = (event) => {
-        setNewTotalQty(event)
+        setNewTotalQty(event.target.value)
     }
 
     const onPriceChange = (event) => {
-        setNewPrice(event)
-        setBtnDisabled(event === '' || event === '0' || newType.current.value === '' || newUnit.current.value === '' || newName.current.value === '')
+        setNewPrice(event.target.value)
+        setBtnDisabled(event.target.value === '' || event.target.value === '0' || newType.current.value === '' || newUnit.current.value === '' || newName.current.value === '')
     }
 
     const onSubmitProductClick = () => {
         const data = {
+            id: editId,
             name: newName.current.value,
             product_type_id: newType.current.value,
             bottle_stock: newBottleStock,
@@ -150,25 +202,45 @@ function MainContent () {
             total_quantity: newTotalQty,
             price_per_unit: newPrice,
             product_unit_id: newUnit.current.value,
-            product_category_id: newCategory.current.value
+            product_category_id: newCategory.current.value,
         }
 
-        axios.post(`${API_URL}/products/create`, data)
+        console.log(data)
+
+        let path, success_message, error_message = ''
+
+        if (type === 'new') {
+            path = 'create'
+            success_message = 'Successfully insert new product'
+            error_message = 'Failed creating new product'
+        }
+        else if (type === 'update') {
+            path = 'update/' + editId
+            success_message = 'Successfully update product data'
+            error_message = 'Failed updating product data'
+        }
+
+        axios.post(`${API_URL}/products/${path}`, data)
             .then((response) => {
                 axios.get(API_URL + '/products')
                 .then((get_response) => {
-                    showToast('success', 'Successfully inserting product')
+                    showToast('success', success_message)
                     console.log(get_response)
                     setProducts(get_response.data)
                     resetNewProductField()
                     checkRequiredFields()
+                    
+                    if (type === 'update') {
+                        setType('new')
+                        setNewProductOpen('none')
+                    }
                 })
                 .catch((error) => {
                     console.log(error)
                 })
             })
             .catch((error) => {
-                showToast('error', 'Failed inserting product')
+                showToast('error', error_message)
                 console.log(error)
             })
     }
@@ -178,10 +250,16 @@ function MainContent () {
         newType.current.value = ''
         newUnit.current.value = ''
         newCategory.current.value = ''
-        setNewBottleStock('')
-        setNewBottleCapacity('')
-        setNewTotalQty('')
-        setNewPrice('')
+
+        document.getElementById('bottle_stock').value = 0
+        document.getElementById('bottle_capacity').value = 0
+        document.getElementById('total_stock').value = 0
+        document.getElementById('price').value = 0
+
+        setNewBottleStock(0)
+        setNewBottleCapacity(0)
+        setNewTotalQty(0)
+        setNewPrice(0)
     }
 
     const checkRequiredFields = () => {
@@ -206,58 +284,57 @@ function MainContent () {
     }
 
     return (
-        <div name="product-pages">
-            <div name="filter" className="mb-4 w-25 shadow">
-                <select className="form-select" onChange={applyFilter}>
-                    <option value="?_sort=id&_order=ASC">LATEST</option>
-                    <option value="?_sort=price_per_unit&_order=ASC">LOWEST TO HIGHEST PRICE</option>
-                    <option value="?_sort=price_per_unit&_order=DESC">HIGHEST TO LOWEST PRICE</option>
-                </select>
-            </div>
-            <div className="table-responsive rounded shadow mb-4">
-                <table className="table">
-                    <thead>
-                        <tr className="text-center table-dark">
-                            <th>#</th>
-                            <th>Nama Produk</th>
-                            <th>Stok Botol</th>
-                            <th>Total Stok</th>
-                            <th>Harga Eceran</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        <>
+            <Select mb={4} w='25%' boxShadow='md' onChange={ applyFilter }>
+                <option value="?_sort=id&_order=ASC">LATEST</option>
+                <option value="?_sort=price_per_unit&_order=ASC">LOWEST TO HIGHEST PRICE</option>
+                <option value="?_sort=price_per_unit&_order=DESC">HIGHEST TO LOWEST PRICE</option>
+            </Select>
+            <TableContainer backgroundColor='gray.50' borderRadius='10' boxShadow='md'>
+                <Table variant='simple'>
+                    <Thead backgroundColor='blue.100'>
+                        <Tr>
+                            <Th>#</Th>
+                            <Th>Nama Produk</Th>
+                            <Th>Stok Botol</Th>
+                            <Th>Total Stok</Th>
+                            <Th>Harga Eceran</Th>
+                            <Th></Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody backgroundColor='white'>
                         { generateProductRows() }
-                    </tbody>
-                </table>
-            </div>
-            <button className="btn btn-sm btn-primary mb-4 fw-bold w-auto" onClick={onAddProductClick}>
+                    </Tbody>
+                </Table>
+            </TableContainer>
+            
+            <Button colorScheme='blue' mt={4} size='sm' onClick={ onAddProductClick } disabled={ type === 'update' ? true : false}>
                 Tambah Produk
-            </button>
-            <div id="add_product" className="d-none justify-content-center w-100">
-                <div className="w-50 rounded shadow p-4">
-                    <ProductCreate 
-                        key={'product_create'} 
-                        types={productTypes}
-                        units={productUnits}
-                        categories={productCategories}
-                        refName={newName}
-                        refType={newType}
-                        refUnit={newUnit}
-                        refCategory={newCategory}
-                        nameChange={onNameChange}
-                        typeChange={onTypeChange}
-                        unitChange={onUnitChange}
-                        priceChange={onPriceChange}
-                        bottleStockChange={onBottleStockChange}
-                        capacityChange={onCapacityChange}
-                        totalQtyChange={onTotalQtyChange}
-                        btnDisabled={btnDisabled}
-                        submit={onSubmitProductClick}
-                    />
-                </div>
-            </div>
-        </div>
+            </Button>
+
+            <Box w='50%' mt={4} mx='auto' p={4} boxShadow='md' display={newProductOpen}>
+                <ProductCreate 
+                    key={'product_create'} 
+                    types={productTypes}
+                    units={productUnits}
+                    categories={productCategories}
+                    refName={newName}
+                    refType={newType}
+                    refUnit={newUnit}
+                    refCategory={newCategory}
+                    nameChange={onNameChange}
+                    typeChange={onTypeChange}
+                    unitChange={onUnitChange}
+                    priceChange={onPriceChange}
+                    bottleStockChange={onBottleStockChange}
+                    capacityChange={onCapacityChange}
+                    totalQtyChange={onTotalQtyChange}
+                    btnDisabled={btnDisabled}
+                    submit={onSubmitProductClick}
+                    cancel={onAddProductCancelClick}
+                />
+            </Box>
+        </>
     )
 }
 

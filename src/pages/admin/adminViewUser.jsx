@@ -80,7 +80,6 @@ function AdminViewUser(){
                                     <thead>
                                         <tr className="adminRow">
                                             <th>User ID</th>
-                                            <th>Name</th>
                                             <th>Username</th>
                                             <th>Email</th>
                                             <th>Verified?</th>
@@ -94,9 +93,9 @@ function AdminViewUser(){
                                     
                                 </table>
                                 <div className='pageController'>
-                                    <button onClick={prevPage} className="btnPage">-</button>
+                                    <button onClick={prevPage} className="btnPage">{"<"}</button>
                                     Page {page} of {Math.floor(count/10)+1}
-                                    <button onClick={nextPage} className="btnPage">+</button>
+                                    <button onClick={nextPage} className="btnPage">{">"}</button>
                                 </div>
                             </div>
                         </div>

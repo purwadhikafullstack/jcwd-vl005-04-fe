@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 
-import { useToast } from "@chakra-ui/react"
+import { Container, Grid, Select, useToast } from "@chakra-ui/react"
 
 import Card from "./components/card"
 import Header from "./components/header"
@@ -42,21 +42,20 @@ function Home() {
     const showProducts = () => {
         return products.map((product, index) => {
             return (
-                <div className="col-3" key={index}>
-                    <Card
-                        id={product.id}
-                        name={product.name}
-                        qty={product.total_quantity}
-                        unit={product.unit}
-                        onCartClick={() => {
-                            if (!isLogin) {
-                                navigate("/login")
-                                return
-                            }
-                            onCartButtonClick(product.id, product.price_per_unit)
-                        }}
-                    />
-                </div>
+                <Card
+                    id={product.id}
+                    name={product.name}
+                    qty={product.total_quantity}
+                    unit={product.unit}
+                    price={product.price_per_unit}
+                    onCartClick={() => {
+                        if (!isLogin) {
+                            navigate("/login")
+                            return
+                        }
+                        onCartButtonClick(product.id, product.price_per_unit)
+                    }}
+                />
             )
         })
     }
@@ -95,18 +94,16 @@ function Home() {
     return (
         <>
             <Header />
-            <div className="p-4">
-                <div name="filter" className="mb-4 w-25 shadow">
-                    <select className="form-select" onChange={applyFilter}>
-                        <option value="?_sort=id&_order=ASC">LATEST</option>
-                        <option value="?_sort=price_per_unit&_order=ASC">LOWEST TO HIGHEST PRICE</option>
-                        <option value="?_sort=price_per_unit&_order=DESC">HIGHEST TO LOWEST PRICE</option>
-                    </select>
-                </div>
-                <div className="row">
-                    {showProducts()}
-                </div>
-            </div>
+            <Container maxW='container.lg' py={5}>
+                <Select mb={4} w='25%' boxShadow='md' onChange={ applyFilter }>
+                    <option value="?_sort=id&_order=ASC">LATEST</option>
+                    <option value="?_sort=price_per_unit&_order=ASC">LOWEST TO HIGHEST PRICE</option>
+                    <option value="?_sort=price_per_unit&_order=DESC">HIGHEST TO LOWEST PRICE</option>
+                </Select>
+                <Grid templateColumns='repeat(4, 1fr)' gap={4}>
+                    { showProducts() }
+                </Grid>
+            </Container>
         </>
     )
 }

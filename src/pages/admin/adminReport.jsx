@@ -15,6 +15,7 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  } from "@fortawesome/free-regular-svg-icons";
 import { faMoneyBill1 } from "@fortawesome/free-solid-svg-icons";
+import Header from "../user/components/header";
 
 function AdminReport() {
   const global = useSelector((state) => state);
@@ -177,14 +178,29 @@ function AdminReport() {
                     <Td className="text-center">{formatThousands(el.profit, ".")}</Td>
                     <Td className="text-center"><Button onClick={openInNewTab(el.payment_proof_path)}>Link</Button></Td>
                   </Tr>
-                })}
-              </Tbody>
-              <Tfoot>
-              </Tfoot>
-            </Table>
-          </TableContainer>
-        </div>}
-
+                </Thead>
+                <Tbody>
+                  {trnList.map((el) => {
+                    return <Tr>
+                      <Td className="text-center">{moment(el.created_at).format("DD-MM-YYYY")}</Td>
+                      <Td className="text-center">{el.inv_number}</Td>
+                      <Td className="text-center">{formatThousands(el.total_payment, ".")}</Td>
+                      <Td className="text-center">{el.name}</Td>
+                      <Td className="text-center">{formatThousands(el.volume, ".")}</Td>
+                      <Td className="text-center">{formatThousands(el.price, ".")}</Td>
+                      <Td className="text-center">{formatThousands(el.price_capital, ".")}</Td>
+                      <Td className="text-center">{formatThousands(el.profit, ".")}</Td>
+                      <Td className="text-center"><Button onClick={openInNewTab(el.payment_proof_path)}>Link</Button></Td>
+                    </Tr>
+                  })}
+                </Tbody>
+                <Tfoot>
+                </Tfoot>
+              </Table>
+            </TableContainer>
+          </div>}
+          </div>
+        </div>
       </div>
     </div>
   );
