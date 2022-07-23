@@ -4,6 +4,7 @@ import { useToast } from "@chakra-ui/react";
 import io from "socket.io-client";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import formatThousands from "format-thousands"
 
 const API_URL = process.env.REACT_APP_API_URL
 const socket = io('http://localhost:5001');
@@ -108,7 +109,7 @@ function TransactionData(data){
             <td>{transaction.status}</td>
             <td>{time}</td>
             <td className="tableDataCenter"><img src={transaction.payment_proof_path} alt="No Image" className="transactionImage"></img></td>
-            <td>Rp. {transaction.total_payment}</td>
+            <td>Rp. {formatThousands(transaction.total_payment, '.')}</td>
             <td>{transaction.address_id}</td>
             <td>
                 {   
