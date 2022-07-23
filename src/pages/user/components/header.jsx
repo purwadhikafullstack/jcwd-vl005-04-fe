@@ -17,7 +17,7 @@ function Header({ isAuth }) {
     }
 
     return (
-        <Box p={4} backgroundColor='blue.500' fontWeight='bold' textColor='white'>
+        <Box p={4} className='bg-primary' fontWeight='bold' textColor='white'>
             {
                 user.role === 'admin' ?
                     <Flex justifyContent='space-between' alignItems='center'>
@@ -25,7 +25,7 @@ function Header({ isAuth }) {
                     </Flex>
                     :
                     <Flex justifyContent='space-between' alignItems='center'>
-                        <Link href='/home' fontSize='3xl'>
+                        <Link href='/' fontSize='3xl'>
                             <Flex alignItems='center' gap={4}>
                                 <Image src={logoHeader} height={70}/>
                                 Home

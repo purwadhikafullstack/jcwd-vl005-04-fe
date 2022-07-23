@@ -19,13 +19,13 @@ function SidebarMain () {
     return (
         <Flex position='fixed' h='100%' w='15%' direction='column' backgroundColor='blue.700' justifyContent='space-between'>
             <Flex direction='column'>
-                <SidebarItem text="Home" url="/admin/home" location={location}/>
-                <SidebarItem text="Add Products" url="/admin/products" location={location}/>
-                <SidebarItem text="Transaction" url="/admin/transaction" location={location}/>
-                <SidebarItem text="Category List" url="/admin/products/category-list" location={location}/>
-                <SidebarItem text="User List" url="/admin/view-user" location={location}/>
-                <SidebarItem text="Add Admin" url="/admin/register" location={location}/>
-                <SidebarItem text="Report" url="/admin/report" location={location}/>
+                <div className="sidebarButton" onClick={()=>navigate('/admin/home')}>Home</div>
+                <div className="sidebarButton" onClick={()=>navigate('/admin/products')}>Add Products</div>
+                <div className="sidebarButton" onClick={()=>navigate('/admin/transaction')}>Transaction</div>
+                <div className="sidebarButton" onClick={()=>navigate('/admin/products/category-list')}>Category List</div>
+                <div className="sidebarButton" onClick={()=>navigate('/admin/view-user')}>User List</div>
+                <div className="sidebarButton" onClick={()=>navigate('/admin/register')}>Add Admin</div>
+                <div className="sidebarButton" onClick={()=>navigate('/admin/report')}>Report</div>
             </Flex>
             <Button
                 p={2}
