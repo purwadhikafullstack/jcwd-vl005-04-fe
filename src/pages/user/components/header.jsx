@@ -17,7 +17,7 @@ function Header({ isAuth }) {
     }
 
     return (
-        <Box p={4} backgroundColor='blue.500' fontWeight='bold' textColor='white'>
+        <Box p={4} className='bg-primary' fontWeight='bold' textColor='white'>
             {
                 user.role === 'admin' ?
                     <Flex justifyContent='space-between' alignItems='center'>
