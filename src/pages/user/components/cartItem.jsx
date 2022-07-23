@@ -1,21 +1,24 @@
 import React, { useState } from "react"
 import axios from "axios"
 
-import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
-
 import dummy_img from "../../../../src/images/whitebackground.png"
+
+import { Box, Button, Flex, Image, Input, Text } from "@chakra-ui/react"
+import { AddIcon, CloseIcon, MinusIcon } from "@chakra-ui/icons"
+
 import { getUserInfo } from "../../../utils"
 
-function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClick, isCheckout, loadCart }) {
+function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClick, updateTotal }) {
     const user_id = getUserInfo().id
     const API_URL = process.env.REACT_APP_API_URL
+    const label = 'product_' + product_id
     
-    const [ totalPrice, setTotalPrice ] = useState(Number(price) * Number(volume))
     const [ totalVolume, setTotalVolume ] = useState(Number(volume))
 
     const onVolumeChange = (event) => {
         setTotalVolume(Number(event.target.value))
-        setTotalPrice(Number(event.target.value) * price)
+
+        updateTotal()
 
         const data = {
             user_id: user_id,
@@ -30,82 +33,49 @@ function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClic
             .catch((error) => {
                 console.log(error)
             })
-            
-            loadCart()
     }
 
-    const onPlusClick = () => {
-        const user_id = getUserInfo().id
-        const incTotalVolume = totalVolume + 1
-        setTotalVolume(incTotalVolume)
+    const onQtyClick = (number) => {
+        const newVolume = totalVolume + number
+        setTotalVolume(newVolume)
 
-        console.log(incTotalVolume)
-
+        const numberInput = document.getElementById(label)
+        numberInput.value = newVolume
+        
         const data = {
-            user_id: user_id,
+            user_id: localStorage.getItem('user_id'),
             product_id: product_id,
-            volume: incTotalVolume
+            volume: newVolume
         }
-
+        
         axios.post(`${API_URL}/cart/update`, data)
-        .then((response) => {
-            console.log(response)
-            setTotalPrice(price * totalVolume)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-    }
-
-    const onMinClick = () => {
-        const user_id = getUserInfo().id
-        const decTotalVolume = totalVolume - 1
-        setTotalVolume(decTotalVolume)
-
-        console.log(totalVolume)
-
-        const data = {
-            user_id: user_id,
-            product_id: product_id,
-            volume: decTotalVolume
-        }
-
-        axios.post(`${API_URL}/cart/update`, data)
-        .then((response) => {
-            console.log(response)
-            setTotalPrice(price * totalVolume)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+            .then((response) => {
+                console.log(response)
+                updateTotal()
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     return (
-        <div className="card shadow mb-4">
-            <div className="card-body">
-                <div className="d-flex w-100">
-                    <div className="w-25 me-2">
-                        <img src={dummy_img} alt="" />
-                    </div>
-                    <div className="w-50 mx-2 d-flex flex-column justify-content-center">
-                        <p>{name}</p>
-                        <p className="mb-2">{totalVolume + ' ' + abbreviation}</p>
-                        <div className="d-flex w-100 justify-content-between border-top pt-2">
-                            <p>Total Belanja:</p>
-                            <p className="fw-bold">{new Intl.NumberFormat('id-ID', {style: 'currency', currency: 'IDR'}).format(totalPrice)}</p>
-                        </div>
-                    </div>
-                    <div className="w-25 ms-2 d-flex flex-column align-items-center justify-content-center">
-                        <div className="d-flex w-100 mb-3">
-                            {/* <button className="btn btn-sm btn-light" onClick={onMinClick}>-</button> */}
-                            <input type="number" min={1} className="form-control mx-2 text-center" defaultValue={totalVolume} onChange={onVolumeChange} disabled={isCheckout}/>
-                            {/* <button className="btn btn-sm btn-light" onClick={onPlusClick}>+</button> */}
-                        </div>
-                        {!isCheckout && <button className="btn btn-sm btn-danger w-100" onClick={onDeleteClick}>Hapus</button>}
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Box shadow='md' borderRadius={20}>
+            <Flex gap='3' p={5} alignItems='center'>
+                <Flex w='10%' alignItems='center' justifyContent='center' borderRightWidth={2} borderRightColor='blue.500' pe={4}>
+                    <Button colorScheme='red' variant='outline' size='xs' onClick={onDeleteClick}><CloseIcon /></Button>
+                </Flex>
+                <Image boxSize='25%' objectFit='cover' borderRadius={10} src={dummy_img} />
+                <Flex direction='column' grow={1}>
+                    <Text>{ name }</Text>
+                    <Text mb={2}>{ new Intl.NumberFormat('id-ID', {style: 'currency', currency: 'IDR'}).format(price) } / {abbreviation}</Text>
+                    <Flex borderTopWidth={1} pt={2} gap={4} justifyContent='end'>
+                        <Button size='sm' variant='outline' colorScheme='blue' onClick={() => onQtyClick(-1)}><MinusIcon /></Button>
+                        <Input id={label} type='number' w='20%' variant='unstyled' textAlign='center' defaultValue={ totalVolume } min={ 1 } onChange={ onVolumeChange } />
+                        <Button size='sm' variant='outline' colorScheme='blue' onClick={() => onQtyClick(1)}><AddIcon /></Button>
+                    </Flex>
+                </Flex>
+            </Flex>
+        </Box>
     )
 }
 
