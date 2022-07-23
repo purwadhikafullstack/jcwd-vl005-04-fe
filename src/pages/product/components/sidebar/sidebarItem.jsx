@@ -1,12 +1,24 @@
 import React from "react"
+import { Link } from "@chakra-ui/react"
 
-import "../../../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
+import '../../../../css/admin/adminSidebar.css'
 
 function SidebarItem (props) {
+    const itemClass = 'sidebar-link ' + (props.location === props.url ? 'sidebar-link-active' : '')
+    console.log(props.url)
+
     return (
-        <div className="p-2 border-bottom border-warning">
-            <a href={props.url}>{ props.text }</a>
-        </div>
+        <Link 
+            p={2} 
+            href={ props.url } 
+            fontWeight='bold' 
+            textColor='white' 
+            borderBottomColor='white' 
+            borderBottomWidth={4} 
+            className={itemClass}
+        >
+            { props.text }
+        </Link>
     )
 }
 
