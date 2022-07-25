@@ -59,6 +59,7 @@ function PendingPayment() {
                             case "approved":
                                 badgeColor = "success"
                                 btnText = "Paid"
+                                onClickFn = openInNewTab(el.payment_proof_path)
                                 break;
                             case "pending":
                                 badgeColor = "warning"
