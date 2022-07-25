@@ -18,6 +18,7 @@ const INITIAL_STATE = {
       email : "",
       role : ""
     },
+    logged : false,
     loading : false
   }
   function Reducer(state = INITIAL_STATE, action){
@@ -29,7 +30,8 @@ const INITIAL_STATE = {
           username : action.payload.username,
           email : action.payload.email,
           role : "admin"
-        }
+        },
+        logged : true
       }
     }
   

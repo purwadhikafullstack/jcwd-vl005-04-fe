@@ -129,19 +129,23 @@ function Cart() {
         <>
             <Header />
 
-            <Flex gap={4} justifyContent='center' p={4} alignItems='start'>
-                <Flex direction='column' gap={3} w='50%'>
-                    { showCartItems() }
-                </Flex>
-                <Box shadow='md' borderRadius={10} w='25%' p={4}>
-                    <Text fontWeight='bold' borderBottomWidth={2} borderBottomColor='blue.500' pb={2} mb={5}>Ringkasan Pembelian</Text>
-                    <Flex justifyContent='space-between' mb={4}>
-                        <Text fontWeight='bold'>Total Belanja: Rp</Text>
-                        <Text>{ new Intl.NumberFormat('id-ID').format(totalShop.current) }</Text>
-                    </Flex>
-                    <Button size='sm' w='100%' colorScheme='blue' onClick={onCheckout}>Checkout</Button>
-                </Box>
-            </Flex>
+            <div className="py-4" style={{
+                height: "calc(100vh - 126px)",
+                overflowY: "scroll",
+            }}>
+                <div className="w-50 mx-auto">
+                    {showCartItems()}
+                </div>
+            </div>
+            <div className="checkout-section bg-primary text-white">
+                <div className="d-flex justify-content-between">
+                    <div>
+                        <Button >Total: {new Intl.NumberFormat('id-ID', {style: 'currency', currency: 'IDR'}).format(totalShop.current)}</Button></div>
+                    <div>
+                        <Button variant="secondary" onClick={onCheckout}>Checkout</Button>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }

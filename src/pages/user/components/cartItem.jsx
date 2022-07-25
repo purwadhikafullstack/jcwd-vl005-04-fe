@@ -7,6 +7,7 @@ import { Box, Button, Flex, Image, Input, Text } from "@chakra-ui/react"
 import { AddIcon, CloseIcon, MinusIcon } from "@chakra-ui/icons"
 
 import { getUserInfo } from "../../../utils"
+import { useLocation } from "react-router-dom"
 
 function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClick, updateTotal }) {
     const user_id = getUserInfo().id
@@ -14,6 +15,7 @@ function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClic
     const label = 'product_' + product_id
     
     const [ totalVolume, setTotalVolume ] = useState(Number(volume))
+    const location = useLocation().pathname;
 
     const onVolumeChange = (event) => {
         setTotalVolume(Number(event.target.value))
@@ -43,11 +45,10 @@ function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClic
         numberInput.value = newVolume
         
         const data = {
-            user_id: localStorage.getItem('user_id'),
+            user_id: user_id,
             product_id: product_id,
             volume: newVolume
         }
-        
         axios.post(`${API_URL}/cart/update`, data)
             .then((response) => {
                 console.log(response)
@@ -68,11 +69,19 @@ function CartItem ({ product_id, volume, price, name, abbreviation, onDeleteClic
                 <Flex direction='column' grow={1}>
                     <Text>{ name }</Text>
                     <Text mb={2}>{ new Intl.NumberFormat('id-ID', {style: 'currency', currency: 'IDR'}).format(price) } / {abbreviation}</Text>
+                    {
+                    location === "/checkout"?
+                    <div>
+                        Total Qty : {totalVolume}
+                    </div>
+                    :
                     <Flex borderTopWidth={1} pt={2} gap={4} justifyContent='end'>
                         <Button size='sm' variant='outline' colorScheme='blue' onClick={() => onQtyClick(-1)}><MinusIcon /></Button>
                         <Input id={label} type='number' w='20%' variant='unstyled' textAlign='center' defaultValue={ totalVolume } min={ 1 } onChange={ onVolumeChange } />
                         <Button size='sm' variant='outline' colorScheme='blue' onClick={() => onQtyClick(1)}><AddIcon /></Button>
                     </Flex>
+                    }
+                    
                 </Flex>
             </Flex>
         </Box>
