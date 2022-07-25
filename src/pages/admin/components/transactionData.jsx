@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Axios from 'axios'
-import { useToast } from "@chakra-ui/react";
+import { Spinner, useToast } from "@chakra-ui/react";
 import io from "socket.io-client";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ function TransactionData(data){
     let index = data.index+1
     const user = useSelector((state) => state.user)
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const toast = useToast();
     let time = transaction.created_at;
@@ -29,10 +30,13 @@ function TransactionData(data){
     }
 
     const approveTransaction = () =>{
+        if(loading)return;
+        setLoading(true);
         Axios.post(API_URL + `/transaction/approve/${transaction.id}`, userdata)
         .then((respond)=>{
             socket.emit('finishTransaction', '')
             setApproveConfirmation(false);
+            setLoading(false);
             toast({
                 title: 'Transaction Approved',
                 description: `An Invoice Email has been sent to User`,
@@ -43,6 +47,7 @@ function TransactionData(data){
         })
         .catch((error)=>{
             setApproveConfirmation(false);
+            setLoading(false);
             toast({
                 title: 'Error',
                 description: `${error.response.data}`,
@@ -54,9 +59,12 @@ function TransactionData(data){
     }
 
     const rejectTransaction = () =>{
+        if(loading)return;
+        setLoading(true);
         Axios.post(API_URL + `/transaction/reject/${transaction.id}`, userdata)
         .then((respond)=>{
             setRejectConfirmation(false);
+            setLoading(false);
             toast({
                 title: 'A Reject Transaction Email has been sent to User',
                 description: `Please refresh to continue`,
@@ -67,6 +75,7 @@ function TransactionData(data){
         })
         .catch((error)=>{
             setRejectConfirmation(false);
+            setLoading(false);
             toast({
                 title: 'Error',
                 description: `${error.response.data}`,
@@ -140,7 +149,7 @@ function TransactionData(data){
                         </div>
                         <div className="adminVerificationText">
                             <button className="adminVerificationButton btnSuccessAdmin" onClick={approveTransaction}>
-                                Yes
+                                {loading?<Spinner></Spinner>:"Yes"}
                             </button>
                             <button className="adminVerificationButton btnErrorAdmin" onClick={()=>setApproveConfirmation(false)}>
                                 No
@@ -170,7 +179,7 @@ function TransactionData(data){
                         </div>
                         <div className="adminVerificationText">
                             <button className="adminVerificationButton btnSuccessAdmin" onClick={rejectTransaction}>
-                                Yes
+                            {loading?<Spinner></Spinner>:"Yes"}
                             </button>
                             <button className="adminVerificationButton btnErrorAdmin" onClick={()=>setRejectConfirmation(false)}>
                                 No
