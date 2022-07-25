@@ -48,6 +48,7 @@ function Home() {
                     qty={product.total_quantity}
                     unit={product.unit}
                     price={product.price_per_unit}
+                    img_path={product.product_img_path}
                     onCartClick={() => {
                         if (!isLogin) {
                             navigate("/login")
