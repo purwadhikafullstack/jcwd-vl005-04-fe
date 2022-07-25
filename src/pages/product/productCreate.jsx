@@ -1,17 +1,13 @@
 import React from "react"
 
 import { 
+    Box,
     Button,
     ButtonGroup,
     Flex,
     FormControl,
     FormLabel,
     Input,
-    NumberDecrementStepper,
-    NumberIncrementStepper,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
     Select 
 } from "@chakra-ui/react"
 
@@ -54,7 +50,7 @@ function ProductCreate ({
     }
 
     return (
-        <>
+        <Box w='50%' mt={4} mx='auto' p={4} boxShadow='md'>
             <FormControl isRequired mb={3}>
                 <FormLabel htmlFor='name'>Nama Produk</FormLabel>
                 <Input 
@@ -139,7 +135,7 @@ function ProductCreate ({
                     <Button isDisabled={btnDisabled} colorScheme='green' size='sm' onClick={submit}>Submit</Button>
                 </ButtonGroup>
             </Flex>
-        </>
+        </Box>
     )
 }
 

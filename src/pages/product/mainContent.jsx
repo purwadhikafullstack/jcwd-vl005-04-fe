@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef }  from "react"
 import axios from "axios"
 
-import { Box, Button, Select, Table, TableContainer, Tbody, Th, Thead, Tr, useToast } from "@chakra-ui/react"
+import { Box, Button, FormControl, FormLabel, Input, Select, Table, TableContainer, Tbody, Th, Thead, Tr, useToast } from "@chakra-ui/react"
 import ProductItems from "./components/sub-view/productItems"
 import ProductCreate from "./productCreate"
 
@@ -15,6 +15,8 @@ function MainContent () {
     const [ productCategories, setProductCategories ] = useState([])
 
     const [ newProductOpen, setNewProductOpen ] = useState('none')
+
+    const [ saveImage, setSaveImage ] = useState(null)
 
     // New Product
     const newName = useRef('')
@@ -283,6 +285,50 @@ function MainContent () {
             })
     }
 
+    const onFileChange = (event) => {
+        console.log(event.target.files[0])
+        console.log(URL.createObjectURL(event.target.files[0]))
+        setSaveImage(event.target.files[0])
+    }
+
+    const onFileBtnClick = (event) => {
+        if (!saveImage) {
+            showToast('error', 'Pilih file untuk di-upload')
+        }
+
+        const formData = new FormData();
+        formData.append('image', saveImage)
+        formData.append('product_id', editId)
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+
+        axios.post(`${API_URL}/products/upload-image`, formData, config)
+            .then((response) => {
+                showToast('success', 'Berhasil upload')
+                document.getElementById('img-upload').value = ''
+            })
+            .catch((error) => {
+                showToast('error', 'Gagal upload')
+                console.log(error)
+            })
+    }
+
+    const imgUploader = () => {
+        return (
+            <Box w='50%' mt={4} mx='auto' p={4} boxShadow='md'>
+                <FormControl>
+                    <FormLabel>Image Uploader</FormLabel>
+                    <Input id='img-upload' type='file' accept="image/*" onChange={onFileChange}/>
+                </FormControl>
+                <Button colorScheme='green' size='sm' onClick={onFileBtnClick}>Upload</Button>
+            </Box>
+        )
+    }
+
     return (
         <>
             <Select mb={4} w='25%' boxShadow='md' onChange={ applyFilter }>
@@ -312,7 +358,8 @@ function MainContent () {
                 Tambah Produk
             </Button>
 
-            <Box w='50%' mt={4} mx='auto' p={4} boxShadow='md' display={newProductOpen}>
+            <Box display={newProductOpen}>
+                { type === 'update' ? imgUploader() : null }
                 <ProductCreate 
                     key={'product_create'} 
                     types={productTypes}

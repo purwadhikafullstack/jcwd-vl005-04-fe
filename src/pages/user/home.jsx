@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
 
-import { Container, Grid, Select, useToast } from "@chakra-ui/react"
+import { Container, Grid, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Select, useToast } from "@chakra-ui/react"
 
 import Card from "./components/card"
 import Header from "./components/header"
@@ -44,10 +44,12 @@ function Home() {
             return (
                 <Card
                     id={product.id}
+                    product_id={product.id}
                     name={product.name}
                     qty={product.total_quantity}
                     unit={product.unit}
                     price={product.price_per_unit}
+                    img_path={product.product_img_path}
                     onCartClick={() => {
                         if (!isLogin) {
                             navigate("/login")
@@ -91,9 +93,23 @@ function Home() {
             })
     }
 
+    const showModal = () => {
+        <Modal>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>Modal Title</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                    Test
+                </ModalBody>
+            </ModalContent>
+        </Modal>
+    }
+
     return (
         <>
             <Header />
+            {showModal()}
             <Container maxW='container.lg' py={5}>
                 <Select mb={4} w='25%' boxShadow='md' onChange={ applyFilter }>
                     <option value="?_sort=id&_order=ASC">LATEST</option>
