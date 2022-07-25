@@ -39,7 +39,7 @@ function Header({ isAuth }) {
                             }
                             <Link href={isLogin ? '/cart' : '/login'} fontSize='3xl'><BiShoppingBag /></Link>
                             { isLogin ?
-                                <Button variant='link' onClick={onLogout}>Logout</Button>
+                                <Button variant='link' onClick={onLogout}><div style={{color:"white", fontSize:"30px"}}>Logout</div></Button>
                                 :
                                 <Link href='/login' fontSize='3xl'>Login</Link>
                             }
