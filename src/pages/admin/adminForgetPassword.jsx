@@ -15,10 +15,6 @@ function AdminForgetPassword (){
     const toast = useToast();
     const navigate = useNavigate();
 
-    // if(user.email){
-    //     navigate('/')
-    // }
-
     const sendVerificationEmail = () =>{
         setErrorMessage("");
         setLoading(true);

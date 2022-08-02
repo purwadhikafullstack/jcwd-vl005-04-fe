@@ -18,7 +18,7 @@ function AdminViewUser(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const toast = useToast();
-    let count = 0;
+    const [count, setCount] = useState(0);
     
     const [page, setPage] = useState(1);
 
@@ -26,7 +26,7 @@ function AdminViewUser(){
         Axios.get(API_URL + `/users?_page=${page}`)
         .then((respond1)=>{
             setUser(respond1.data.user)
-            count  = respond1.data.total
+            setCount(respond1.data.total)
         })
         .catch((error)=>{
             console.log(error)
@@ -94,7 +94,7 @@ function AdminViewUser(){
                                 </table>
                                 <div className='pageController'>
                                     <button onClick={prevPage} className="btnPage">{"<"}</button>
-                                    Page {page} of {Math.floor(count/10)+1}
+                                    Page {page} of {Math.floor(count/5)+1}
                                     <button onClick={nextPage} className="btnPage">{">"}</button>
                                 </div>
                             </div>
