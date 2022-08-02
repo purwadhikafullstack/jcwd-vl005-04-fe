@@ -49,7 +49,6 @@ function App() {
 
   useEffect(() => {
     const admintoken = localStorage.getItem('admintoken')
-    console.log(admintoken)
     if (admintoken) {
       Axios.get(API_URL + `/admin/${admintoken}`)
         .then((respond) => {
@@ -88,8 +87,6 @@ function App() {
           <Route path='/admin/transaction' element={<AdminTransaction />} />
           <Route path='/admin/user-transactions/:id' element={<AdminUserTransactions />} />
           <Route path='/admin/view-user' element={<AdminViewUser />} />
-          <Route path='/admin/forget-password' element={<AdminForgetPassword/>} />
-          <Route path='/admin/reset-password/:id' element={<AdminResetPassword />} />
           <Route path="/admin/report" element={<AdminReport />} />
           <Route path='/admin/products/category-list' element={<ProductHome />} />
           <Route path='/admin/products' element={<ProductHome />} />
@@ -97,6 +94,8 @@ function App() {
 
         <Route exact path="/admin" element={<AuthRouteAdmin />}>
           <Route path='/admin' element={<AdminLogin />} />
+          <Route path='/admin/forget-password' element={<AdminForgetPassword/>} />
+          <Route path='/admin/reset-password/:id' element={<AdminResetPassword />} />
         </Route>
         {/* admin */}
 
