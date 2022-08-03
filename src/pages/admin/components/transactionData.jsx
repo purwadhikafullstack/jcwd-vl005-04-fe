@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import Axios from 'axios'
 import { Spinner, useToast } from "@chakra-ui/react";
-import io from "socket.io-client";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import formatThousands from "format-thousands"
 
 const API_URL = process.env.REACT_APP_API_URL
-const socket = io('http://localhost:5001');
 let notificationSent = false;
 
 function TransactionData(data){
@@ -34,7 +32,6 @@ function TransactionData(data){
         setLoading(true);
         Axios.post(API_URL + `/transaction/approve/${transaction.id}`, userdata)
         .then((respond)=>{
-            socket.emit('finishTransaction', '')
             setApproveConfirmation(false);
             setLoading(false);
             toast({
@@ -85,19 +82,6 @@ function TransactionData(data){
               })
         })
     }
-
-    socket.on('confirmasiCheckOutBerhasil', (arg) => {
-        if (user.role == "admin" && !notificationSent) {
-            notificationSent = true;
-            toast({
-                title: "Transaction Success",
-                description: arg,
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-            })
-        }
-    })
 
     const checkInvoice = (inv) =>{
         navigate("/invoice/"+inv)
